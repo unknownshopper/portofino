@@ -15,5 +15,5 @@
 - [ ] RFC / razón social para el aviso de privacidad
 
 ## Publicación
-- [ ] **URL del repo GitHub nuevo** (otra cuenta) → `git remote` + `og:image` absoluto
-- [ ] **Dominio** definitivo (¿portofino.mx?) → `propuesta.html`, CNAME + DNS
+- [x] Repo GitHub — `github.com/unknownshopper/portofino` · `og:image` → `unknownshopper.github.io/portofino`
+- [ ] **Dominio** definitivo (¿portofino.mx / portofino.com.mx?) → `propuesta.html`, CNAME + DNS
