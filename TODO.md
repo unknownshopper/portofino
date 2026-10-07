@@ -1,8 +1,7 @@
 # Pendientes PORTOFINO — preguntar a Eduardo
 
 ## Catálogo / cotizador (catalogo.html)
-- [ ] **Correo de ventas** — para habilitar "Enviar por correo" (constante `CORREO_VENTAS` en catalogo.html). Hoy solo envía por WhatsApp.
-- [ ] **Decidir canal formal**: ¿correo, WhatsApp, o ambos? (lo formal parece correo)
+- [x] **Correo de ventas** — `ventas@portofino.com.mx` ya conectado (`CORREO_VENTAS`, mailto es el envío primario; WhatsApp alterno)
 - [ ] ¿Mostrar precio por m² público o solo "a cotización"? (hoy: sin precio público)
 
 ## Imágenes / Dropbox
@@ -12,7 +11,7 @@
 ## Datos del negocio
 - [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto, Google Maps, aviso de privacidad
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
-- [ ] Correo de contacto general (para footers y aviso de privacidad)
+- [x] Correo de contacto — `ventas@portofino.com.mx` (ya en cotizador, contacto y aviso)
 - [ ] RFC / razón social para el aviso de privacidad
 
 ## Publicación
