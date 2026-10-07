@@ -214,6 +214,88 @@
     .obra-1, .obra-2, .obra-3, .obra-4, .obra-5, .obra-6 { grid-column: span 12; aspect-ratio: 4/5; }
   }
 
+  /* ── materiales: carousel de productos ── */
+  .materiales { background: var(--paper); color: var(--ink); padding: 0 2rem 7rem; }
+  .materiales-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-top: 1px solid rgba(22,24,26,.15);
+    padding-top: 2.5rem;
+    max-width: 1200px; margin: 0 auto 3rem;
+  }
+  .materiales-head .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1rem;
+  }
+  .materiales-head h2 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600; font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -.02em;
+  }
+  .carr-nav { display: flex; gap: .6rem; }
+  .carr-btn {
+    width: 2.7rem; height: 2.7rem; border-radius: 50%;
+    border: 1px solid rgba(22,24,26,.25); background: transparent;
+    color: var(--ink); font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .25s, color .25s;
+  }
+  .carr-btn:hover { background: var(--ink); color: var(--paper); }
+  .carr {
+    display: flex; gap: 1.5rem;
+    max-width: 1200px; margin: 0 auto;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; padding-bottom: .5rem;
+  }
+  .carr::-webkit-scrollbar { display: none; }
+  .prod {
+    flex: 0 0 calc(25% - 1.125rem);
+    scroll-snap-align: start;
+    background: #fff;
+    border: 1px solid rgba(22,24,26,.12);
+    border-radius: 18px; padding: 1rem;
+    display: flex; flex-direction: column; gap: .9rem;
+  }
+  .prod-fig {
+    position: relative; aspect-ratio: 4/5;
+    border-radius: 12px; overflow: hidden; background: #e7e9e9;
+  }
+  .prod-fig > img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: opacity .35s;
+  }
+  .prod-fig .mini {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 2.1rem; height: 2.1rem; border-radius: 50%; border: none;
+    background: rgba(255,255,255,.88); color: var(--ink);
+    font-size: .95rem; cursor: pointer; opacity: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .25s, background .25s;
+  }
+  .prod-fig:hover .mini { opacity: 1; }
+  @media (hover: none) { .prod-fig .mini { opacity: .9; } }
+  .prod-fig .mini:hover { background: #fff; }
+  .mini.prev { left: .6rem; }
+  .mini.next { right: .6rem; }
+  .prod h3 { font-size: 1.02rem; font-weight: 500; letter-spacing: .01em; }
+  .vars { display: flex; gap: .5rem; }
+  .vars button {
+    width: 42px; height: 42px; border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(22,24,26,.14); padding: 0; cursor: pointer;
+    background: #e7e9e9; flex-shrink: 0;
+  }
+  .vars button.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .vars img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ver {
+    margin-top: auto; align-self: center;
+    font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--accent);
+    border-radius: 999px; padding: .68rem 1.5rem; text-decoration: none;
+    transition: background .25s, color .25s;
+  }
+  .ver:hover { background: var(--accent); color: #fff; }
+  @media (max-width: 900px) { .prod { flex-basis: calc(50% - .75rem); } }
+  @media (max-width: 560px) { .prod { flex-basis: 74vw; } }
+
   /* ── contacto ── */
   .contacto {
     padding: 7rem 2rem;
@@ -437,6 +519,21 @@
   <p>La piedra no se fabrica.<br>Se selecciona, se corta y permanece.</p>
 </section>
 
+<!-- MATERIALES -->
+<section class="materiales" id="materiales">
+  <div class="materiales-head">
+    <div>
+      <span class="k">Catálogo</span>
+      <h2>Materiales</h2>
+    </div>
+    <div class="carr-nav">
+      <button class="carr-btn" id="carrPrev" aria-label="Anterior">←</button>
+      <button class="carr-btn" id="carrNext" aria-label="Siguiente">→</button>
+    </div>
+  </div>
+  <div class="carr" id="carr"></div>
+</section>
+
 <!-- PROYECTOS -->
 <section class="proyectos" id="proyectos">
   <div class="proyectos-head">
@@ -549,6 +646,7 @@
   </form>
 </div>
 
+<script src="imagenes.js"></script>
 <script>
 // loader — sale cuando carga la primera foto del hero (o 4.5s máx)
 const loader = document.getElementById('loader');
@@ -585,6 +683,56 @@ setInterval(() => {
 addEventListener('scroll', () => {
   document.body.classList.toggle('scrolled', scrollY > innerHeight * .55);
 }, { passive: true });
+
+// ── materiales: carousel con mini-variantes por producto ──
+const PRODUCTOS = [
+  { slug: 'marmoles', nombre: 'Mármoles' },
+  { slug: 'granitos', nombre: 'Granitos exóticos' },
+  { slug: 'silestone', nombre: 'Silestone®' },
+  { slug: 'dekton', nombre: 'Dekton®' },
+];
+const carr = document.getElementById('carr');
+
+PRODUCTOS.forEach(({ slug, nombre }) => {
+  const rubro = (typeof PORTOFINO_DATA !== 'undefined' ? PORTOFINO_DATA : [])
+    .find(r => r.slug === slug);
+  // variantes: un thumb por proyecto del rubro; fallback a thumbs locales por convención
+  const vars = rubro && rubro.proyectos.length
+    ? rubro.proyectos.slice(0, 5).map(p => p.thumb || p.fotos[0])
+    : [0, 1, 2].map(i => `img/thumbs/${slug}-${i}.jpg`);
+
+  const card = document.createElement('article');
+  card.className = 'prod';
+  card.innerHTML = `
+    <div class="prod-fig">
+      <img src="${vars[0] || ''}" alt="${nombre}" onerror="this.style.opacity=0">
+      <button class="mini prev" aria-label="Variante anterior">←</button>
+      <button class="mini next" aria-label="Variante siguiente">→</button>
+    </div>
+    <h3>${nombre}</h3>
+    <div class="vars">${vars.map((v, i) =>
+      `<button data-i="${i}" class="${i === 0 ? 'on' : ''}" aria-label="Variante ${i + 1}"><img src="${v}" alt="" loading="lazy" onerror="this.parentElement.style.visibility='hidden'"></button>`
+    ).join('')}</div>
+    <a class="ver" href="galeria.html#${slug}">Ver catálogo</a>`;
+
+  const fig = card.querySelector('.prod-fig img');
+  let vi = 0;
+  const show = i => {
+    vi = (i + vars.length) % vars.length;
+    fig.style.opacity = 0;
+    fig.onload = () => { fig.style.opacity = 1; };
+    fig.src = vars[vi];
+    card.querySelectorAll('.vars button').forEach((b, j) => b.classList.toggle('on', j === vi));
+  };
+  card.querySelector('.prev').onclick = () => show(vi - 1);
+  card.querySelector('.next').onclick = () => show(vi + 1);
+  card.querySelectorAll('.vars button').forEach(b => { b.onclick = () => show(+b.dataset.i); });
+  carr.appendChild(card);
+});
+
+const paso = () => (carr.querySelector('.prod')?.offsetWidth || 300) + 24;
+document.getElementById('carrPrev').onclick = () => carr.scrollBy({ left: -paso(), behavior: 'smooth' });
+document.getElementById('carrNext').onclick = () => carr.scrollBy({ left: paso(), behavior: 'smooth' });
 
 // chat asistente — responde por palabras clave
 const chatBox = document.getElementById('chatBox');
