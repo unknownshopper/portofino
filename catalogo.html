@@ -138,16 +138,17 @@
     color: var(--accent); margin-top: -.35rem;
   }
   .add {
-    align-self: flex-start;
-    font-family: inherit;
-    font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
-    color: var(--accent); background: none;
-    border: none; border-bottom: 1px solid var(--accent);
-    padding: 0 0 .25rem; cursor: pointer;
-    transition: color .2s, border-color .2s;
+    position: absolute; left: 50%; bottom: .8rem; transform: translateX(-50%);
+    font-family: inherit; white-space: nowrap;
+    font-size: .6rem; letter-spacing: .24em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); background: rgba(255,255,255,.9);
+    border: none; border-radius: 99px;
+    padding: .6rem 1.15rem; cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background .2s, color .2s, transform .2s;
   }
-  .add:hover { color: var(--ink); border-color: var(--ink); }
-  .add.in { color: var(--ink); font-weight: 600; }
+  .add:hover { background: #fff; transform: translateX(-50%) translateY(-1px); }
+  .add.in { background: var(--ink); color: var(--paper); }
   .vacio { grid-column: 1/-1; padding: 4rem 0; text-align: center; opacity: .5; font-size: .9rem; }
 
   /* ── botón flotante de cotización ── */
@@ -399,10 +400,12 @@ function renderGrid() {
     const d = document.createElement('article');
     d.className = 'item';
     d.innerHTML = `
-      <div class="item-fig"><img src="${it.img}" alt="${it.nombre}" loading="lazy"></div>
+      <div class="item-fig">
+        <img src="${it.img}" alt="${it.nombre}" loading="lazy">
+        <button class="add ${enCot ? 'in' : ''}">${enCot ? '✓ En cotización' : '+ Cotizar'}</button>
+      </div>
       <h3>${it.nombre}</h3>
-      <span class="rubro">${it.rubro}</span>
-      <button class="add ${enCot ? 'in' : ''}">${enCot ? '✓ En su cotización' : '+ Cotizar'}</button>`;
+      <span class="rubro">${it.rubro}</span>`;
     d.querySelector('.add').onclick = () => {
       if (cot[it.id]) delete cot[it.id];
       else cot[it.id] = { m2: '' };
