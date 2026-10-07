@@ -211,7 +211,7 @@
   .cot-item .nom { font-size: .85rem; font-weight: 500; }
   .cot-item .rub { font-size: .56rem; letter-spacing: .24em; text-transform: uppercase; color: var(--accent); }
   .cot-item .m2 {
-    margin-top: .4rem; width: 88px;
+    margin-top: .4rem; width: 150px;
     border: 1px solid var(--hairline); border-radius: 8px;
     padding: .35rem .5rem; font-family: inherit; font-size: .75rem;
     background: #fff; color: var(--ink); outline: none;
@@ -244,8 +244,8 @@
     transition: opacity .2s, transform .2s;
   }
   .enviar:hover { transform: translateY(-1px); }
-  .enviar.wa { background: var(--ink); color: var(--paper); }
-  .enviar.mail { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
+  .enviar.mail { background: var(--ink); color: var(--paper); }
+  .enviar.wa { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
   .enviar:disabled { opacity: .4; cursor: default; transform: none; }
   .cot-aviso { font-size: .72rem; opacity: .55; line-height: 1.6; margin-top: .4rem; }
 
@@ -326,8 +326,8 @@
       </div>
       <input id="fCiudad" type="text" placeholder="Ciudad / Estado donde compra *" required>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
-      <button class="enviar wa" id="envWa" type="submit">Enviar por WhatsApp →</button>
-      <button class="enviar mail" id="envMail" type="button" style="display:none">Enviar por correo →</button>
+      <button class="enviar mail" id="envMail" type="submit">Enviar solicitud por correo →</button>
+      <button class="enviar wa" id="envWa" type="button">Enviar por WhatsApp →</button>
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas y precio final. Sucursales en Veracruz y Tabasco; operamos en toda la república.</p>
     </form>
   </div>
@@ -367,6 +367,8 @@ let q = '';
 // ── carrito de cotización (localStorage) ──
 let cot = {};
 try { cot = JSON.parse(localStorage.getItem('pf_cot') || '{}'); } catch (e) { cot = {}; }
+// descartar items guardados que ya no existen en el manifiesto actual
+Object.keys(cot).forEach(id => { if (!ITEMS.some(x => x.id === id)) delete cot[id]; });
 const guardar = () => localStorage.setItem('pf_cot', JSON.stringify(cot));
 
 function renderCats() {
@@ -442,7 +444,7 @@ function renderPanel() {
       <div>
         <div class="nom">${it.nombre}</div>
         <div class="rub">${it.rubro}</div>
-        <input class="m2" type="number" min="0" step="0.5" placeholder="m² aprox." value="${cot[id].m2 || ''}">
+        <input class="m2" type="number" min="0" step="0.5" placeholder="Área en m² (aprox.)" value="${cot[id].m2 || ''}">
       </div>
       <button class="quitar" aria-label="Quitar">×</button>`;
     row.querySelector('.m2').oninput = e => { cot[id].m2 = e.target.value; guardar(); };
@@ -492,21 +494,18 @@ Comentarios: ${f('fMsg') || '—'}`,
   };
 }
 
+// correo = canal principal; WhatsApp = alterno
 document.getElementById('cotForm').addEventListener('submit', e => {
   e.preventDefault();
   const r = resumen();
-  window.open(`https://wa.me/${WA_VENTAS}?text=${encodeURIComponent(r.texto)}`, '_blank');
+  location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Solicitud de cotización — ' + r.nombre)}&body=${encodeURIComponent(r.texto)}`;
 });
 
-const envMail = document.getElementById('envMail');
-if (CORREO_VENTAS) {
-  envMail.style.display = '';
-  envMail.onclick = () => {
-    if (!document.getElementById('cotForm').reportValidity()) return;
-    const r = resumen();
-    location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Cotización — ' + r.nombre)}&body=${encodeURIComponent(r.texto)}`;
-  };
-}
+document.getElementById('envWa').onclick = () => {
+  if (!document.getElementById('cotForm').reportValidity()) return;
+  const r = resumen();
+  window.open(`https://wa.me/${WA_VENTAS}?text=${encodeURIComponent(r.texto)}`, '_blank');
+};
 
 // ── búsqueda + routing ──
 buscarEl.addEventListener('input', () => { q = buscarEl.value.trim().toLowerCase(); renderGrid(); });
