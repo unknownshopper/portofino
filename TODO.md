@@ -21,6 +21,11 @@
 
 ## Por hacer (técnico)
 
-- [ ] Activar **GitHub Pages**: Settings → Pages → Deploy from branch → `main` → sitio en `https://unknownshopper.github.io/portofino/`
-- [ ] Cuando ancle dominio propio: archivo `CNAME` en raíz + DNS + actualizar `og:url`
+- [x] Activar **GitHub Pages**: Settings → Pages → Deploy from branch → `main` → sitio en `https://unknownshopper.github.io/portofino/`
+- [~] Dominio propio `portofino.com.mx` — CNAME en raíz ✓ · falta DNS (abajo) + `og:url`
+  - Hoy apunta a `107.180.112.116` (GoDaddy). En el DNS de GoDaddy:
+    - `@` (A records) → `185.199.108.153` `185.199.109.153` `185.199.110.153` `185.199.111.153`
+    - `www` (CNAME) → `unknownshopper.github.io` (hoy: CNAME al apex)
+  - Después en GitHub: Settings → Pages → verificar dominio + **Enforce HTTPS**
+  - Al final: cambiar `og:url` en index/propuesta de github.io a `https://portofino.com.mx`
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
