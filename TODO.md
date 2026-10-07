@@ -1,19 +1,26 @@
-# Pendientes PORTOFINO — preguntar a Eduardo
+# Pendientes PORTOFINO
 
-## Catálogo / cotizador (catalogo.html)
-- [x] **Correo de ventas** — `ventas@portofino.com.mx` ya conectado (`CORREO_VENTAS`, mailto es el envío primario; WhatsApp alterno)
-- [ ] ¿Mostrar precio por m² público o solo "a cotización"? (hoy: sin precio público)
+## Para preguntar a Eduardo
 
-## Imágenes / Dropbox
-- [ ] **Enlace de la carpeta Dropbox de Portofino** → regenerar `imagenes.js`, `imagenes.json` y `img/thumbs/` con las fotos reales (los actuales son de muestra, Wikimedia Commons)
-- [ ] Confirmar nombres de carpetas/rubros: hoy `marmoles`, `granitos`, `silestone`, `dekton`, `cocinas`, `banos`
-
-## Datos del negocio
-- [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto, Google Maps, aviso de privacidad
+- [ ] **Enlace de la carpeta Dropbox de Portofino** → regenerar `imagenes.js` + `img/thumbs/` con las fotos reales (hoy son de muestra, Wikimedia Commons). Al regenerar: subir `?v=` del script tag
+- [ ] **Nombres de carpetas/rubros** reales: hoy `marmoles`, `granitos`, `silestone`, `dekton`, `cocinas`, `banos`
+- [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto + Google Maps + aviso de privacidad
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
-- [x] Correo de contacto — `ventas@portofino.com.mx` (ya en cotizador, contacto y aviso)
-- [ ] RFC / razón social para el aviso de privacidad
+- [ ] **RFC / razón social** para el aviso de privacidad
+- [ ] ¿Precio por m² público en el catálogo o siempre "a cotización"? (hoy: sin precio público)
+- [ ] ¿Dominio definitivo? (¿portofino.com.mx? ya existe para el correo) → CNAME + DNS + actualizar `og:url`
 
-## Publicación
-- [x] Repo GitHub — `github.com/unknownshopper/portofino` · `og:image` → `unknownshopper.github.io/portofino`
-- [ ] **Dominio** definitivo (¿portofino.mx / portofino.com.mx?) → `propuesta.html`, CNAME + DNS
+## Ya resuelto
+
+- [x] Correo de ventas — `ventas@portofino.com.mx` (cotizador mailto primario, WhatsApp alterno; también en contacto y aviso)
+- [x] Repo GitHub — `github.com/unknownshopper/portofino`, remote `origin` conectado
+- [x] `og:image`/`og:url` → `unknownshopper.github.io/portofino`
+- [x] `galeria.html` retirada — `catalogo.html` la sustituye (mismos `#slugs`)
+- [x] Fotos de muestra + manifiesto provisional en los rubros nuevos
+- [x] Thumbs viejos de kuchen eliminados de `img/thumbs/`
+
+## Por hacer (técnico)
+
+- [ ] Activar **GitHub Pages**: Settings → Pages → Deploy from branch → `main` → sitio en `https://unknownshopper.github.io/portofino/`
+- [ ] Cuando ancle dominio propio: archivo `CNAME` en raíz + DNS + actualizar `og:url`
+- [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
