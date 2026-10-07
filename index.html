@@ -484,7 +484,8 @@
     <img src="img/logo-ink.png" alt="PORTOFINO — Mármol &amp; Granito">
   </a>
   <div class="links">
-    <a href="galeria.html">Materiales</a>
+    <a href="galeria.html">Galería</a>
+    <a href="catalogo.html">Catálogo</a>
     <a href="#contacto">Contacto</a>
   </div>
 </nav>
@@ -711,7 +712,7 @@ PRODUCTOS.forEach(({ slug, nombre }) => {
     <div class="vars">${vars.map((v, i) =>
       `<button data-i="${i}" class="${i === 0 ? 'on' : ''}" aria-label="Variante ${i + 1}"><img src="${v}" alt="" loading="lazy" onerror="this.parentElement.style.visibility='hidden'"></button>`
     ).join('')}</div>
-    <a class="ver" href="galeria.html#${slug}">Ver catálogo</a>`;
+    <a class="ver" href="catalogo.html#${slug}">Ver catálogo</a>`;
 
   const fig = card.querySelector('.prod-fig img');
   let vi = 0;
@@ -750,7 +751,7 @@ const RESPUESTAS = [
   [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está en la <a href="galeria.html">galería</a> — mármoles, granitos, Silestone y Dekton.', ['Ver materiales','Cotizar']],
   [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
   [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver materiales']],
-  [/galer[ií]a|foto|cat[aá]logo/, 'Aquí está el catálogo completo por material: <a href="galeria.html">abrir la galería</a>.', ['Cotizar','Contactar asesor']],
+  [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — o vea la <a href="galeria.html">galería</a> de materiales.', ['Cotizar','Contactar asesor']],
   [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
 ];
 const CHAT_FALLBACK = 'Para eso le conviene un asesor — le respondemos hoy mismo por WhatsApp: <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>';

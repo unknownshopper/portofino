@@ -302,7 +302,10 @@
 
 <nav>
   <a class="brand" href="index.html" aria-label="PORTOFINO"><img src="img/logo-ink.png" alt="PORTOFINO — Mármol &amp; Granito"></a>
-  <a href="index.html#contacto">Contacto</a>
+  <div style="display:flex;gap:2rem;align-items:center;">
+    <a href="catalogo.html">Catálogo</a>
+    <a href="index.html#contacto">Contacto</a>
+  </div>
 </nav>
 
 <header class="head">
@@ -482,7 +485,7 @@ const RESPUESTAS = [
   [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está aquí mismo — filtre por categoría arriba o toque cualquier tarjeta.', ['Ver materiales','Cotizar']],
   [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
   [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver materiales']],
-  [/galer[ií]a|foto|cat[aá]logo/, 'Ya está en la galería — filtre por material arriba o toque cualquier tarjeta.', ['Cotizar','Contactar asesor']],
+  [/galer[ií]a|foto|cat[aá]logo/, 'Ya está en la galería — filtre por material arriba. Para armar una cotización, vaya al <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
 ];
 const CHAT_FALLBACK = 'Para eso le conviene un asesor — le respondemos hoy mismo por WhatsApp: <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>';
