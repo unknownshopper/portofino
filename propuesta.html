@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PORTOFINO — Propuesta</title>
+<meta name="description" content="Propuesta de sitio web y automatización para PORTOFINO — mármol y granito en Tabasco, Chiapas, Veracruz y Campeche.">
+<meta property="og:title" content="PORTOFINO — Propuesta de sitio web">
+<meta property="og:description" content="Su catálogo de materiales, en un sitio a la altura de su piedra.">
+<meta property="og:type" content="website">
+<!-- TODO: og:image con URL absoluta cuando se ancle el dominio/Pages nuevo -->
+<link rel="icon" type="image/png" href="img/ico.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3f4f4;
+    --ink: #16181b;
+    --ink-soft: #565b5e;
+    --accent: #67757d;
+    --hairline: rgba(22, 24, 26, .14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: 'Inter', -apple-system, sans-serif; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── portada ── */
+  .cover {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .cover .wordmark {
+    width: clamp(260px, 44vw, 470px);
+    height: auto;
+    display: block;
+  }
+  .cover .doc-kind {
+    font-size: .72rem;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 2.2rem;
+  }
+  .cover h1 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    letter-spacing: -.02em;
+    margin-top: .6rem;
+    max-width: 24ch;
+    line-height: 1.3;
+  }
+  .cover .meta {
+    margin-top: 4rem;
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── secciones ── */
+  section { padding: 5.5rem 0; border-bottom: 1px solid var(--hairline); }
+  section:last-of-type { border-bottom: none; }
+  .label {
+    font-size: .68rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.6rem;
+    display: block;
+  }
+  h2 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 1.8rem;
+  }
+  h2 em { font-style: italic; }
+  p { color: var(--ink-soft); }
+  p + p { margin-top: 1.1em; }
+  p strong { color: var(--ink); font-weight: 500; }
+
+  .lede {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1.2;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    letter-spacing: -.015em;
+  }
+
+  /* ── pilares ── */
+  .pilares { display: grid; gap: 0; margin-top: 3rem; }
+  .pilar {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.6rem;
+    padding: 2.2rem 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .pilar .num {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 1.9rem;
+    color: var(--accent);
+    font-style: italic;
+    line-height: 1;
+    padding-top: .3rem;
+  }
+  .pilar h3 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    margin-bottom: .5rem;
+  }
+  .pilar p { font-size: .95rem; }
+
+  /* ── flujo ── */
+  .flujo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .paso { border-top: 1px solid var(--ink); padding-top: 1.4rem; }
+  .paso .k {
+    font-size: .68rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: .8rem;
+  }
+  .paso p { font-size: .92rem; }
+  @media (max-width: 640px) {
+    .flujo { grid-template-columns: 1fr; gap: 1.8rem; }
+  }
+
+  /* ── mockup ── */
+  .mockup-section { text-align: center; }
+  .mockup-section h2, .mockup-section p { margin-left: auto; margin-right: auto; }
+  .phone {
+    width: 300px;
+    margin: 3.5rem auto 0;
+    border: 1px solid var(--ink);
+    border-radius: 38px;
+    padding: 10px;
+    background: #111;
+    box-shadow: 0 40px 80px -30px rgba(22,24,26,.4);
+  }
+  .phone-screen {
+    border-radius: 30px;
+    overflow: hidden;
+    aspect-ratio: 9 / 19;
+    position: relative;
+    background: #0e1012;
+  }
+  .phone-screen > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: .88;
+  }
+  .phone-screen::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(10,9,8,.35), rgba(10,9,8,.05) 40%, rgba(10,9,8,.72));
+  }
+  .phone-ui {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: 1.9rem 1.4rem 2rem;
+    z-index: 2;
+    color: #f5f1ea;
+  }
+  .phone-ui .top {
+    font-size: .55rem; letter-spacing: .4em; text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+  .phone-ui .bottom { margin-top: auto; text-align: center; }
+  .phone-ui .brand {
+    width: 68%; height: auto; display: block; margin: 0 auto;
+    filter: drop-shadow(0 1px 10px rgba(0,0,0,.4));
+  }
+  .phone-ui .tag {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-style: italic; font-size: .95rem; opacity: .85; margin-top: .9rem;
+  }
+  .phone-ui .cta {
+    font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+    border: 1px solid rgba(242,243,244,.5);
+    padding: .7rem 0; margin-top: 1.4rem;
+  }
+  .chat-demo { margin: 4rem auto 0; max-width: 560px; text-align: left; }
+  .chat-card {
+    background: #eef0f0;
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 50px -30px rgba(22,24,26,.25);
+  }
+  .chat-head {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .85rem 1.1rem;
+    background: #fff;
+    border-bottom: 1px solid var(--hairline);
+    font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+  }
+  .chat-head .dot { width: 8px; height: 8px; border-radius: 50%; background: #25d366; }
+  .chat-head small {
+    margin-left: auto; font-weight: 400;
+    color: var(--ink-soft); font-size: .62rem;
+    letter-spacing: .14em; text-transform: uppercase;
+  }
+  .chat-body { padding: 1.2rem 1.1rem 1.4rem; display: flex; flex-direction: column; gap: .55rem; }
+  .bubble { max-width: 82%; padding: .55rem .85rem; border-radius: 14px; font-size: .85rem; line-height: 1.45; }
+  .bubble.in { background: #fff; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .bubble.out { background: #d9fdd3; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .bubble .who {
+    display: block; font-size: .58rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .15rem;
+  }
+  .mockup-note {
+    margin-top: 1.8rem;
+    font-size: .75rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .ver-sitio {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: .68rem; letter-spacing: .28em; text-transform: uppercase;
+    padding: 1rem 2.2rem;
+    border: 1px solid var(--ink);
+    color: var(--ink); text-decoration: none;
+    transition: background .3s, color .3s;
+  }
+  .ver-sitio:hover { background: var(--ink); color: var(--paper); }
+
+  /* ── fases ── */
+  .fases { margin-top: 3rem; }
+  .fase {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 2rem;
+    padding: 1.8rem 0;
+    border-top: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .fase .fk {
+    font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent);
+  }
+  .fase h4 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600; font-size: 1.2rem; margin-bottom: .3rem;
+  }
+  .fase p { font-size: .92rem; }
+
+  .planes {
+    width: 100%; border-collapse: collapse; margin-top: 3rem; font-size: .92rem;
+  }
+  .planes th, .planes td {
+    padding: 1rem .6rem; border-bottom: 1px solid var(--hairline);
+    text-align: left; vertical-align: top;
+  }
+  .planes thead th {
+    font-size: .68rem; letter-spacing: .24em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+  }
+  .planes thead .precio {
+    display: block; margin-top: .45rem; font-size: 1.35rem; font-weight: 600;
+    color: var(--ink); letter-spacing: 0; text-transform: none;
+  }
+  .planes thead .precio small { font-size: .72rem; font-weight: 400; color: var(--ink-soft); }
+  .planes td:first-child { color: var(--ink-soft); width: 46%; }
+  .planes td.si { color: var(--ink); }
+  .planes td.no { color: var(--ink-soft); opacity: .35; }
+  .planes .nota-td { display: block; font-size: .75rem; color: var(--ink-soft); }
+  .planes tfoot td {
+    border-bottom: none; border-top: 2px solid var(--ink);
+    padding-top: 1.1rem; font-weight: 600; color: var(--ink);
+  }
+  .planes tfoot td:first-child { color: var(--ink); font-weight: 500; }
+  .planes-nota { list-style: none; margin-top: 1.4rem; }
+  .planes-nota li { font-size: .82rem; line-height: 1.8; margin-bottom: .3rem; }
+  .planes-nota li::before { content: '—  '; color: var(--accent); }
+  @media (max-width: 720px) {
+    .planes { font-size: .8rem; }
+    .planes th, .planes td { padding: .7rem .35rem; }
+    .planes thead .precio { font-size: 1.05rem; }
+  }
+  @media (max-width: 560px) {
+    .fase { grid-template-columns: 1fr; gap: .5rem; }
+  }
+
+  /* ── cierre ── */
+  .cierre { text-align: center; padding: 7rem 0 6rem; }
+  .cierre .serif {
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    max-width: 24ch;
+    margin: 0 auto 2.5rem;
+    line-height: 1.3;
+  }
+  .cierre .firma {
+    font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-soft);
+  }
+
+  footer {
+    padding: 2rem 0 3rem;
+    font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<header class="cover">
+  <div class="wrap">
+    <img class="wordmark" src="img/logo-ink.png" alt="PORTOFINO — Mármol &amp; Granito">
+    <div class="doc-kind">Propuesta · Sitio web &amp; presencia digital</div>
+    <h1>Un sitio a la altura de la piedra que venden.</h1>
+    <div class="meta">
+      <span>Octubre 2026</span>
+      <span>Documento confidencial</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- LA IDEA -->
+  <section>
+    <span class="label">La idea</span>
+    <p class="lede">Su piedra ya habla sola.<br>El sitio solo tiene que <em style="font-style:italic">dejarla hablar</em>.</p>
+    <p style="margin-top:2rem">Una losa de mármol o un granito exótico no necesitan que los describan. Necesitan <strong>que los vean</strong>.</p>
+    <p>Por eso proponemos un sitio donde la fotografía es la protagonista absoluta — pantalla completa, sin distracciones, con la elegancia silenciosa de los mejores estudios italianos.</p>
+    <p>Impecable en el celular y en pantalla grande, porque la mayoría de sus prospectos los va a conocer desde un teléfono.</p>
+  </section>
+
+  <!-- LO QUE PROPONEMOS -->
+  <section>
+    <span class="label">Qué proponemos</span>
+    <h2>Tres piezas,<br><em>un solo sistema</em>.</h2>
+
+    <div class="pilares">
+      <div class="pilar">
+        <div class="num">i</div>
+        <div>
+          <h3>Un sitio editorial</h3>
+          <p>Diseño de galería de arte: tipografía limpia, espacio en blanco generoso, fotografías a pantalla completa.</p>
+          <p>Cada material merece su propia página, no una fila más en un grid.</p>
+        </div>
+      </div>
+      <div class="pilar">
+        <div class="num">ii</div>
+        <div>
+          <h3>Sus fotos se publican solas</h3>
+          <p>Ustedes ya suben las fotos de cada material a una carpeta. El sitio detecta cada carpeta nueva y la convierte en una página con su propia liga: <strong>portofino.mx/#marmoles</strong>.</p>
+          <p>Cero paneles de administración, cero trabajo extra — su flujo no cambia en nada.</p>
+        </div>
+      </div>
+      <div class="pilar">
+        <div class="num">iii</div>
+        <div>
+          <h3>Prospectos atendidos al instante</h3>
+          <p>Cuando alguien escribe por Facebook o WhatsApp, recibe respuesta inmediata. Si pide ejemplos, se le envía la liga a la galería del material — esa misma página que se generó sola desde la carpeta de fotos.</p>
+          <p>El prospecto ve su piedra al momento, no al día siguiente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section>
+    <span class="label">Cómo funciona</span>
+    <h2>Ustedes siguen haciendo <em>exactamente lo mismo</em>.</h2>
+    <p>Ese es el punto: nada de capacitación, nada de sistemas nuevos que aprender.</p>
+
+    <div class="flujo">
+      <div class="paso">
+        <span class="k">Paso 1</span>
+        <p>Les llega material nuevo o terminan una instalación, y suben las fotos a su carpeta, como siempre.</p>
+      </div>
+      <div class="paso">
+        <span class="k">Paso 2</span>
+        <p>El sistema la detecta, optimiza las imágenes y publica su página de material.</p>
+      </div>
+      <div class="paso">
+        <span class="k">Paso 3</span>
+        <p>La liga queda lista para el sitio, y para que el asistente automático la comparta con prospectos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOCKUP -->
+  <section class="mockup-section">
+    <span class="label">Adelanto</span>
+    <h2>Así se siente <em>en la mano</em>.</h2>
+    <p>Una cortesía: primer boceto de la portada. Las fotografías finales serán, por supuesto, las suyas.</p>
+
+    <div class="phone">
+      <div class="phone-screen">
+        <img src="img/thumbs/marmoles-0.jpg" alt="Mármol PORTOFINO">
+        <div class="phone-ui">
+          <div class="top"><span>Materiales</span><span>Contacto</span></div>
+          <div class="bottom">
+            <img class="brand" src="img/logo-color.png" alt="PORTOFINO — Mármol &amp; Granito">
+            <div class="tag">Superficies de alta gama para proyectos arquitectónicos</div>
+            <div class="cta">Ver materiales</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockup-note">Boceto ilustrativo — sujeto a dirección de arte final</div>
+    <br>
+    <a class="ver-sitio" href="index.html" target="_blank" rel="noopener">Ver el sitio en desarrollo →</a>
+  </section>
+
+  <!-- FASES -->
+  <section>
+    <span class="label">Ruta de trabajo</span>
+    <h2>En <em>tres fases</em>,<br>sin prisa y sin pausa.</h2>
+
+    <div class="fases">
+      <div class="fase">
+        <div class="fk">Fase uno</div>
+        <div>
+          <h4>El sitio</h4>
+          <p>Portada, catálogo de materiales y contacto. Dominio anclado y publicado. Es lo primero
+          que sus prospectos van a ver.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <div class="fk">Fase dos</div>
+        <div>
+          <h4>Publicación automática</h4>
+          <p>Conexión con sus carpetas de fotos (Drive o Dropbox): cada material nuevo genera su
+          propia página compartible sin que nadie toque nada.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <div class="fk">Fase tres</div>
+        <div>
+          <h4>Atención a prospectos</h4>
+          <p>Respuestas automáticas en Facebook y WhatsApp que saludan, responden lo básico y
+          comparten las galerías de materiales a quien pide ejemplos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COSTOS DE HERRAMIENTAS -->
+  <section>
+    <span class="label">Inversión en herramientas</span>
+    <h2>Qué cuesta cada pieza,<br><em>para que decidan</em>.</h2>
+    <p>Transparencia total: esto es lo que cobran los proveedores, a octubre 2026.</p>
+    <p>Nada es obligatorio — el sitio funciona sin nada de esto.</p>
+
+    <table class="planes">
+      <thead>
+        <tr>
+          <th class="feat">Automatización</th>
+          <th>Básica<span class="precio">$8,000<small> MXN · único</small></span></th>
+          <th>Intermedia<span class="precio">$14,000<small> MXN · único</small></span></th>
+          <th>Premium<span class="precio">$18,000<small> MXN · único</small></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Todos los mensajes y comentarios en un solo panel</td>
+          <td class="si">✓<span class="nota-td">Business Suite</span></td><td class="si">✓</td><td class="si">✓</td>
+        </tr>
+        <tr>
+          <td>Auto-respuestas en DMs — WhatsApp, Messenger e Instagram</td>
+          <td class="si">✓<span class="nota-td">app Business + Suite</span></td><td class="si">✓</td><td class="si">✓</td>
+        </tr>
+        <tr>
+          <td>Respuestas a comentarios y keywords en publicaciones (FB/IG)</td>
+          <td class="no">—</td><td class="si">✓</td><td class="si">✓</td>
+        </tr>
+        <tr>
+          <td>Flujos guiados por ciudad y captura del prospecto</td>
+          <td class="no">—</td><td class="si">✓</td><td class="si">✓</td>
+        </tr>
+        <tr>
+          <td>Chat con IA dentro del sitio</td>
+          <td class="no">—</td><td class="si">✓</td><td class="si">✓</td>
+        </tr>
+        <tr>
+          <td>IA que entiende preguntas libres</td>
+          <td class="no">—</td><td class="no">—</td><td class="si">✓</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Suscripción de herramientas (al proveedor)</td>
+          <td class="si">$0</td><td class="si">~$270 MXN<span class="nota-td">ManyChat Essential</span></td><td class="si">~$550 MXN<span class="nota-td">ManyChat Pro</span></td>
+        </tr>
+      </tfoot>
+    </table>
+    <ul class="planes-nota">
+      <li>La implementación es pago único en MXN.</li>
+      <li>ManyChat se paga directo al proveedor en USD. Los precios mostrados son el equivalente mensual con facturación anual (Essential ~$14 USD/mes, Pro ~$29 USD/mes); mes a mes cuestan ~$17 y ~$39 USD respectivamente.</li>
+      <li>El chat con IA en el sitio está incluido en Intermedia y Premium; su costo mensual de servicio va aparte (~$40–190 MXN/mes a medida, o ~$360–860 MXN/mes con Chatbase/Tidio).</li>
+      <li>Meta no cobra las respuestas dentro de la conversación del cliente; solo plantillas de campañas salientes (~$0.03 USD c/u), opcionales.</li>
+    </ul>
+
+    <div class="chat-demo">
+      <div class="chat-card">
+        <div class="chat-head">
+          <span class="dot"></span>
+          PORTOFINO · WhatsApp
+          <small>Plan Premium</small>
+        </div>
+        <div class="chat-body">
+          <div class="bubble out">Hola, vi una cubierta de granito en su Instagram. ¿Más o menos cuánto cuesta el metro?</div>
+          <div class="bubble in"><span class="who">IA</span>Hola, buenas tardes. Depende de la losa y las medidas — se cotiza por m². ¿En qué estado está usted: Tabasco, Chiapas, Veracruz o Campeche?</div>
+          <div class="bubble out">En Villahermosa. Es para la cocina de mi casa.</div>
+          <div class="bubble in"><span class="who">IA</span>Perfecto — le paso la liga a nuestra galería de granitos y agendamos medición sin costo. ¿Qué día le queda mejor?</div>
+        </div>
+      </div>
+      <p class="mockup-note" style="text-align:center">Ejemplo ilustrativo — el tono y las respuestas se definen con ustedes</p>
+    </div>
+
+    <div class="fases">
+      <div class="fase">
+        <div class="fk">Sitio web</div>
+        <div>
+          <h4>Ya realizado — no se cobra de nuevo</h4>
+          <p>El diseño y desarrollo del sitio con su galería ya fue cubierto. Lo que ven en este documento ya está en línea y funcionando.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <div class="fk">Hosting</div>
+        <div>
+          <h4>Su dominio propio</h4>
+          <p>Este demo vive temporalmente en GitHub Pages. En producción el sitio migrará a su propio dominio — por ejemplo <strong>portofino.mx</strong> o el que decidan registrar.
+          Las fotos se siguen sirviendo desde su Dropbox: <strong>$0</strong>.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <div class="fk">Importante</div>
+        <div>
+          <h4>Dependencia: su carpeta de Dropbox</h4>
+          <p>El sitio lee las fotos directamente de su carpeta compartida. Para que la galería funcione, esa carpeta debe conservar el permiso <strong>"Cualquiera con el vínculo"</strong> y no moverse ni renombrarse.</p>
+          <p>Si llegara a cambiar, los enlaces se regeneran y actualizan — es parte del soporte mensual.</p>
+        </div>
+      </div>
+      <div class="fase">
+        <div class="fk">Soporte</div>
+        <div>
+          <h4>Soporte y operación — $1,000 MXN/mes</h4>
+          <p>Cubre:</p>
+          <ul class="planes-nota" style="margin-top:.3rem">
+            <li>Configuración y ajuste de los flujos de WhatsApp/Messenger</li>
+            <li>Procesamiento y publicación de fotos y materiales nuevos — ustedes suben la carpeta a Dropbox, nosotros la convertimos y publicamos (incluyendo formatos como HEIC)</li>
+            <li>Monitoreo y reporte de prospectos</li>
+            <li>Cambios al sitio y atención técnica cuando Meta o Dropbox cambien sus reglas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="cierre">
+    <p class="serif">La piedra ya está.<br>Las fotos ya están.<br>Solo falta que el mundo las vea.</p>
+    <div class="firma">Quedamos a sus órdenes para comenzar</div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>PORTOFINO — Propuesta</span>
+  <a href="aviso.html" style="color:inherit;text-decoration:none;">Aviso de privacidad</a>
+  <span>Octubre 2026</span>
+</footer>
+
+</body>
+</html>

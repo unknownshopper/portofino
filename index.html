@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PORTOFINO — Mármol &amp; Granito. Especialistas en superficies de alta gama: mármoles, granitos exóticos, Silestone y Dekton. Tabasco, Chiapas, Veracruz y Campeche.">
+<meta property="og:title" content="PORTOFINO — Mármol &amp; Granito">
+<meta property="og:description" content="Superficies de alta gama para proyectos arquitectónicos. Mármol, granito, Silestone y Dekton.">
+<meta property="og:type" content="website">
+<!-- TODO: og:image con URL absoluta cuando se ancle el dominio/Pages nuevo -->
+<title>PORTOFINO — Mármol &amp; Granito</title>
+<link rel="icon" type="image/png" href="img/ico.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/thumbs/marmoles-0.jpg">
+<style>
+  :root {
+    --ink: #16181b;
+    --paper: #f3f4f4;
+    --accent: #67757d;
+    --light: #f2f3f4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0e1012;
+    color: var(--light);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: 'Inter', -apple-system, sans-serif; }
+
+  /* ── nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem 2rem;
+    z-index: 10;
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+  }
+  nav a { color: var(--light); text-decoration: none; opacity: .8; }
+  nav a:hover { opacity: 1; }
+  nav .links { display: flex; gap: 1.6rem; align-items: center; }
+  .nav-logo img {
+    height: 26px; display: block;
+    filter: drop-shadow(0 1px 8px rgba(0,0,0,.45));
+  }
+  .nav-logo { opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+  body.scrolled .nav-logo { opacity: 1; pointer-events: auto; }
+
+  /* ── loader ── */
+  #loader {
+    position: fixed; inset: 0; z-index: 200;
+    background: #0e1012;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .6s ease;
+  }
+  #loader.done { opacity: 0; pointer-events: none; }
+  #loader img { width: min(220px, 55vw); animation: lpulse 2s ease-in-out infinite; }
+  @keyframes lpulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+
+  /* ── reveal de secciones ── */
+  section { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+  section.seen { opacity: 1; transform: none; }
+
+  /* ── hero ── */
+  .hero {
+    height: 100svh;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+    animation: slow-zoom 24s ease-out forwards;
+  }
+  .hero > img.on {
+    opacity: 1;
+  }
+  @keyframes slow-zoom {
+    from { transform: scale(1.08); }
+    to   { transform: scale(1); }
+  }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(14,16,18,.3), rgba(14,16,18,0) 35%, rgba(14,16,18,.78));
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    width: 100%;
+    padding: 0 2rem 4.5rem;
+    text-align: center;
+  }
+  .hero-logo {
+    width: clamp(230px, 42vw, 430px);
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 18px rgba(0,0,0,.45));
+  }
+  .tagline {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.6vw, 1.4rem);
+    opacity: .85;
+    margin-top: 1rem;
+  }
+  .cta-row {
+    margin-top: 2.6rem;
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+  .cta {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    padding: 1rem 2.4rem;
+    border: 1px solid rgba(242,243,244,.55);
+    color: var(--light); text-decoration: none;
+    transition: background .3s, color .3s;
+  }
+  .cta:hover { background: var(--light); color: var(--ink); }
+  .cta.solid { background: var(--light); color: var(--ink); border-color: var(--light); }
+
+  .scroll-hint {
+    position: absolute; bottom: 1.4rem; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    color: var(--light); opacity: .65;
+  }
+  .scroll-hint svg {
+    display: block;
+    animation: hint-bounce 3s ease-in-out infinite;
+  }
+  @keyframes hint-bounce {
+    0%, 55%, 100% { transform: translateY(0); }
+    70% { transform: translateY(7px); }
+    82% { transform: translateY(0); }
+  }
+
+  /* ── manifiesto ── */
+  .manifesto {
+    background: var(--paper); color: var(--ink);
+    padding: 7rem 2rem;
+    text-align: center;
+  }
+  .manifesto .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1.6rem;
+  }
+  .manifesto p {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+    font-weight: 500;
+    letter-spacing: -.015em;
+    line-height: 1.35;
+    max-width: 26ch;
+    margin: 0 auto;
+  }
+
+  /* ── proyectos ── */
+  .proyectos { background: var(--paper); color: var(--ink); padding: 0 2rem 7rem; }
+  .proyectos-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-top: 1px solid rgba(22,24,26,.15);
+    padding-top: 2.5rem;
+    max-width: 1200px; margin: 0 auto 3rem;
+  }
+  .proyectos-head h2 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600; font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -.02em;
+  }
+  .proyectos-head span {
+    font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .obra { position: relative; overflow: hidden; display: block; }
+  .obra img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 1.2s cubic-bezier(.2,.6,.2,1);
+  }
+  .obra:hover img { transform: scale(1.05); }
+  .obra figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.2rem 1.4rem;
+    background: linear-gradient(to top, rgba(14,16,18,.65), transparent);
+    color: var(--light);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .obra figcaption .nombre {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 1.15rem; font-weight: 500;
+  }
+  .obra figcaption .lugar {
+    font-size: .62rem; letter-spacing: .24em; text-transform: uppercase; opacity: .8;
+  }
+  .obra-1 { grid-column: span 7; aspect-ratio: 16/10; }
+  .obra-2 { grid-column: span 5; aspect-ratio: 16/10; }
+  .obra-3 { grid-column: span 5; aspect-ratio: 4/5; }
+  .obra-4 { grid-column: span 7; aspect-ratio: 4/5; }
+  .obra-5 { grid-column: span 6; aspect-ratio: 4/5; }
+  .obra-6 { grid-column: span 6; aspect-ratio: 4/5; }
+  @media (max-width: 700px) {
+    .obra-1, .obra-2, .obra-3, .obra-4, .obra-5, .obra-6 { grid-column: span 12; aspect-ratio: 4/5; }
+  }
+
+  /* ── contacto ── */
+  .contacto {
+    padding: 7rem 2rem;
+    text-align: center;
+    background: #0e1012;
+  }
+  .contacto .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1.6rem;
+  }
+  .contacto h2 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600; font-size: clamp(1.9rem, 5vw, 3rem);
+    letter-spacing: -.02em;
+    max-width: 20ch; margin: 0 auto 2.6rem; line-height: 1.25;
+  }
+  .sucursales {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 420px));
+    gap: 3rem;
+    justify-content: center;
+    margin: 3.5rem auto 4rem;
+    text-align: center;
+  }
+  @media (max-width: 700px) { .sucursales { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .suc {
+    border-top: 1px solid rgba(242,243,244,.2);
+    padding-top: 1.8rem;
+    display: flex; flex-direction: column;
+  }
+  .suc h3 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 600; font-size: 1.5rem; margin-bottom: .2rem;
+  }
+  .suc .estado {
+    font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1.4rem;
+  }
+  .suc p {
+    font-size: .92rem; line-height: 1.8; opacity: .85;
+    max-width: none;
+  }
+  .suc .dato {
+    display: block; margin-top: 1.2rem;
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+  }
+  .suc .dato b { font-weight: 400; color: var(--accent); margin-right: .8rem; display: inline-flex; align-items: center; gap: .55rem; }
+  .suc .iconos { display: flex; gap: 1.5rem; margin-top: auto; padding-top: 1.6rem; justify-content: center; }
+  .suc .iconos a { border-bottom: none; color: var(--light); display: inline-flex; }
+  .suc .iconos a:hover { color: var(--accent); }
+  .suc .iconos svg { width: 24px; height: 24px; }
+  .cta svg { width: 14px; height: 14px; margin-right: .6rem; vertical-align: -2px; }
+  .suc a { color: var(--light); text-decoration: none; border-bottom: 1px solid rgba(242,243,244,.35); }
+  .suc a:hover { border-color: var(--light); }
+  footer {
+    padding: 2rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    opacity: .5;
+    background: #0e1012;
+  }
+  footer a { color: inherit; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── chat ── */
+  .chat-fab {
+    position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 60;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 14px 34px -10px rgba(22,24,26,.55);
+    transition: transform .25s;
+  }
+  .chat-fab:hover { transform: scale(1.07); }
+  .chat-fab svg { width: 24px; height: 24px; }
+  .chat-box {
+    position: fixed; right: 1.4rem; bottom: 5.6rem; z-index: 60;
+    width: min(360px, calc(100vw - 2.8rem));
+    height: min(480px, calc(100dvh - 8rem));
+    background: var(--paper);
+    border: 1px solid rgba(22,24,26,.14);
+    border-radius: 18px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 30px 70px -20px rgba(22,24,26,.4);
+    opacity: 0; transform: translateY(14px) scale(.97);
+    pointer-events: none;
+    transition: opacity .3s, transform .3s;
+  }
+  .chat-box.open { opacity: 1; transform: none; pointer-events: auto; }
+  .chat-top {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .85rem 1rem;
+    background: var(--ink); color: var(--paper);
+  }
+  .chat-top img { width: 26px; height: 26px; border-radius: 50%; }
+  .chat-top b { font-size: .8rem; font-weight: 600; letter-spacing: .05em; display: block; }
+  .chat-top span {
+    font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); display: flex; align-items: center; gap: .35rem;
+  }
+  .chat-top span::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #7fb069; display: inline-block;
+  }
+  .chat-x {
+    margin-left: auto; background: none; border: none;
+    color: var(--paper); font-size: 1.3rem; cursor: pointer;
+    line-height: 1; padding: .2rem .3rem; opacity: .7;
+  }
+  .chat-x:hover { opacity: 1; }
+  .chat-log {
+    flex: 1; overflow-y: auto;
+    padding: 1rem .9rem;
+    display: flex; flex-direction: column; gap: .5rem;
+  }
+  .msg {
+    max-width: 84%; padding: .55rem .8rem;
+    border-radius: 14px; font-size: .84rem; line-height: 1.5;
+  }
+  .msg.bot {
+    background: #fff; color: var(--ink);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(22,24,26,.08);
+  }
+  .msg.me {
+    background: var(--ink); color: var(--paper);
+    align-self: flex-end; border-bottom-right-radius: 4px;
+  }
+  .msg.bot a { color: var(--accent); font-weight: 600; }
+  .msg .wa-row { display: flex; flex-direction: column; gap: .4rem; margin-top: .5rem; }
+  .msg .wa {
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid var(--accent); border-radius: 10px;
+    padding: .5rem .75rem; text-decoration: none;
+    font-weight: 600;
+  }
+  .msg .wa:hover { background: var(--accent); color: #fff; }
+  .msg.typing { display: flex; gap: 4px; padding: .7rem .9rem; }
+  .msg.typing i {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); opacity: .4;
+    animation: blink 1.2s infinite;
+  }
+  .msg.typing i:nth-child(2) { animation-delay: .2s; }
+  .msg.typing i:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
+  .chat-chips {
+    display: flex; flex-wrap: wrap; gap: .4rem;
+    padding: .5rem .9rem;
+  }
+  .chat-chips button {
+    background: none; border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 99px;
+    font-family: inherit; font-size: .72rem;
+    padding: .35rem .75rem; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .chat-chips button:hover { background: var(--accent); color: var(--paper); }
+  .chat-form {
+    display: flex; gap: .5rem;
+    padding: .7rem .9rem .9rem;
+    border-top: 1px solid rgba(22,24,26,.1);
+  }
+  .chat-form input {
+    flex: 1; border: 1px solid rgba(22,24,26,.16);
+    border-radius: 99px; padding: .55rem .95rem;
+    font-family: inherit; font-size: .82rem;
+    background: #fff; color: var(--ink); outline: none;
+  }
+  .chat-form input:focus { border-color: var(--accent); }
+  .chat-form button {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    border: none; cursor: pointer; font-size: 1rem;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true"><img src="img/logo-color.png" alt=""></div>
+<noscript><style>#loader{display:none} section{opacity:1;transform:none}</style></noscript>
+
+<nav>
+  <a class="nav-logo" href="index.html" aria-label="PORTOFINO">
+    <img src="img/logo-color.png" alt="PORTOFINO — Mármol &amp; Granito">
+  </a>
+  <div class="links">
+    <a href="galeria.html">Materiales</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <img class="on" src="img/thumbs/marmoles-0.jpg" alt="Mármol PORTOFINO">
+  <img src="img/thumbs/granitos-0.jpg" alt="Granito PORTOFINO" loading="lazy">
+  <img src="img/thumbs/marmoles-1.jpg" alt="Mármol PORTOFINO" loading="lazy">
+  <img src="img/thumbs/silestone-0.jpg" alt="Silestone PORTOFINO" loading="lazy">
+  <img src="img/thumbs/cocinas-0.jpg" alt="Cubierta de cocina PORTOFINO" loading="lazy">
+  <div class="hero-inner">
+    <img class="hero-logo" src="img/logo-color.png" alt="PORTOFINO — Mármol &amp; Granito">
+    <p class="tagline">Superficies de alta gama para proyectos arquitectónicos</p>
+    <div class="cta-row">
+      <a class="cta solid" href="galeria.html">Ver materiales</a>
+      <a class="cta" href="#contacto">Cotizar</a>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#filosofia" aria-label="Desliza para ver más">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 8l6 6 6-6"/><path d="M6 13l6 6 6-6" opacity=".5"/>
+    </svg>
+  </a>
+</header>
+
+<!-- MANIFIESTO -->
+<section class="manifesto" id="filosofia">
+  <span class="k">Nuestra filosofía</span>
+  <p>La piedra no se fabrica.<br>Se selecciona, se corta y permanece.</p>
+</section>
+
+<!-- PROYECTOS -->
+<section class="proyectos" id="proyectos">
+  <div class="proyectos-head">
+    <h2>Nuestros materiales</h2>
+    <span>Cada losa, única</span>
+  </div>
+  <div class="grid">
+    <a class="obra obra-1" href="galeria.html#marmoles">
+      <img src="img/thumbs/marmoles-0.jpg" alt="Mármoles" loading="lazy">
+      <figcaption><span class="nombre">Mármoles</span><span class="lugar">Ver galería</span></figcaption>
+    </a>
+    <a class="obra obra-2" href="galeria.html#granitos">
+      <img src="img/thumbs/granitos-0.jpg" alt="Granitos exóticos" loading="lazy">
+      <figcaption><span class="nombre">Granitos exóticos</span><span class="lugar">Ver galería</span></figcaption>
+    </a>
+    <a class="obra obra-3" href="galeria.html#silestone">
+      <img src="img/thumbs/silestone-0.jpg" alt="Silestone" loading="lazy">
+      <figcaption><span class="nombre">Silestone®</span><span class="lugar">Distribuidor oficial</span></figcaption>
+    </a>
+    <a class="obra obra-4" href="galeria.html#dekton">
+      <img src="img/thumbs/dekton-0.jpg" alt="Dekton" loading="lazy">
+      <figcaption><span class="nombre">Dekton®</span><span class="lugar">Distribuidor oficial</span></figcaption>
+    </a>
+    <a class="obra obra-5" href="galeria.html#cocinas">
+      <img src="img/thumbs/cocinas-0.jpg" alt="Cubiertas de cocina" loading="lazy">
+      <figcaption><span class="nombre">Cocinas</span><span class="lugar">Ver galería</span></figcaption>
+    </a>
+    <a class="obra obra-6" href="galeria.html#banos">
+      <img src="img/thumbs/banos-0.jpg" alt="Baños y revestimientos" loading="lazy">
+      <figcaption><span class="nombre">Baños y revestimientos</span><span class="lugar">Ver galería</span></figcaption>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <span class="k">Hablemos</span>
+  <h2>Su próximo proyecto empieza con una conversación.</h2>
+
+  <div class="sucursales">
+    <div class="suc">
+      <h3>Tabasco</h3>
+      <span class="estado">Villahermosa</span>
+      <p>Ventas y distribución de mármol,<br>granito y superficies</p>
+      <div class="iconos">
+        <a href="tel:+529933939163" aria-label="Llamar a Tabasco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <a href="https://wa.me/529933939163" aria-label="WhatsApp Tabasco"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+      </div>
+      <span class="dato"><b>Showroom</b> Con cita</span>
+    </div>
+    <div class="suc">
+      <h3>Chiapas</h3>
+      <span class="estado">Ventas</span>
+      <p>Atención y distribución<br>en todo el estado</p>
+      <div class="iconos">
+        <a href="tel:+529933939163" aria-label="Llamar a Chiapas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <a href="https://wa.me/529933939163" aria-label="WhatsApp Chiapas"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+      </div>
+      <span class="dato"><b>Atención</b> Por WhatsApp</span>
+    </div>
+    <div class="suc">
+      <h3>Veracruz</h3>
+      <span class="estado">Ventas</span>
+      <p>Atención y distribución<br>en todo el estado</p>
+      <div class="iconos">
+        <a href="tel:+529933939163" aria-label="Llamar a Veracruz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <a href="https://wa.me/529933939163" aria-label="WhatsApp Veracruz"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+      </div>
+      <span class="dato"><b>Atención</b> Por WhatsApp</span>
+    </div>
+    <div class="suc">
+      <h3>Campeche</h3>
+      <span class="estado">Ventas</span>
+      <p>Atención y distribución<br>en todo el estado</p>
+      <div class="iconos">
+        <a href="tel:+529933939163" aria-label="Llamar a Campeche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <a href="https://wa.me/529933939163" aria-label="WhatsApp Campeche"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+      </div>
+      <span class="dato"><b>Atención</b> Por WhatsApp</span>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta solid" href="https://wa.me/529933939163"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp</a>
+    <a class="cta" href="https://www.instagram.com/portofino.granitosymarmoles" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>Instagram</a>
+  </div>
+</section>
+
+<footer>
+  <span>© PORTOFINO</span>
+  <a href="aviso.html">Aviso de privacidad</a>
+  <span>Tabasco · Chiapas · Veracruz · Campeche</span>
+</footer>
+
+<!-- CHAT -->
+<button class="chat-fab" id="chatFab" aria-label="Abrir asistente">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+<div class="chat-box" id="chatBox" role="dialog" aria-label="Asistente Portofino">
+  <div class="chat-top">
+    <img src="img/ico.png" alt="">
+    <div><b>PORTOFINO Asistente</b><span>en línea</span></div>
+    <button class="chat-x" id="chatX" aria-label="Cerrar chat">×</button>
+  </div>
+  <div class="chat-log" id="chatLog"></div>
+  <div class="chat-chips" id="chatChips"></div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatIn" type="text" placeholder="Escriba su mensaje…" autocomplete="off">
+    <button type="submit" aria-label="Enviar">→</button>
+  </form>
+</div>
+
+<script>
+// loader — sale cuando carga la primera foto del hero (o 4.5s máx)
+const loader = document.getElementById('loader');
+const firstSlide = document.querySelector('.hero > img');
+let loaderGone = false;
+function hideLoader() {
+  if (loaderGone) return; loaderGone = true;
+  loader.classList.add('done');
+  setTimeout(() => loader.remove(), 700);
+}
+if (firstSlide.complete && firstSlide.naturalWidth) hideLoader();
+else {
+  firstSlide.addEventListener('load', hideLoader, { once: true });
+  firstSlide.addEventListener('error', hideLoader, { once: true });
+}
+setTimeout(hideLoader, 4500);
+
+// secciones aparecen al entrar al viewport
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } });
+}, { threshold: .12 }) : null;
+document.querySelectorAll('section').forEach(s => io ? io.observe(s) : s.classList.add('seen'));
+
+// slideshow del hero — cambia cada 5s con fundido
+const slides = document.querySelectorAll('.hero > img');
+let cur = 0;
+setInterval(() => {
+  slides[cur].classList.remove('on');
+  cur = (cur + 1) % slides.length;
+  slides[cur].classList.add('on');
+}, 5000);
+
+// el logo del nav aparece al salir del hero
+addEventListener('scroll', () => {
+  document.body.classList.toggle('scrolled', scrollY > innerHeight * .55);
+}, { passive: true });
+
+// chat asistente — responde por palabras clave
+const chatBox = document.getElementById('chatBox');
+const chatLog = document.getElementById('chatLog');
+const chatChips = document.getElementById('chatChips');
+let chatGreeted = false;
+
+const RESPUESTAS = [
+  [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle materiales, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver materiales','Cotizar','Contactar asesor']],
+  [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del material, la losa y las medidas — se cotiza por m². Mándenos las medidas de su proyecto por WhatsApp y le cotizamos hoy. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Cotizar <span>WhatsApp →</span></a></span>', ['Ver materiales','Contactar asesor']],
+  [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en la <a href="galeria.html#marmoles">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en la <a href="galeria.html#granitos">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/silestone|cuarzo/, 'Somos distribuidores oficiales de Silestone®. Vea los colores disponibles en la <a href="galeria.html#silestone">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/dekton|ultracompacto/, 'Somos distribuidores oficiales de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea la <a href="galeria.html#dekton">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/cocina|cubierta|barra|meseta/, 'Fabricamos cubiertas de cocina en mármol, granito, Silestone y Dekton — corte e instalación incluidos. Vea trabajos en la <a href="galeria.html#cocinas">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/ba[ñn]o|lavabo|revestimiento|muro|fachada/, 'Hacemos baños y revestimientos en piedra natural y ultracompactos. Vea ejemplos en la <a href="galeria.html#banos">galería</a>.', ['Cotizar','Contactar asesor']],
+  [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está en la <a href="galeria.html">galería</a> — mármoles, granitos, Silestone y Dekton.', ['Ver materiales','Cotizar']],
+  [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
+  [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver materiales']],
+  [/galer[ií]a|foto|cat[aá]logo/, 'Aquí está el catálogo completo por material: <a href="galeria.html">abrir la galería</a>.', ['Cotizar','Contactar asesor']],
+  [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
+];
+const CHAT_FALLBACK = 'Para eso le conviene un asesor — le respondemos hoy mismo por WhatsApp: <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>';
+
+function addMsg(html, who) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + who;
+  if (who === 'me') d.textContent = html; else d.innerHTML = html;
+  chatLog.appendChild(d);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function setChips(list) {
+  chatChips.innerHTML = '';
+  list.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = c;
+    b.onclick = () => sendMsg(c);
+    chatChips.appendChild(b);
+  });
+}
+
+function botSay(text) {
+  const t = document.createElement('div');
+  t.className = 'msg bot typing';
+  t.innerHTML = '<i></i><i></i><i></i>';
+  chatLog.appendChild(t);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  const hit = RESPUESTAS.find(([re]) => re.test(text.toLowerCase()));
+  const [ , reply, chips ] = hit || [null, CHAT_FALLBACK, ['Agendar cita']];
+  setTimeout(() => { t.remove(); addMsg(reply, 'bot'); setChips(chips); }, 800 + Math.random() * 500);
+}
+
+function sendMsg(text) {
+  if (!text.trim()) return;
+  addMsg(text, 'me');
+  document.getElementById('chatIn').value = '';
+  setChips([]);
+  botSay(text);
+}
+
+document.getElementById('chatFab').onclick = () => {
+  chatBox.classList.toggle('open');
+  if (chatBox.classList.contains('open') && !chatGreeted) {
+    chatGreeted = true;
+    botSay('hola');
+  }
+};
+document.getElementById('chatX').onclick = () => chatBox.classList.remove('open');
+document.getElementById('chatForm').onsubmit = e => {
+  e.preventDefault();
+  sendMsg(document.getElementById('chatIn').value);
+};
+</script>
+
+</body>
+</html>
