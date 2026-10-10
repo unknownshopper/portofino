@@ -1,3 +1,6 @@
 prods/
 .DS_Store
 ._*
+
+# PDFs exportados (instrucciones, etc.)
+*.pdf
