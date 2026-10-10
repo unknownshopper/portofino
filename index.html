@@ -686,21 +686,20 @@ addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── materiales: carousel con mini-variantes por producto ──
-const PRODUCTOS = [
-  { slug: 'marmol', nombre: 'Mármol' },
-  { slug: 'granito', nombre: 'Granito' },
-  { slug: 'silestone', nombre: 'Silestone®' },
-  { slug: 'dekton', nombre: 'Dekton®' },
-];
+// nombre bonito por slug (el manifiesto trae rubro en mayúsculas)
+const NOMBRES = {
+  marmol: 'Mármol', granito: 'Granito', dekton: 'Dekton®', silestone: 'Silestone®',
+  eclos: 'Éclos', sinterizado: 'Sinterizado', cuarzo: 'Cuarzo',
+  fregaderos: 'Fregaderos', suministros: 'Suministros', novedades: 'Novedades'
+};
 const carr = document.getElementById('carr');
 
-PRODUCTOS.forEach(({ slug, nombre }) => {
-  const rubro = (typeof PORTOFINO_DATA !== 'undefined' ? PORTOFINO_DATA : [])
-    .find(r => r.slug === slug);
-  // variantes: un thumb por proyecto del rubro; fallback a thumbs locales por convención
-  const vars = rubro && rubro.proyectos.length
-    ? rubro.proyectos.slice(0, 4).map(p => p.thumb || p.fotos[0])
-    : [0, 1, 2, 3].map(i => `img/thumbs/${slug}-${i}.jpg`);
+(typeof PORTOFINO_DATA !== 'undefined' ? PORTOFINO_DATA : []).forEach(rubro => {
+  if (!rubro.proyectos.length) return;
+  const { slug } = rubro;
+  const nombre = NOMBRES[slug] || rubro.rubro;
+  // variantes: un thumb por proyecto del rubro (hasta 4)
+  const vars = rubro.proyectos.slice(0, 4).map(p => p.thumb || p.fotos[0]);
 
   const card = document.createElement('article');
   card.className = 'prod';
