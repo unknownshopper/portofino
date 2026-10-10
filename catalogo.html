@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Catálogo PORTOFINO — mármoles, granitos exóticos, Silestone y Dekton. Arme su lista y solicite cotización. Ventas en Veracruz y Tabasco, operamos en toda la república.">
-<meta property="og:title" content="PORTOFINO — Catálogo de materiales">
+<meta property="og:title" content="PORTOFINO — Catálogo de productos">
 <meta property="og:description" content="Mármoles, granitos exóticos, Silestone y Dekton — arme su lista y solicite cotización.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://unknownshopper.github.io/portofino/img/og.png">
@@ -292,9 +292,9 @@
 <header class="head">
   <div>
     <span class="k">Catálogo</span>
-    <h1>Materiales</h1>
+    <h1>Productos</h1>
   </div>
-  <p class="nota">Seleccione los materiales de su proyecto y envíe la solicitud — un asesor le cotiza medidas, corte e instalación.</p>
+  <p class="nota">Seleccione los productos de su proyecto y envíe la solicitud — un asesor le cotiza medidas, corte e instalación.</p>
 </header>
 
 <div class="toolbar">
@@ -419,7 +419,7 @@ function renderGrid() {
     };
     grid.appendChild(d);
   });
-  totalEl.textContent = `${n} material${n === 1 ? '' : 'es'}`;
+  totalEl.textContent = `${n} producto${n === 1 ? '' : 's'}`;
   if (!n) grid.innerHTML = '<p class="vacio">Sin resultados — pruebe otra búsqueda o categoría.</p>';
 }
 
@@ -439,7 +439,7 @@ function renderFab() {
 function renderPanel() {
   const ids = Object.keys(cot);
   if (!ids.length) {
-    lista.innerHTML = '<p class="panel-vacio">Aún no agrega materiales.<br>Toque “+ Cotizar” en cualquier producto.</p>';
+    lista.innerHTML = '<p class="panel-vacio">Aún no agrega productos.<br>Toque “+ Cotizar” en cualquier producto.</p>';
     return;
   }
   lista.innerHTML = '';
@@ -495,7 +495,7 @@ Teléfono: ${f('fTel')}
 Correo: ${f('fCorreo') || '—'}
 Ciudad / Estado: ${f('fCiudad')}
 
-Materiales:
+Productos:
 ${lineas}
 
 Comentarios: ${f('fMsg') || '—'}`,

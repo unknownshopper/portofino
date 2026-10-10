@@ -504,7 +504,7 @@
     <img class="hero-logo" src="img/logo-w.png" alt="PORTOFINO — Mármol &amp; Granito">
     <p class="tagline">Superficies de alta gama para proyectos arquitectónicos</p>
     <div class="cta-row">
-      <a class="cta solid" href="catalogo.html">Ver materiales</a>
+      <a class="cta solid" href="catalogo.html">Ver productos</a>
       <a class="cta" href="#contacto">Cotizar</a>
     </div>
   </div>
@@ -526,7 +526,7 @@
   <div class="materiales-head">
     <div>
       <span class="k">Catálogo</span>
-      <h2>Materiales</h2>
+      <h2>Productos</h2>
     </div>
     <div class="carr-nav">
       <button class="carr-btn" id="carrPrev" aria-label="Anterior">←</button>
@@ -764,8 +764,8 @@ const chatChips = document.getElementById('chatChips');
 let chatGreeted = false;
 
 const RESPUESTAS = [
-  [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle materiales, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver materiales','Cotizar','Contactar asesor']],
-  [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del material, la losa y las medidas — se cotiza por m². Mándenos las medidas de su proyecto por WhatsApp y le cotizamos hoy. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Cotizar <span>WhatsApp →</span></a></span>', ['Ver materiales','Contactar asesor']],
+  [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle productos, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver productos','Cotizar','Contactar asesor']],
+  [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del producto, la losa y las medidas — se cotiza por m². Mándenos las medidas de su proyecto por WhatsApp y le cotizamos hoy. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Cotizar <span>WhatsApp →</span></a></span>', ['Ver productos','Contactar asesor']],
   [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en el <a href="catalogo.html#marmoles">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en el <a href="catalogo.html#granitos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/dekton|ultracompacto/, 'Somos distribuidores de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea el <a href="catalogo.html#dekton">catálogo</a>.', ['Cotizar','Contactar asesor']],
@@ -778,10 +778,10 @@ const RESPUESTAS = [
   [/suministro|sellador|pegamento|epoxi|accesorio|herramienta/, 'Manejamos selladores y suministros para instalación y mantenimiento de piedra. Vea el <a href="catalogo.html#selladores">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/cocina|cubierta|barra|meseta/, 'Fabricamos cubiertas de cocina en mármol, granito, cuarzo, Silestone y Dekton — corte e instalación incluidos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/ba[ñn]o|revestimiento|muro|fachada/, 'Hacemos baños y revestimientos en piedra natural y ultracompactos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Silestone, Dekton, Éclos, sinterizados y más.', ['Ver materiales','Cotizar']],
+  [/losa|placa|material|producto|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de productos está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Dekton, Éclos, sinterizados y más.', ['Ver productos','Cotizar']],
   [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
-  [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver materiales']],
-  [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — seleccione materiales y envíe su solicitud.', ['Cotizar','Contactar asesor']],
+  [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver productos']],
+  [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — seleccione productos y envíe su solicitud.', ['Cotizar','Contactar asesor']],
   [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
 ];
 const CHAT_FALLBACK = 'Para eso le conviene un asesor — le respondemos hoy mismo por WhatsApp: <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>';
