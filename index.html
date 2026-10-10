@@ -537,33 +537,33 @@
 <!-- PROYECTOS -->
 <section class="proyectos" id="proyectos">
   <div class="proyectos-head">
-    <h2>Aplicaciones</h2>
-    <span>Cada losa, única</span>
+    <h2>Todas las líneas</h2>
+    <span>El catálogo completo</span>
   </div>
   <div class="grid">
-    <a class="obra obra-1" href="catalogo.html#marmoles">
-      <img src="img/thumbs/marmoles-0.jpg" alt="Mármoles" loading="lazy">
-      <figcaption><span class="nombre">Mármoles</span><span class="lugar">Ver catálogo</span></figcaption>
+    <a class="obra obra-1" href="catalogo.html#eclos">
+      <img src="img/thumbs/dekton-3.jpg" alt="Éclos" loading="lazy">
+      <figcaption><span class="nombre">Éclos</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
-    <a class="obra obra-2" href="catalogo.html#granitos">
-      <img src="img/thumbs/granitos-0.jpg" alt="Granitos exóticos" loading="lazy">
-      <figcaption><span class="nombre">Granitos exóticos</span><span class="lugar">Ver catálogo</span></figcaption>
+    <a class="obra obra-2" href="catalogo.html#sinterizado">
+      <img src="img/thumbs/silestone-3.jpg" alt="Sinterizado" loading="lazy">
+      <figcaption><span class="nombre">Sinterizado</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
-    <a class="obra obra-3" href="catalogo.html#silestone">
-      <img src="img/thumbs/silestone-0.jpg" alt="Silestone" loading="lazy">
-      <figcaption><span class="nombre">Silestone®</span><span class="lugar">Distribuidor oficial</span></figcaption>
+    <a class="obra obra-3" href="catalogo.html#cuarzo">
+      <img src="img/thumbs/silestone-1.jpg" alt="Cuarzo" loading="lazy">
+      <figcaption><span class="nombre">Cuarzo</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
-    <a class="obra obra-4" href="catalogo.html#dekton">
-      <img src="img/thumbs/dekton-0.jpg" alt="Dekton" loading="lazy">
-      <figcaption><span class="nombre">Dekton®</span><span class="lugar">Distribuidor oficial</span></figcaption>
+    <a class="obra obra-4" href="catalogo.html#fregaderos">
+      <img src="img/thumbs/fregaderos-1.jpg" alt="Fregaderos" loading="lazy">
+      <figcaption><span class="nombre">Fregaderos</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
-    <a class="obra obra-5" href="catalogo.html#cocinas">
-      <img src="img/thumbs/cocinas-0.jpg" alt="Cubiertas de cocina" loading="lazy">
-      <figcaption><span class="nombre">Cocinas</span><span class="lugar">Ver catálogo</span></figcaption>
+    <a class="obra obra-5" href="catalogo.html#suministros">
+      <img src="img/thumbs/cocinas-0.jpg" alt="Suministros" loading="lazy">
+      <figcaption><span class="nombre">Suministros</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
-    <a class="obra obra-6" href="catalogo.html#banos">
-      <img src="img/thumbs/banos-0.jpg" alt="Baños y revestimientos" loading="lazy">
-      <figcaption><span class="nombre">Baños y revestimientos</span><span class="lugar">Ver catálogo</span></figcaption>
+    <a class="obra obra-6" href="catalogo.html#novedades">
+      <img src="img/thumbs/marmoles-3.jpg" alt="Novedades" loading="lazy">
+      <figcaption><span class="nombre">Novedades</span><span class="lugar">Ver catálogo</span></figcaption>
     </a>
   </div>
 </section>
@@ -647,7 +647,7 @@
   </form>
 </div>
 
-<script src="imagenes.js?v=2"></script>
+<script src="imagenes.js?v=3"></script>
 <script>
 // loader — sale cuando carga la primera foto del hero (o 4.5s máx)
 const loader = document.getElementById('loader');
@@ -687,8 +687,8 @@ addEventListener('scroll', () => {
 
 // ── materiales: carousel con mini-variantes por producto ──
 const PRODUCTOS = [
-  { slug: 'marmoles', nombre: 'Mármoles' },
-  { slug: 'granitos', nombre: 'Granitos exóticos' },
+  { slug: 'marmol', nombre: 'Mármol' },
+  { slug: 'granito', nombre: 'Granito' },
   { slug: 'silestone', nombre: 'Silestone®' },
   { slug: 'dekton', nombre: 'Dekton®' },
 ];
@@ -744,13 +744,19 @@ let chatGreeted = false;
 const RESPUESTAS = [
   [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle materiales, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver materiales','Cotizar','Contactar asesor']],
   [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del material, la losa y las medidas — se cotiza por m². Mándenos las medidas de su proyecto por WhatsApp y le cotizamos hoy. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Cotizar <span>WhatsApp →</span></a></span>', ['Ver materiales','Contactar asesor']],
-  [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en la <a href="catalogo.html#marmoles">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en la <a href="catalogo.html#granitos">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/silestone|cuarzo/, 'Somos distribuidores oficiales de Silestone®. Vea los colores disponibles en la <a href="catalogo.html#silestone">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/dekton|ultracompacto/, 'Somos distribuidores oficiales de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea la <a href="catalogo.html#dekton">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/cocina|cubierta|barra|meseta/, 'Fabricamos cubiertas de cocina en mármol, granito, Silestone y Dekton — corte e instalación incluidos. Vea trabajos en la <a href="catalogo.html#cocinas">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/ba[ñn]o|lavabo|revestimiento|muro|fachada/, 'Hacemos baños y revestimientos en piedra natural y ultracompactos. Vea ejemplos en la <a href="catalogo.html#banos">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está en la <a href="catalogo.html">catálogo</a> — mármoles, granitos, Silestone y Dekton.', ['Ver materiales','Cotizar']],
+  [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en el <a href="catalogo.html#marmol">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en el <a href="catalogo.html#granito">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/silestone/, 'Somos distribuidores oficiales de Silestone®. Vea los colores disponibles en el <a href="catalogo.html#silestone">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/dekton|ultracompacto/, 'Somos distribuidores oficiales de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea el <a href="catalogo.html#dekton">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/eclos|[eé]clos/, 'Éclos es la línea ultracompacta de Cosentino con tratamiento de superficie mate. Vea opciones en el <a href="catalogo.html#eclos">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/sinterizado|neolith|porcel[aá]nico/, 'Superficies sinterizadas de gran formato para cubiertas y fachadas. Vea el <a href="catalogo.html#sinterizado">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/cuarzo|quartz/, 'Cuarzo engineered de alta resistencia — ideal para cubiertas de cocina. Vea el <a href="catalogo.html#cuarzo">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/fregadero|tarja|sink|lavabo|lavamanos/, 'Fregaderos y tarjas en varios modelos — busque por código en el <a href="catalogo.html#fregaderos">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/suministro|sellador|pegamento|epoxi|accesorio|herramienta/, 'Manejamos suministros para instalación y mantenimiento de piedra. Vea el <a href="catalogo.html#suministros">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/novedad|nuevo|lanzamiento|reci[eé]n/, 'Lo más reciente que llega a inventario está en la sección de <a href="catalogo.html#novedades">novedades</a>.', ['Cotizar','Contactar asesor']],
+  [/cocina|cubierta|barra|meseta/, 'Fabricamos cubiertas de cocina en mármol, granito, cuarzo, Silestone y Dekton — corte e instalación incluidos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/ba[ñn]o|revestimiento|muro|fachada/, 'Hacemos baños y revestimientos en piedra natural y ultracompactos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/losa|placa|material|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de materiales está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Silestone, Dekton, Éclos, sinterizados y más.', ['Ver materiales','Cotizar']],
   [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
   [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Atendemos Tabasco, Chiapas, Veracruz y Campeche. Escríbanos y le decimos la sucursal que le queda más cerca. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver materiales']],
   [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — seleccione materiales y envíe su solicitud.', ['Cotizar','Contactar asesor']],
