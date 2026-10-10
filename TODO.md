@@ -2,8 +2,8 @@
 
 ## Para preguntar a Eduardo
 
-- [ ] **Enlace de la carpeta Dropbox de Portofino** → regenerar `imagenes.js` + `img/thumbs/` con las fotos reales (hoy son de muestra, Wikimedia Commons). Al regenerar: subir `?v=` del script tag
-- [ ] **Nombres de carpetas/rubros** reales: hoy `marmoles`, `granitos`, `silestone`, `dekton`, `cocinas`, `banos`
+- [ ] **Enlace de Google Drive de la carpeta `Productos`** (NO Dropbox) → regenerar `imagenes.js` + `img/thumbs/` con las fotos reales (hoy son de muestra). Ojo: Drive no sirve `raw=1` como Dropbox — las fotos saldrán por `drive.google.com/thumbnail?id=…&sz=w…` o `uc?id=…`; evaluar cuota/límites y si conviene self-hostear los thumbs procesados. Al regenerar: subir `?v=` del script tag
+- [ ] Rubros reales según su estructura (ya confirmada): `granito`, `marmol`, `dekton`, `silestone`, `eclos`, `sinterizado`, `cuarzo`, `fregaderos`, `suministros`, `novedades` — productos por Color / Código del Modelo / Nombre del modelo, cada uno con `Fotografías/` + `Descripción` + `Características y medidas` (considerar mostrar ficha/descripción en el catálogo)
 - [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto + Google Maps + aviso de privacidad
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
 - [ ] **RFC / razón social** para el aviso de privacidad

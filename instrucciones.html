@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Instrucciones para preparar la carpeta de fotos de PORTOFINO en Dropbox.">
+<meta name="description" content="Instrucciones para preparar la carpeta de fotos de PORTOFINO en Google Drive.">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="PORTOFINO — Instrucciones para la carpeta de fotos">
-<meta property="og:description" content="Cómo armar la carpeta de Dropbox para que el catálogo se actualice solo.">
+<meta property="og:description" content="Cómo compartir la carpeta de Google Drive para que el catálogo se actualice solo.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://unknownshopper.github.io/portofino/img/og.png">
 <meta property="og:url" content="https://unknownshopper.github.io/portofino/instrucciones.html">
@@ -93,13 +93,13 @@
     font-size: .9rem; margin: 1.4rem 0;
   }
 
-  .tabla { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1rem 0 1.6rem; }
+  .tabla { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1rem 0 1.6rem; table-layout: fixed; }
   .tabla td, .tabla th {
     text-align: left; padding: .65rem .4rem;
     border-bottom: 1px solid var(--hairline); vertical-align: top;
   }
   .tabla th { font-size: .62rem; letter-spacing: .24em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-  .tabla td:first-child { font-weight: 500; white-space: nowrap; padding-right: 1.4rem; }
+  .tabla td:first-child { font-weight: 500; width: 52%; padding-right: 1.4rem; }
 
   .descarga {
     margin-top: 3.5rem; padding-top: 2.4rem;
@@ -146,56 +146,47 @@
 
 <main>
   <span class="k">Para el equipo de PORTOFINO</span>
-  <h1>Cómo preparar la carpeta de fotos en Dropbox</h1>
-  <p class="intro">El sitio web lee las fotos <b>directamente de una carpeta compartida de Dropbox</b> — no hay que subir nada a otra parte. Si la carpeta se arma como se describe aquí, el catálogo se actualiza solo. Solo hay que hacerlo una vez.</p>
+  <h1>Cómo compartir la carpeta de fotos en Google Drive</h1>
+  <p class="intro">El sitio web lee las fotos <b>directamente de una carpeta compartida de Google Drive</b> — no hay que subir nada a otra parte. La estructura que ya tienen armada funciona tal cual; solo hace falta que la carpeta <code>Productos</code> quede compartida con enlace público y nos manden esa liga. Solo se hace una vez.</p>
 
   <h2>Paso a paso</h2>
 
   <div class="paso"><span class="n">1</span><div>
-    <p><b>Crear la carpeta.</b> En Dropbox, crear una carpeta llamada <code>Portofino</code> (el nombre interno da igual, pero así la ubicamos todos).</p>
+    <p><b>La estructura actual ya es la correcta.</b> Dentro de <code>Productos</code>, cada categoría (Granito, Mármol, Dekton, Silestone, Éclos, Sinterizado, Cuarzo, Fregaderos, Suministros, Novedades) contiene una carpeta por producto — por <b>Color</b>, <b>Código del Modelo</b> o <b>Nombre del modelo</b>. Ese nombre es el que se mostrará en el sitio.</p>
   </div></div>
 
   <div class="paso"><span class="n">2</span><div>
-    <p><b>Crear una subcarpeta por categoría.</b> Dentro de <code>Portofino</code>, una carpeta por cada tipo de material, con estos nombres exactos:</p>
-    <ul>
-      <li><code>Mármoles</code></li>
-      <li><code>Granitos</code></li>
-      <li><code>Silestone</code></li>
-      <li><code>Dekton</code></li>
-      <li><code>Cocinas</code> <span class="mono">(proyectos/instalaciones)</span></li>
-      <li><code>Baños</code> <span class="mono">(proyectos/instalaciones)</span></li>
-    </ul>
+    <p><b>Las fotos van en la subcarpeta <code>Fotografías</code></b> de cada producto. JPG o PNG, la mejor resolución disponible (ideal ≥1600px de ancho — el sitio genera solo las miniaturas). Si se nombran <code>01.jpg</code>, <code>02.jpg</code>… se respeta ese orden; la primera será la portada.</p>
   </div></div>
 
   <div class="paso"><span class="n">3</span><div>
-    <p><b>Dentro de cada categoría, una carpeta por material.</b> El nombre de la carpeta es el nombre que se mostrará en el sitio (ej. <code>Carrara Blanco</code>, <code>Tan Brown</code>, <code>Blanco Zeus</code>). Dentro de cada una van sus fotos.</p>
+    <p><b><code>Descripción</code> y <code>Características y medidas</code></b> de cada producto también los lee el sitio — pueden ser texto o PDF; con el archivo basta.</p>
   </div></div>
 
   <div class="paso"><span class="n">4</span><div>
-    <p><b>Subir las fotos.</b> JPG o PNG, la mejor resolución disponible (ideal ≥1600px de ancho — el sitio genera solo las miniaturas). Si se nombran <code>01.jpg</code>, <code>02.jpg</code>… se respetará ese orden; la primera será la portada del material.</p>
-  </div></div>
-
-  <div class="paso"><span class="n">5</span><div>
-    <p><b>Compartir la carpeta <code>Portofino</code></b> (la raíz, no subcarpetas): clic derecho → <b>Compartir → Crear enlace</b> → permiso <b>"Cualquiera con el vínculo puede ver"</b>. Mandarnos ese enlace por WhatsApp o correo.</p>
+    <p><b>Compartir la carpeta <code>Productos</code></b> (no las subcarpetas): clic derecho → <b>Compartir → Copiar enlace</b> → en "Acceso general" elegir <b>"Cualquier persona con el vínculo"</b> (rol: Lector). Mandarnos ese enlace por WhatsApp o correo.</p>
   </div></div>
 
   <h2>Estructura esperada</h2>
-  <div class="tree">Portofino/
-├── Mármoles/
-│   ├── Carrara Blanco/      <span class="cm">← nombre visible en el sitio</span>
-│   │   ├── 01.jpg           <span class="cm">← primera foto = portada</span>
-│   │   ├── 02.jpg
-│   │   └── 03.jpg
-│   ├── Statuarietto/
-│   └── foto suelta.jpg      <span class="cm">← sin carpeta = sección "Varios"</span>
-├── Granitos/
-│   ├── Tan Brown/
-│   └── Blanco Cristal/
-├── Silestone/
-│   └── Blanco Zeus/
-├── Dekton/
-├── Cocinas/
-└── Baños/</div>
+  <div class="tree">PORTOFINO GRANITOS Y MÁRMOLES/
+└── Productos/                    <span class="cm">← compartir esta carpeta</span>
+    ├── Granito/
+    │   └── Tan Brown/             <span class="cm">← Color = nombre visible</span>
+    │       ├── Fotografías/
+    │       │   ├── 01.jpg         <span class="cm">← primera foto = portada</span>
+    │       │   └── 02.jpg
+    │       ├── Descripción
+    │       └── Características y medidas
+    ├── Mármol/
+    │   └── Carrara Blanco/
+    ├── Dekton/
+    ├── Silestone/
+    ├── Éclos/
+    ├── Sinterizado/
+    ├── Cuarzo/
+    ├── Fregaderos/                <span class="cm">← por Código del Modelo</span>
+    ├── Suministros/               <span class="cm">← por Nombre del modelo</span>
+    └── Novedades/                 <span class="cm">← por Nombre del modelo</span></div>
 
   <h2>Reglas de las fotos</h2>
   <ul>
@@ -213,13 +204,13 @@
   <h2>Además necesitamos</h2>
   <table class="tabla">
     <tr><th>Dato</th><th>Para qué</th></tr>
-    <tr><td>Dirección de sucursal Veracruz</td><td>Sección de contacto + Google Maps</td></tr>
-    <tr><td>Dirección de sucursal Tabasco</td><td>Sección de contacto + Google Maps</td></tr>
-    <tr><td>¿Chiapas y Campeche tienen showroom o solo cobertura?</td><td>Texto de contacto y chat</td></tr>
-    <tr><td>RFC / razón social</td><td>Aviso de privacidad</td></tr>
-    <tr><td>¿Mostrar precio por m² en el catálogo?</td><td>Sí/No — hoy todo es "a cotización"</td></tr>
-    <tr><td>Logo en alta (vectorial o PNG grande)</td><td>El actual se extrajo de una imagen; el original quedaría mejor</td></tr>
-    <tr><td>Acceso a <b>Facebook Business</b>: agregar como administrador a <a href="https://www.facebook.com/pirichingon">facebook.com/pirichingon</a></td><td>Para conectar página, mensajes y futuras campañas</td></tr>
+    <tr><td>Dirección de sucursal Veracruz</td><td>Sección de contacto + Google Maps.</td></tr>
+    <tr><td>Dirección de sucursal Tabasco</td><td>Sección de contacto + Google Maps.</td></tr>
+    <tr><td>¿Chiapas y Campeche tienen showroom o solo cobertura?</td><td>Texto de contacto y chat.</td></tr>
+    <tr><td>RFC / razón social</td><td>Aviso de privacidad.</td></tr>
+    <tr><td>¿Mostrar precio por m² en el catálogo?</td><td>Sí/No — hoy todo es "a cotización".</td></tr>
+    <tr><td>Logo en alta (vectorial o PNG grande)</td><td>El actual se extrajo de una imagen; el original quedaría mejor.</td></tr>
+    <tr><td>Acceso a <b>Facebook Business</b>: agregar como administrador a <a href="https://www.facebook.com/pirichingon">facebook.com/pirichingon</a></td><td>Automatización de mensajes, respuestas en el feed, publicaciones y campañas.</td></tr>
   </table>
 
   <h2>Dudas</h2>
