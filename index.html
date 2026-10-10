@@ -217,11 +217,11 @@
   }
 
   /* ── materiales: carousel de productos ── */
-  .materiales { background: var(--paper); color: var(--ink); padding: 0 2rem 7rem; }
+  .materiales { background: var(--paper); color: var(--ink); padding: 0 0 7rem; }
   .materiales-head {
     display: flex; justify-content: space-between; align-items: flex-end;
     border-top: 1px solid rgba(22,24,26,.15);
-    padding-top: 2.5rem;
+    padding: 2.5rem 2rem 0;
     max-width: 1200px; margin: 0 auto 3rem;
   }
   .materiales-head .k {
@@ -244,9 +244,11 @@
   .carr-btn:hover { background: var(--ink); color: var(--paper); }
   .carr {
     display: flex; gap: 1.5rem;
-    max-width: 1200px; margin: 0 auto;
     overflow-x: auto; scroll-snap-type: x mandatory;
     scrollbar-width: none; padding-bottom: .5rem;
+    padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+    padding-right: 2rem;
+    scroll-padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
   }
   .carr::-webkit-scrollbar { display: none; }
   .prod {
@@ -731,8 +733,29 @@ const carr = document.getElementById('carr');
 });
 
 const paso = () => (carr.querySelector('.prod')?.offsetWidth || 300) + 24;
-document.getElementById('carrPrev').onclick = () => carr.scrollBy({ left: -paso(), behavior: 'smooth' });
-document.getElementById('carrNext').onclick = () => carr.scrollBy({ left: paso(), behavior: 'smooth' });
+
+// autoplay: una tarjeta cada 3.5s, regresa al inicio al llegar al final
+let auto;
+const hayOverflow = () => carr.scrollWidth > carr.clientWidth + 8;
+const avanzar = () => {
+  if (!hayOverflow()) return;
+  const fin = carr.scrollLeft + carr.clientWidth >= carr.scrollWidth - 8;
+  if (fin) carr.scrollTo({ left: 0, behavior: 'smooth' });
+  else carr.scrollBy({ left: paso(), behavior: 'smooth' });
+};
+const arrancar = () => {
+  clearInterval(auto);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) auto = setInterval(avanzar, 3500);
+};
+const parar = () => clearInterval(auto);
+carr.addEventListener('pointerenter', parar);
+carr.addEventListener('pointerleave', arrancar);
+carr.addEventListener('touchstart', parar, { passive: true });
+carr.addEventListener('touchend', () => setTimeout(arrancar, 4000));
+arrancar();
+
+document.getElementById('carrPrev').onclick = () => { carr.scrollBy({ left: -paso(), behavior: 'smooth' }); arrancar(); };
+document.getElementById('carrNext').onclick = () => { carr.scrollBy({ left: paso(), behavior: 'smooth' }); arrancar(); };
 
 // chat asistente — responde por palabras clave
 const chatBox = document.getElementById('chatBox');
