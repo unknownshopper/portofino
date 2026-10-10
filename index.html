@@ -164,56 +164,41 @@
     margin: 0 auto;
   }
 
-  /* ── proyectos ── */
-  .proyectos { background: var(--paper); color: var(--ink); padding: 0 2rem 7rem; }
-  .proyectos-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-top: 1px solid rgba(22,24,26,.15);
-    padding-top: 2.5rem;
-    max-width: 1200px; margin: 0 auto 3rem;
+  /* ── promoción vigente ── */
+  .promo { background: var(--paper); color: var(--ink); border-bottom: 1px solid rgba(22,24,26,.12); }
+  .promo-inner {
+    max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;
+    display: flex; align-items: center; gap: 4rem;
   }
-  .proyectos-head h2 {
+  .promo-txt { flex: 1; }
+  .promo .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1.3rem;
+  }
+  .promo h2 {
     font-family: 'Inter', -apple-system, sans-serif;
-    font-weight: 600; font-size: clamp(1.8rem, 4vw, 2.6rem);
-    letter-spacing: -.02em;
+    font-weight: 600; font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    letter-spacing: -.02em; line-height: 1.15; margin-bottom: 1.2rem;
   }
-  .proyectos-head span {
-    font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent);
+  .promo p {
+    font-size: .95rem; line-height: 1.8; opacity: .75;
+    max-width: 48ch; margin-bottom: 2rem;
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1.5rem;
-    max-width: 1200px; margin: 0 auto;
+  .promo-cta {
+    font-size: .66rem; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1px solid var(--ink); padding-bottom: .35rem;
+    transition: color .25s, border-color .25s;
   }
-  .obra { position: relative; overflow: hidden; display: block; }
-  .obra img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 1.2s cubic-bezier(.2,.6,.2,1);
+  .promo-cta:hover { color: var(--accent); border-color: var(--accent); }
+  .promo-fig { flex: 0 0 clamp(220px, 26vw, 340px); }
+  .promo-fig img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover;
+    border-radius: 12px; display: block;
   }
-  .obra:hover img { transform: scale(1.05); }
-  .obra figcaption {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 1.2rem 1.4rem;
-    background: linear-gradient(to top, rgba(14,16,18,.65), transparent);
-    color: var(--light);
-    display: flex; justify-content: space-between; align-items: baseline;
-  }
-  .obra figcaption .nombre {
-    font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 1.15rem; font-weight: 500;
-  }
-  .obra figcaption .lugar {
-    font-size: .62rem; letter-spacing: .24em; text-transform: uppercase; opacity: .8;
-  }
-  .obra-1 { grid-column: span 7; aspect-ratio: 16/10; }
-  .obra-2 { grid-column: span 5; aspect-ratio: 16/10; }
-  .obra-3 { grid-column: span 5; aspect-ratio: 4/5; }
-  .obra-4 { grid-column: span 7; aspect-ratio: 4/5; }
-  .obra-5 { grid-column: span 6; aspect-ratio: 4/5; }
-  .obra-6 { grid-column: span 6; aspect-ratio: 4/5; }
   @media (max-width: 700px) {
-    .obra-1, .obra-2, .obra-3, .obra-4, .obra-5, .obra-6 { grid-column: span 12; aspect-ratio: 4/5; }
+    .promo-inner { flex-direction: column; align-items: stretch; gap: 2.2rem; padding: 3rem 2rem; }
+    .promo-fig { flex-basis: auto; }
   }
 
   /* ── materiales: carousel de productos ── */
@@ -515,6 +500,22 @@
   </a>
 </header>
 
+<!-- PROMOCIÓN — copy de ejemplo, actualizar con la oferta real del mes -->
+<section class="promo" id="promo">
+  <div class="promo-inner">
+    <div class="promo-txt">
+      <span class="k">Promoción del mes</span>
+      <h2>Granito Blanco Cristal —<br>precio especial en losa completa</h2>
+      <p>En cubiertas de cocina: medición, corte e instalación incluidos.
+        Vigencia al 30 de noviembre o hasta agotar existencias.</p>
+      <a class="promo-cta" href="https://wa.me/529933939163?text=Hola%2C%20me%20interesa%20la%20promoci%C3%B3n%20de%20Granito%20Blanco%20Cristal">Cotizar esta promoción →</a>
+    </div>
+    <figure class="promo-fig">
+      <img src="img/thumbs/granitos-0.jpg" alt="Granito Blanco Cristal — promoción PORTOFINO">
+    </figure>
+  </div>
+</section>
+
 <!-- MANIFIESTO -->
 <section class="manifesto" id="filosofia">
   <span class="k">Nuestra filosofía</span>
@@ -534,40 +535,6 @@
     </div>
   </div>
   <div class="carr" id="carr"></div>
-</section>
-
-<!-- PROYECTOS -->
-<section class="proyectos" id="proyectos">
-  <div class="proyectos-head">
-    <h2>Todas las líneas</h2>
-    <span>El catálogo completo</span>
-  </div>
-  <div class="grid">
-    <a class="obra obra-1" href="catalogo.html#cuarcitas">
-      <img src="img/thumbs/silestone-3.jpg" alt="Cuarcitas" loading="lazy">
-      <figcaption><span class="nombre">Cuarcitas</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-    <a class="obra obra-2" href="catalogo.html#travertinos">
-      <img src="img/thumbs/banos-0.jpg" alt="Travertinos" loading="lazy">
-      <figcaption><span class="nombre">Travertinos</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-    <a class="obra obra-3" href="catalogo.html#cuarzos">
-      <img src="img/thumbs/silestone-1.jpg" alt="Cuarzos" loading="lazy">
-      <figcaption><span class="nombre">Cuarzos</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-    <a class="obra obra-4" href="catalogo.html#tarjas">
-      <img src="img/thumbs/fregaderos-1.jpg" alt="Tarjas" loading="lazy">
-      <figcaption><span class="nombre">Tarjas</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-    <a class="obra obra-5" href="catalogo.html#selladores">
-      <img src="img/thumbs/cocinas-0.jpg" alt="Selladores" loading="lazy">
-      <figcaption><span class="nombre">Selladores</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-    <a class="obra obra-6" href="catalogo.html#sinterizados">
-      <img src="img/thumbs/dekton-3.jpg" alt="Sinterizados" loading="lazy">
-      <figcaption><span class="nombre">Sinterizados</span><span class="lugar">Ver catálogo</span></figcaption>
-    </a>
-  </div>
 </section>
 
 <!-- CONTACTO -->
