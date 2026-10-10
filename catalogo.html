@@ -277,6 +277,25 @@
     font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
     opacity: .5;
   }
+
+  /* ── marcas: marquee ── */
+  .marcas {
+    overflow: hidden;
+    border-top: 1px solid rgba(22,24,26,.12);
+    padding: 1.7rem 0;
+  }
+  .marcas-track {
+    display: flex; align-items: center; gap: 4.5rem;
+    width: max-content;
+    animation: marcas 34s linear infinite;
+  }
+  .marcas span {
+    font-size: .8rem; font-weight: 500;
+    letter-spacing: .34em; text-transform: uppercase;
+    color: var(--ink); opacity: .42; white-space: nowrap;
+  }
+  @keyframes marcas { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marcas-track { animation: none; } }
 </style>
 </head>
 <body>
@@ -339,6 +358,14 @@
     </form>
   </div>
 </aside>
+
+<!-- MARCAS — ajustar lista a las marcas que realmente distribuyen -->
+<div class="marcas" aria-label="Marcas que distribuimos">
+  <div class="marcas-track">
+    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+  </div>
+</div>
 
 <footer>
   <span>© PORTOFINO</span>
