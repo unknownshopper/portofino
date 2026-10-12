@@ -52,6 +52,29 @@ DM Stones. Cada post de material:
 Los datos ya los tenemos: nombre de modelo = carpeta del Drive,
 rubro = categoría, acabado = parte de "Características y medidas".
 
+## Flujo de producción (2 posts/semana)
+
+**Carpeta por publicación:** `imgs/<AAAAMMDD>-<a|b>-<NNN>/`
+- `a` = primer día de la semana, `b` = segundo
+- `NNN` = consecutivo del post (003, 004…)
+- Dentro: `post.png` (arte 1080×1080) + `caption.txt` (copy + hashtags)
+
+**Generar el arte:** `plantilla-post.html` recibe la foto y los datos por URL:
+```
+file:///…/redsoc/plantilla-post.html?foto=RUTA&nombre=NOMBRE&rubro=RUBRO&acabado=ACABADO
+```
+Render con Chrome headless:
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
+  --disable-gpu --hide-scrollbars --window-size=1080,1080 \
+  --virtual-time-budget=4000 --screenshot=post.png "file://…?foto=…&nombre=…"
+```
+
+**Origen de fotos:** cuando Eduardo suba `Productos/` al Drive, se elige
+una foto por post (escena de aplicación tipo Stonehaus o losa tipo DM),
+se levanta la plantilla y se exporta. Mientras tanto se usan las muestras
+de `img/thumbs/`.
+
 ## Redes de Portofino
 
 - Facebook Business: página de Portofino — dar admin a
