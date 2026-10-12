@@ -1,5 +1,5 @@
-// MUESTRA — se regenera desde la carpeta "Productos" en Google Drive
-// Rubros reales del cliente (Drive): CUARCITAS, CUARZOS, DEKTON, ECLOS, GRANITOS,
+// MUESTRA — se regenera desde la carpeta "Productos" en Dropbox
+// Rubros reales del cliente (Dropbox): CUARCITAS, CUARZOS, DEKTON, ECLOS, GRANITOS,
 //   MARMOLES, SELLADORES, SINTERIZADOS, TARJAS, TRAVERTINOS
 // Estructura por producto: <RUBRO>/<MODELO>/Fotografías/ + Descripción + Características y medidas
 const PORTOFINO_DATA = [

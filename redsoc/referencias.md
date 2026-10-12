@@ -49,7 +49,7 @@ DM Stones. Cada post de material:
 3. Logo PORTOFINO pequeño, esquina inferior derecha
 4. Mismo layout siempre → el grid se lee como catálogo
 
-Los datos ya los tenemos: nombre de modelo = carpeta del Drive,
+Los datos ya los tenemos: nombre de modelo = carpeta de Dropbox,
 rubro = categoría, acabado = parte de "Características y medidas".
 
 ## Flujo de producción (2 posts/semana)
@@ -70,7 +70,7 @@ Render con Chrome headless:
   --virtual-time-budget=4000 --screenshot=post.png "file://…?foto=…&nombre=…"
 ```
 
-**Origen de fotos:** cuando Eduardo suba `Productos/` al Drive, se elige
+**Origen de fotos:** cuando Eduardo suba `Productos/` a Dropbox, se elige
 una foto por post (escena de aplicación tipo Stonehaus o losa tipo DM),
 se levanta la plantilla y se exporta. Mientras tanto se usan las muestras
 de `img/thumbs/`.
