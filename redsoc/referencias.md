@@ -3,35 +3,67 @@
 Todo lo relacionado con el contenido social de PORTOFINO: referencias de
 estética, guías de publicación, assets y calendario.
 
-## Referencia de estética (enviada por Eduardo)
+## Referencias de estética (enviadas por Eduardo)
 
 - Publicación de referencia:
   https://www.facebook.com/share/1DHdNRBGnv/?mibextid=wwXIfr
-- Página: DM Stones — https://www.facebook.com/dmstones/
+- Página DM Stones: https://www.facebook.com/dmstones/
 
-**Quiénes son:** Distribuidora de Mármoles (DM Stones), Zapopan + Hermosillo.
-Competidor directo — mismas líneas: mármoles, granitos, cuarcitas, cuarzos,
-piedras tecnológicas, slates, calizas.
-- Web: https://www.distribuidorademarmoles.com
-- Instagram: https://www.instagram.com/dmstones/
-- Catálogo PDF: https://www.distribuidorademarmoles.com/wp-content/uploads/2025/05/CATALOGO-LAMINAS-1.pdf
+### Ref. 1 — STONEHAUS (`ref-stonehaus.png`)
 
-## Estética a observar (por llenar al revisar los posts)
+Estilo editorial/lifestyle. La piedra siempre en contexto, nunca sola:
 
-- [ ] Formato de foto de producto: losa completa vs. detalle de veta
-- [ ] Overlay de texto: nombre del material, código, categoría — tipografía y posición
-- [ ] Fondo/paleta de las publicaciones
-- [ ] Copy de los captions: tono, largo, hashtags, CTA
-- [ ] Frecuencia y tipo de posts (producto / proyecto / promo / video)
+- Grid tipo Pinterest: fotos de ambiente — alberca, chimenea, mobiliario,
+  acabados de piso, detalle de veta, cantera/origen
+- Paleta clara neutra: beige, greige, blanco cálido — luz natural suave
+- Watermark "STONEHAUS" pequeño, blanco, esquina inferior de cada foto —
+  marca presente sin gritar
+- Contenido mixto: lifestyle + close-ups de textura + tarjetas de paleta
+  con frase ("Diseño, estética y elegancia") + etiquetas de acabado
+  (Pulido / Leather Finish / Mate)
+- Vende sensación, no producto
+
+### Ref. 2 — DM STONES (`ref-dmstones.jpg`)
+
+Estilo arquitectónico dramático. El material como protagonista de lujo:
+
+- Grid de posts cuadrados: escenas de alta gama — alberca al atardecer,
+  fachada, isla de cocina, muro de TV, baño — renders o fotos oscuras
+  con luz cálida
+- **Overlay fijo esquina inferior izquierda:**
+  - NOMBRE DEL MATERIAL en bold blanco (ej. `NEGRO SANTIAGO`)
+  - línea chica `RUBRO | ACABADO` (ej. `GRANITO | FLAMEADO CEPILLADO`)
+- Logo "DM" pequeño, esquina inferior derecha
+- Intercalan las escenas con fotos "de piso": losa real en el patio de
+  maniobras, misma overlay — conecta el render con el inventario real
+- Vende producto con nombre propio + especificación
+
+## Formato Portofino propuesto
+
+Combinar ambas: la escena editorial de Stonehaus + la overlay técnica de
+DM Stones. Cada post de material:
+
+1. Foto de losa o escena de aplicación
+2. Overlay inferior izquierda: `NOMBRE DEL MODELO` (bold, blanco)
+   + `RUBRO | ACABADO` (línea chica)
+3. Logo PORTOFINO pequeño, esquina inferior derecha
+4. Mismo layout siempre → el grid se lee como catálogo
+
+Los datos ya los tenemos: nombre de modelo = carpeta del Drive,
+rubro = categoría, acabado = parte de "Características y medidas".
 
 ## Redes de Portofino
 
-- Facebook Business: página de Portofino — dar admin a https://www.facebook.com/pirichingon
+- Facebook Business: página de Portofino — dar admin a
+  https://www.facebook.com/pirichingon (automatización de mensajes,
+  respuestas en el feed, publicaciones y campañas — va en la iguala)
 - Instagram: @portofino.granitosymarmoles
 - WhatsApp ventas: 993 393 9163
 
 ## Pendientes
 
-- [ ] Capturas de los posts de referencia (FB pide sesión para verlos)
-- [ ] Lineamiento visual de posts (plantilla con logo, datos de contacto)
-- [ ] Calendario de contenido mensual (ligado a la promo del mes del sitio)
+- [ ] Confirmar con Eduardo si la referencia del share link es Stonehaus
+      u otra página
+- [ ] Plantilla de post (formato de la overlay) — Figma/Canva o generada
+- [ ] Calendario mensual de contenido — alinear con la promo del mes del sitio
+- [ ] Copys base: tono (mayoría "usted"), CTA a WhatsApp/catálogo
