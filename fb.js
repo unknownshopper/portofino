@@ -2,10 +2,12 @@
 // Config: console.firebase.google.com → tu proyecto → Configuración → Tus apps → Web.
 // Mientras apiKey quede vacío no se carga nada — el cotizador funciona igual (correo/WhatsApp).
 const FIREBASE_CONFIG = {
-  apiKey: '',
-  authDomain: '',
-  projectId: '',
-  appId: '',
+  apiKey: 'AIzaSyA3jaMC7q1H81xt8P-8Baz10-chLVvJeSA',
+  authDomain: 'portofino-1.firebaseapp.com',
+  projectId: 'portofino-1',
+  storageBucket: 'portofino-1.firebasestorage.app',
+  messagingSenderId: '78595824301',
+  appId: '1:78595824301:web:d5d75c42778e7e8ef80424',
 };
 const FB_V = '10.14.1';
 const FB_ON = !!FIREBASE_CONFIG.apiKey;
