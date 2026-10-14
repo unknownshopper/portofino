@@ -44,6 +44,7 @@
      ```
   5. Config web app → pegar apiKey/authDomain/projectId/appId en `fb.js`
   Panel: `admin.html` (login) · escritura automática desde el cotizador de catalogo.html
+- [ ] **Fase 2 — Stone Profit Systems (ERP)** → pendiente reunión con Eduardo: qué módulos tienen (Online Inventory?), si hay export de inventario. El catálogo podría mostrar existencia real de losas. Por ahora Dropbox + Firebase cubren fase 1
 - [ ] **Handle de Facebook** — hoy `facebook.com/portofinoveracruz`, cambiará a `portofinomx` o similar. Cuando quede el definitivo: agregar link de FB en footer/contacto del sitio y `og:`/meta sociales. La conexión Business/ManyChat va por ID interno — el rename no rompe nada
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (hacer cuando el dominio apunte al sitio)
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
