@@ -176,9 +176,9 @@ const tpl = p =>
 Hay vetas que tardan milenios en formarse — y un solo instante en encontrar su lugar: tu cocina, tu muro, tu espacio.
 
 Hoy: ${p.map(e=>e.nombre.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())).join(' · ')}
-Tabasco · Chiapas · Veracruz · Campeche — cotiza por WhatsApp
+Envíos a todo México — cotiza por WhatsApp
 
-#Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #Tabasco #Veracruz`;
+#Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
 
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
@@ -188,10 +188,10 @@ async function genOllama(){
   tag.textContent = 'Ollama: generando…';
   const nombres = picks.map(e=>`${e.nombre} (${e.rubro})`).join(', ');
   const prompt =
-`Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo en el sureste de México (Tabasco, Chiapas, Veracruz, Campeche).
+`Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, con envíos a todo México.
 La publicación muestra: ${nombres}.
 Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
-Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → línea de alcance (Tabasco · Chiapas · Veracruz · Campeche) + CTA cotizar por WhatsApp → 5-7 hashtags. Máximo 80 palabras antes de hashtags. Solo el caption, sin comillas ni explicaciones.`;
+Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → línea de alcance (envíos a todo México) + CTA cotizar por WhatsApp → 5-7 hashtags. Máximo 80 palabras antes de hashtags. Solo el caption, sin comillas ni explicaciones.`;
   try{
     const r = await fetch(OLLAMA+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model, prompt, stream:false})});
