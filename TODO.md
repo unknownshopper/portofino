@@ -30,7 +30,7 @@
   - Verificar con `dig +short portofino.com.mx` que resuelva a las IPs de GitHub
   - ENTONCES: re-agregar `CNAME` al repo (o Custom domain en Settings → Pages) + **Enforce HTTPS**
   - Al final: cambiar `og:url` en index/propuesta de github.io a `https://portofino.com.mx`
-- [ ] **Meta Pixel ID** → Events Manager del Business Manager → Orígenes de datos → pegar en `meta-pixel.js` (`META_PIXEL_ID`). Ya trackea PageView, Contact (clics wa/mail) y Lead (cotización)
+- [x] **Meta Pixel** → ID `1124678623449829` conectado en `meta-pixel.js`. Trackea PageView, Contact (clics wa/mail) y Lead (cotización). Verificar en Events Manager → Probar eventos tras push
 - [ ] **Handle de Facebook** — hoy `facebook.com/portofinoveracruz`, cambiará a `portofinomx` o similar. Cuando quede el definitivo: agregar link de FB en footer/contacto del sitio y `og:`/meta sociales. La conexión Business/ManyChat va por ID interno — el rename no rompe nada
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (hacer cuando el dominio apunte al sitio)
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
