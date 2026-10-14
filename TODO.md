@@ -31,6 +31,19 @@
   - ENTONCES: re-agregar `CNAME` al repo (o Custom domain en Settings → Pages) + **Enforce HTTPS**
   - Al final: cambiar `og:url` en index/propuesta de github.io a `https://portofino.com.mx`
 - [x] **Meta Pixel** → ID `1124678623449829` conectado en `meta-pixel.js`. Trackea PageView, Contact (clics wa/mail) y Lead (cotización). Verificar en Events Manager → Probar eventos tras push
+- [ ] **Firebase (panel de cotizaciones)** → console.firebase.google.com:
+  1. Crear proyecto `portofino`
+  2. Firestore Database → crear (producción)
+  3. Authentication → correo/contraseña → crear usuario admin (ventas@…)
+  4. Reglas Firestore:
+     ```
+     match /cotizaciones/{doc} {
+       allow create: if true;
+       allow read, update, delete: if request.auth != null;
+     }
+     ```
+  5. Config web app → pegar apiKey/authDomain/projectId/appId en `fb.js`
+  Panel: `admin.html` (login) · escritura automática desde el cotizador de catalogo.html
 - [ ] **Handle de Facebook** — hoy `facebook.com/portofinoveracruz`, cambiará a `portofinomx` o similar. Cuando quede el definitivo: agregar link de FB en footer/contacto del sitio y `og:`/meta sociales. La conexión Business/ManyChat va por ID interno — el rename no rompe nada
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (hacer cuando el dominio apunte al sitio)
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)

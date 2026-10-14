@@ -377,6 +377,7 @@
 </footer>
 
 <script src="imagenes.js?v=5"></script>
+<script src="fb.js"></script>
 <script>
 // ── datos de envío ──
 const WA_VENTAS = '529933939163';
@@ -516,7 +517,15 @@ function resumen() {
     return `• ${it.nombre} (${it.rubro})` + (cot[id].m2 ? ` — ${cot[id].m2} m² aprox.` : '');
   }).filter(Boolean).join('\n');
   const f = id => document.getElementById(id).value.trim();
+  const productos = Object.keys(cot).map(id => {
+    const it = ITEMS.find(x => x.id === id);
+    return it ? { nombre: it.nombre, rubro: it.rubro, m2: cot[id].m2 || null } : null;
+  }).filter(Boolean);
   return {
+    datos: {
+      nombre: f('fNombre'), telefono: f('fTel'), correo: f('fCorreo') || null,
+      ciudad: f('fCiudad'), mensaje: f('fMsg') || null, productos,
+    },
     texto:
 `SOLICITUD DE COTIZACIÓN — PORTOFINO
 
@@ -537,13 +546,15 @@ Comentarios: ${f('fMsg') || '—'}`,
 document.getElementById('cotForm').addEventListener('submit', e => {
   e.preventDefault();
   const r = resumen();
+  guardarCotizacion({ ...r.datos, canal: 'correo' });
   px('Lead', { canal: 'correo' });
-  location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Solicitud de cotización — ' + r.nombre)}&body=${encodeURIComponent(r.texto)}`;
+  location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Solicitud de cotización — ' + r.datos.nombre)}&body=${encodeURIComponent(r.texto)}`;
 });
 
 document.getElementById('envWa').onclick = () => {
   if (!document.getElementById('cotForm').reportValidity()) return;
   const r = resumen();
+  guardarCotizacion({ ...r.datos, canal: 'whatsapp' });
   px('Lead', { canal: 'whatsapp' });
   window.open(`https://wa.me/${WA_VENTAS}?text=${encodeURIComponent(r.texto)}`, '_blank');
 };
