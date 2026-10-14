@@ -297,6 +297,7 @@
   @keyframes marcas { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) { .marcas-track { animation: none; } }
 </style>
+<script src="meta-pixel.js"></script>
 </head>
 <body>
 
@@ -536,12 +537,14 @@ Comentarios: ${f('fMsg') || '—'}`,
 document.getElementById('cotForm').addEventListener('submit', e => {
   e.preventDefault();
   const r = resumen();
+  px('Lead', { canal: 'correo' });
   location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Solicitud de cotización — ' + r.nombre)}&body=${encodeURIComponent(r.texto)}`;
 });
 
 document.getElementById('envWa').onclick = () => {
   if (!document.getElementById('cotForm').reportValidity()) return;
   const r = resumen();
+  px('Lead', { canal: 'whatsapp' });
   window.open(`https://wa.me/${WA_VENTAS}?text=${encodeURIComponent(r.texto)}`, '_blank');
 };
 
