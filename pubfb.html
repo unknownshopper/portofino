@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Portofino · pubfb</title>
+<link rel="icon" href="img/ico.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#16181b; --paper:#f3f4f4; --accent:#67757d; }
+  * { margin:0; box-sizing:border-box; }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--paper); color:var(--ink); }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+
+  header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 0; border-bottom:1px solid rgba(22,24,26,.12); flex-wrap:wrap; }
+  .brand { font-weight:700; letter-spacing:.35em; font-size:.9rem; }
+  .brand span { font-weight:300; color:var(--accent); }
+  .ctl { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .ctl input[type=date], .ctl select, .ctl button {
+    font:inherit; font-size:.8rem; padding:8px 12px; border:1px solid rgba(22,24,26,.25);
+    background:#fff; color:var(--ink); border-radius:6px; cursor:pointer;
+  }
+  .ctl button { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .ctl button.ghost { background:transparent; color:var(--ink); border-color:rgba(22,24,26,.25); }
+
+  .kick { color:var(--accent); letter-spacing:.32em; font-size:.7rem; font-weight:500; text-transform:uppercase; }
+  h1 { font-size:1.4rem; font-weight:600; margin:6px 0 4px; }
+  .sub { color:var(--accent); font-size:.85rem; }
+  .intro { padding:26px 0 18px; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+  .ollama { font-size:.72rem; letter-spacing:.06em; padding:6px 12px; border-radius:20px; }
+  .ollama.on  { background:#e2efe3; color:#2e6b3e; }
+  .ollama.off { background:#f3e4e0; color:#8a4a3a; }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px; padding:8px 0 8px; }
+  .card { background:#fff; border:1px solid rgba(22,24,26,.1); border-radius:10px; overflow:hidden; }
+  .card .ph { aspect-ratio:1/1; width:100%; object-fit:cover; display:block; background:#e6e7e7; }
+  .card .bd { padding:12px 14px 14px; }
+  .card .nm { font-weight:700; font-size:.82rem; letter-spacing:.04em; }
+  .card .rb { color:var(--accent); font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; margin-top:2px; }
+  .card .ops { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .card .ops button { font:inherit; font-size:.68rem; letter-spacing:.05em; padding:6px 10px; border-radius:6px; border:1px solid rgba(22,24,26,.2); background:#fff; cursor:pointer; }
+  .card .ops button.pri { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .lg { display:flex; gap:6px; margin-top:8px; }
+  .lg button { flex:1; font-size:.62rem; padding:5px 4px; border-radius:5px; border:1px solid rgba(22,24,26,.18); background:#fff; cursor:pointer; letter-spacing:.04em; }
+  .lg button.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  .cap { margin:22px 0 60px; background:#fff; border:1px solid rgba(22,24,26,.1); border-radius:10px; padding:18px 20px; }
+  .cap textarea { width:100%; min-height:130px; font:inherit; font-size:.85rem; line-height:1.55; border:1px solid rgba(22,24,26,.15); border-radius:8px; padding:12px; resize:vertical; margin-top:12px; }
+  .cap .row { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .cap .row button { font:inherit; font-size:.78rem; padding:9px 16px; border-radius:6px; border:1px solid rgba(22,24,26,.2); background:#fff; cursor:pointer; }
+  .cap .row button.pri { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  footer { border-top:1px solid rgba(22,24,26,.12); padding:16px 0; font-size:.7rem; color:var(--accent); letter-spacing:.08em; }
+</style>
+</head>
+<body>
+<header class="wrap" style="padding-left:0;padding-right:0;max-width:none;border-bottom:none;">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;border-bottom:1px solid rgba(22,24,26,.12);padding-bottom:18px;">
+    <div class="brand">PORTOFINO <span>· pubfb</span></div>
+    <div class="ctl">
+      <input type="date" id="dia">
+      <button class="ghost" id="otra">↺ Otra selección</button>
+      <label style="font-size:.75rem;color:var(--accent);">Logo
+        <select id="logoSel"><option value="auto">auto</option><option value="w">blanco</option><option value="ink">tinta</option></select>
+      </label>
+      <label style="font-size:.75rem;color:var(--accent);">
+        <input type="checkbox" id="ovl" checked> overlay nombre
+      </label>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <div>
+      <div class="kick">Contenido · 2 publicaciones / semana</div>
+      <h1 id="tit">Selección del día</h1>
+      <div class="sub" id="selInfo"></div>
+    </div>
+    <div class="ollama off" id="ollamaTag">Ollama: …</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="cap">
+    <div class="kick">Caption de la publicación</div>
+    <textarea id="cap"></textarea>
+    <div class="row">
+      <button class="pri" id="genOllama">✦ Generar con Ollama</button>
+      <button id="genTpl">Plantilla</button>
+      <button id="copyCap">Copiar caption</button>
+      <button id="dlAll">Descargar las 4 fotos</button>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap" style="max-width:none;">
+  <div class="wrap">pubfb — herramienta interna · no indexada · usa PORTOFINO_DATA + muestras/reales</div>
+</footer>
+
+<script src="imagenes.js"></script>
+<script>
+const OLLAMA = 'http://localhost:11434';
+let picks = [], salt = 0, model = null;
+
+// ── rng determinista por fecha ──
+function hash(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function rng(seed){let a=seed;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+const pool = PORTOFINO_DATA.flatMap(r =>
+  r.proyectos.flatMap(p => p.fotos.map(f => ({ nombre:p.nombre, rubro:r.rubro, slug:r.slug, foto:f }))));
+
+function pick(dstr){
+  const r = rng(hash(dstr+'|'+salt));
+  const usados = new Set(), sel = [];
+  const arr = [...pool].sort(()=>r()-.5);
+  for (const e of arr){ if(!usados.has(e.nombre)){ usados.add(e.nombre); sel.push(e); } if(sel.length===4) break; }
+  return sel;
+}
+
+// ── canvas 1080 con logo + overlay ──
+const logoImg = { w:new Image(), ink:new Image() };
+logoImg.w.src='img/logo-w.png'; logoImg.ink.src='img/logo-ink.png';
+
+function loadImg(src){ return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;}); }
+
+function lum(img, sx, sy, sw, sh){
+  const c=document.createElement('canvas');c.width=c.height=16;
+  const x=c.getContext('2d');x.drawImage(img,sx,sy,sw,sh,0,0,16,16);
+  const d=x.getImageData(0,0,16,16).data;let s=0;
+  for(let i=0;i<d.length;i+=4)s+=d[i]*.299+d[i+1]*.587+d[i+2]*.114;
+  return s/(d.length/4);
+}
+
+async function renderPost(e){
+  const img = await loadImg(e.foto);
+  const c = document.createElement('canvas'); c.width=c.height=1080;
+  const x = c.getContext('2d');
+  const s = Math.max(1080/img.width, 1080/img.height);
+  const w=img.width*s, h=img.height*s;
+  x.drawImage(img,(1080-w)/2,(1080-h)/2,w,h);
+
+  const mode = document.getElementById('logoSel').value;
+  const dark = lum(img, Math.floor(img.width*.75), Math.floor(img.height*.8), Math.floor(img.width*.25), Math.floor(img.height*.2)) < 128;
+  const lg = (mode==='w'||(mode==='auto'&&dark)) ? logoImg.w : logoImg.ink;
+
+  if (document.getElementById('ovl').checked){
+    const g=x.createLinearGradient(0,700,0,1080);
+    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');
+    x.fillStyle=g;x.fillRect(0,700,1080,380);
+    x.fillStyle='#fff';x.textBaseline='bottom';
+    x.font='700 46px Inter, sans-serif';
+    x.fillText(e.nombre.toUpperCase(),48,986,780);
+    x.font='500 30px Inter, sans-serif';x.fillStyle='rgba(255,255,255,.85)';
+    x.fillText(e.rubro.toUpperCase(),48,1032,780);
+  }
+  if (lg.complete && lg.naturalWidth){
+    const lw=150, lh=lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, 1080-48-lw, 1080-44-lh, lw, lh);
+  }
+  return c;
+}
+
+async function descargar(e, i, dia){
+  const c = await renderPost(e);
+  const a = document.createElement('a');
+  a.download = `portofino-${dia.replaceAll('-','')}-${String(i+1).padStart(2,'0')}.png`;
+  a.href = c.toDataURL('image/png'); a.click();
+}
+
+// ── caption ──
+const tpl = p =>
+`La historia se escribe en piedra.
+
+Hay vetas que tardan milenios en formarse — y un solo instante en encontrar su lugar: tu cocina, tu muro, tu espacio.
+
+Hoy: ${p.map(e=>e.nombre.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())).join(' · ')}
+Tabasco · Chiapas · Veracruz · Campeche — cotiza por WhatsApp
+
+#Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #Tabasco #Veracruz`;
+
+function setCap(txt){ document.getElementById('cap').value = txt; }
+
+async function genOllama(){
+  const tag = document.getElementById('ollamaTag');
+  if (!model){ alert('Ollama no está corriendo.\n\nInstala: brew install ollama\nModelo: ollama pull llama3.2\nY corre: ollama serve'); return; }
+  tag.textContent = 'Ollama: generando…';
+  const nombres = picks.map(e=>`${e.nombre} (${e.rubro})`).join(', ');
+  const prompt =
+`Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo en el sureste de México (Tabasco, Chiapas, Veracruz, Campeche).
+La publicación muestra: ${nombres}.
+Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
+Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → línea de alcance (Tabasco · Chiapas · Veracruz · Campeche) + CTA cotizar por WhatsApp → 5-7 hashtags. Máximo 80 palabras antes de hashtags. Solo el caption, sin comillas ni explicaciones.`;
+  try{
+    const r = await fetch(OLLAMA+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model, prompt, stream:false})});
+    const j = await r.json();
+    setCap(j.response.trim());
+    tag.textContent = 'Ollama: '+model;
+  }catch(e){ tag.textContent='Ollama: error'; }
+}
+
+async function detectOllama(){
+  const tag = document.getElementById('ollamaTag');
+  try{
+    const r = await fetch(OLLAMA+'/api/tags');
+    const j = await r.json();
+    const names = j.models.map(m=>m.name);
+    model = names.find(n=>/llama3|mistral|gemma|qwen/i.test(n)) || names[0];
+    tag.className='ollama on';
+    tag.textContent = model ? 'Ollama: '+model : 'Ollama: sin modelos (ollama pull llama3.2)';
+  }catch(e){
+    tag.textContent='Ollama: no detectado — brew install ollama && ollama pull llama3.2';
+  }
+}
+
+// ── render ──
+function render(){
+  const dia = document.getElementById('dia').value;
+  picks = pick(dia);
+  document.getElementById('tit').textContent = 'Selección del '+new Date(dia+'T12:00').toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('selInfo').textContent = picks.map(e=>e.nombre).join(' · ');
+  const g = document.getElementById('grid'); g.innerHTML='';
+  picks.forEach((e,i)=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `<img class="ph" src="${e.foto}" alt="${e.nombre}">
+      <div class="bd">
+        <div class="nm">${e.nombre}</div><div class="rb">${e.rubro}</div>
+        <div class="ops">
+          <button class="pri" data-dl="${i}">Descargar PNG 1080</button>
+          <button data-view="${i}">Vista previa</button>
+        </div>
+      </div>`;
+    g.appendChild(card);
+  });
+  g.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>descargar(picks[b.dataset.dl],+b.dataset.dl,dia));
+  g.querySelectorAll('[data-view]').forEach(b=>b.onclick=async()=>{
+    const w = window.open('','_blank');
+    const c = await renderPost(picks[b.dataset.view]);
+    w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
+  });
+  setCap(tpl(picks));
+}
+
+document.getElementById('dia').value = new Date().toISOString().slice(0,10);
+document.getElementById('dia').onchange = ()=>{salt=0;render()};
+document.getElementById('otra').onclick = ()=>{salt++;render()};
+document.getElementById('genTpl').onclick = ()=>setCap(tpl(picks));
+document.getElementById('genOllama').onclick = genOllama;
+document.getElementById('copyCap').onclick = ()=>{
+  navigator.clipboard.writeText(document.getElementById('cap').value);
+  const b=document.getElementById('copyCap');b.textContent='✓ Copiado';setTimeout(()=>b.textContent='Copiar caption',1500);
+};
+document.getElementById('dlAll').onclick = async()=>{
+  const dia=document.getElementById('dia').value;
+  for(let i=0;i<picks.length;i++){ await descargar(picks[i],i,dia); await new Promise(r=>setTimeout(r,350)); }
+};
+
+detectOllama();
+render();
+</script>
+</body>
+</html>
