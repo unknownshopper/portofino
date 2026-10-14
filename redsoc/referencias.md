@@ -77,7 +77,8 @@ de `img/thumbs/`.
 
 ## Redes de Portofino
 
-- Facebook Business: página de Portofino — dar admin a
+- Facebook Business: página de Portofino — hoy `facebook.com/portofinoveracruz`,
+  migrará a `@portofinomx` o similar (actualizar cuando quede) — dar admin a
   https://www.facebook.com/pirichingon (automatización de mensajes,
   respuestas en el feed, publicaciones y campañas — va en la iguala)
 - Instagram: @portofino.granitosymarmoles
