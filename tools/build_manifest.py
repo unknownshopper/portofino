@@ -104,6 +104,26 @@ def product_photos(prod_dir: Path):
                   key=natural_key)
 
 
+def load_muestras():
+    """Muestras del imagenes.js actual: {slug: rubro-completo} — solo productos con muestra:true."""
+    mf = ROOT / 'imagenes.js'
+    if not mf.exists():
+        return {}
+    m = re.search(r'PORTOFINO_DATA\s*=\s*(\[.*\])\s*;', mf.read_text(), re.S)
+    if not m:
+        return {}
+    try:
+        data = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return {}
+    out = {}
+    for r in data:
+        muestras = [p for p in r.get('proyectos', []) if p.get('muestra')]
+        if muestras:
+            out[r['slug']] = {'rubro': r['rubro'], 'proyectos': muestras}
+    return out
+
+
 def bump_version():
     v = 1
     idx = ROOT / 'index.html'
@@ -136,7 +156,8 @@ def main():
     if not dry:
         THUMBS.mkdir(parents=True, exist_ok=True)
         for old in THUMBS.glob('*.jpg'):
-            old.unlink()
+            if not old.name.startswith('muestra-'):   # las muestras viven hasta ser desplazadas
+                old.unlink()
 
     data, report = [], []
     for rubro_dir in sorted(subs, key=natural_key):
@@ -166,6 +187,25 @@ def main():
                 prod['ficha'] = True
             proyectos.append(prod)
         data.append({'rubro': rubro, 'slug': rslug, 'proyectos': proyectos, 'varios': []})
+
+    # ── merge orgánico: cada producto real desplaza una muestra del rubro ──
+    # muestras con el mismo nombre que un real se dan por reemplazadas
+    muestras = load_muestras()
+    for r in data:
+        pool = muestras.pop(r['slug'], None)
+        if not pool:
+            continue
+        reales = {p['nombre'].upper() for p in r['proyectos']}
+        restan = [m for m in pool['proyectos'] if m['nombre'].upper() not in reales]
+        keep = max(0, len(pool['proyectos']) - len(r['proyectos']))
+        kept = restan[:keep]
+        if kept:
+            r['proyectos'] += kept
+            report.append(f'  + {r["slug"]}: {len(kept)} muestras conservadas')
+    # rubros sin carpeta real todavía → conservar muestras enteras
+    for s, pool in muestras.items():
+        data.append({'rubro': pool['rubro'], 'slug': s, 'proyectos': pool['proyectos'], 'varios': []})
+        report.append(f'  + {s}: sin carpeta real — muestras conservadas')
 
     out = ROOT / 'imagenes.js'
     js = ('// GENERADO por tools/build_manifest.py — no editar a mano\n'
