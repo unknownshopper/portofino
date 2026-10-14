@@ -3,7 +3,7 @@
 ## Para preguntar a Eduardo
 
 - [x] **Enlace de Dropbox de `Productos`** — vínculo de lectura con descargas, verificado (descarga zip completo vía `dl=1`). Guardado local en `dropbox-link.txt` (gitignored)
-- [ ] **Eduardo: subir fotos a `Productos/`** — estructura ya armada (10 rubros × PRODUCTO 01/02/03). Cuando suba: `bash tools/sync-productos.sh` descarga, procesa y regenera todo. Renombres que pedir antes: `SISNTERIZADOS` → `SINTERIZADOS`, `TRAVERTINO` → `TRAVERTINOS` (el script los corrige igual, pero mejor limpio). Ideal: renombrar `PRODUCTO 0N` al nombre del modelo
+- [ ] **Eduardo: subir fotos a `Productos/`** — estructura ya armada (10 rubros × PRODUCTO 01/02/03). Cuando suba: `bash tools/sync-productos.sh` descarga, procesa y regenera todo. `SISNTERIZADOS` ya se corrigió a `SINTERIZADOS`; queda `TRAVERTINO` → `TRAVERTINOS` (menor — el script lo mapea igual). Ideal: renombrar `PRODUCTO 0N` al nombre del modelo
 - [ ] **Secret `DROPBOX_URL` en GitHub** → Settings → Secrets → Actions. Con eso corre el job nocturno (`.github/workflows/sync-productos.yml`)
 - [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto + Google Maps + aviso de privacidad
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
