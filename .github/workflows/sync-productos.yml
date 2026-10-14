@@ -1,0 +1,37 @@
+name: Sync productos
+
+# Corre todas las noches ~02:00 CDMX y manual desde Actions → Run workflow.
+# Requiere el secret DROPBOX_URL con el vínculo de lectura de la carpeta Productos.
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Herramientas de imagen
+        run: sudo apt-get update && sudo apt-get install -y imagemagick libheif-examples
+
+      - name: Descargar y regenerar
+        env:
+          DROPBOX_URL: ${{ secrets.DROPBOX_URL }}
+        run: bash tools/sync-productos.sh
+
+      - name: Commit si hubo cambios
+        run: |
+          git config user.name "portofino-sync[bot]"
+          git config user.email "actions@github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Sin cambios — el catálogo ya estaba al día"
+          else
+            git commit -m "Sync productos $(date +%F): manifiesto + thumbs desde Dropbox"
+            git push
+          fi

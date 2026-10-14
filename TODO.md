@@ -2,8 +2,9 @@
 
 ## Para preguntar a Eduardo
 
-- [ ] **Enlace de Dropbox de la carpeta `Productos`** → regenerar `imagenes.js` + `img/thumbs/` con las fotos reales (hoy son de muestra). Dropbox sí sirve imágenes directas (`?raw=1`) — el sync puede descargar la carpeta compartida o listar vía API. Al regenerar: subir `?v=` del script tag
-- [ ] Rubros reales según su estructura (ya confirmada): `granito`, `marmol`, `dekton`, `silestone`, `eclos`, `sinterizado`, `cuarzo`, `fregaderos`, `suministros`, `novedades` — productos por Color / Código del Modelo / Nombre del modelo, cada uno con `Fotografías/` + `Descripción` + `Características y medidas` (considerar mostrar ficha/descripción en el catálogo)
+- [x] **Enlace de Dropbox de `Productos`** — vínculo de lectura con descargas, verificado (descarga zip completo vía `dl=1`). Guardado local en `dropbox-link.txt` (gitignored)
+- [ ] **Eduardo: subir fotos a `Productos/`** — estructura ya armada (10 rubros × PRODUCTO 01/02/03). Cuando suba: `bash tools/sync-productos.sh` descarga, procesa y regenera todo. Renombres que pedir antes: `SISNTERIZADOS` → `SINTERIZADOS`, `TRAVERTINO` → `TRAVERTINOS` (el script los corrige igual, pero mejor limpio). Ideal: renombrar `PRODUCTO 0N` al nombre del modelo
+- [ ] **Secret `DROPBOX_URL` en GitHub** → Settings → Secrets → Actions. Con eso corre el job nocturno (`.github/workflows/sync-productos.yml`)
 - [ ] **Direcciones físicas** de sucursales (Veracruz y Tabasco) → sección contacto + Google Maps + aviso de privacidad
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
 - [ ] **RFC / razón social** para el aviso de privacidad

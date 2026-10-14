@@ -511,11 +511,11 @@
 
 <!-- HERO -->
 <header class="hero">
-  <img class="on" src="img/thumbs/marmoles-0.jpg" alt="Mármol PORTOFINO">
-  <img src="img/thumbs/granitos-0.jpg" alt="Granito PORTOFINO" loading="lazy">
-  <img src="img/thumbs/marmoles-1.jpg" alt="Mármol PORTOFINO" loading="lazy">
-  <img src="img/thumbs/silestone-0.jpg" alt="Silestone PORTOFINO" loading="lazy">
-  <img src="img/thumbs/cocinas-0.jpg" alt="Cubierta de cocina PORTOFINO" loading="lazy">
+  <img class="on" src="img/thumbs/marmoles-0.jpg" data-src-slug="marmoles" data-src-idx="0" alt="Mármol PORTOFINO">
+  <img src="img/thumbs/granitos-0.jpg" data-src-slug="granitos" data-src-idx="0" alt="Granito PORTOFINO" loading="lazy">
+  <img src="img/thumbs/marmoles-1.jpg" data-src-slug="marmoles" data-src-idx="1" alt="Mármol PORTOFINO" loading="lazy">
+  <img src="img/thumbs/cuarzos-0.jpg" data-src-slug="cuarzos" data-src-idx="0" alt="Cuarzo PORTOFINO" loading="lazy">
+  <img src="img/thumbs/dekton-0.jpg" data-src-slug="dekton" data-src-idx="0" alt="Dekton PORTOFINO" loading="lazy">
   <div class="hero-inner">
     <img class="hero-logo" src="img/logo-w.png" alt="PORTOFINO — Mármol &amp; Granito">
     <p class="tagline">Superficies de alta gama para proyectos arquitectónicos</p>
@@ -543,7 +543,7 @@
         <a class="promo-cta" href="https://wa.me/529933939163?text=Hola%2C%20me%20interesa%20la%20promoci%C3%B3n%20de%20Granito%20Blanco%20Cristal">Cotizar esta promoción →</a>
       </div>
       <figure class="promo-fig">
-        <img src="img/thumbs/granitos-0.jpg" alt="Granito Blanco Cristal — promoción PORTOFINO">
+        <img src="img/thumbs/granitos-0.jpg" data-src-slug="granitos" data-src-idx="0" alt="Granito Blanco Cristal — promoción PORTOFINO">
       </figure>
     </div>
     <div class="promo-inner">
@@ -555,7 +555,7 @@
         <a class="promo-cta" href="https://wa.me/529933939163?text=Hola%2C%20me%20interesa%20la%20promoci%C3%B3n%20de%20M%C3%A1rmol%20Carrara%20Blanco">Cotizar esta promoción →</a>
       </div>
       <figure class="promo-fig">
-        <img src="img/thumbs/marmoles-1.jpg" alt="Mármol Carrara Blanco — promoción PORTOFINO">
+        <img src="img/thumbs/marmoles-1.jpg" data-src-slug="marmoles" data-src-idx="1" alt="Mármol Carrara Blanco — promoción PORTOFINO">
       </figure>
     </div>
     <div class="promo-inner">
@@ -567,7 +567,7 @@
         <a class="promo-cta" href="https://wa.me/529933939163?text=Hola%2C%20me%20interesa%20la%20promoci%C3%B3n%20de%20Dekton%20Entzo">Cotizar esta promoción →</a>
       </div>
       <figure class="promo-fig">
-        <img src="img/thumbs/dekton-3.jpg" alt="Dekton Entzo — promoción PORTOFINO">
+        <img src="img/thumbs/dekton-3.jpg" data-src-slug="dekton" data-src-idx="3" alt="Dekton Entzo — promoción PORTOFINO">
       </figure>
     </div>
   </div>
@@ -721,6 +721,15 @@ setInterval(() => {
 addEventListener('scroll', () => {
   document.body.classList.toggle('scrolled', scrollY > innerHeight * .55);
 }, { passive: true });
+
+// hero + promo figs: resuelven su foto del manifiesto (sobrevive a regeneraciones)
+document.querySelectorAll('img[data-src-slug]').forEach(img => {
+  const r = (typeof PORTOFINO_DATA !== 'undefined' ? PORTOFINO_DATA : [])
+    .find(r => r.slug === img.dataset.srcSlug);
+  const p = r && r.proyectos[+img.dataset.srcIdx || 0];
+  const t = p && (p.thumb || p.fotos[0]);
+  if (t) img.src = t;
+});
 
 // ── materiales: carousel con mini-variantes por producto ──
 // nombre bonito por slug (el manifiesto trae rubro en mayúsculas)
