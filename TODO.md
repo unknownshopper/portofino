@@ -8,7 +8,7 @@
 - [ ] ¿Hay sucursal/showroom en Chiapas y Campeche o solo cobertura?
 - [ ] **RFC / razón social** para el aviso de privacidad
 - [ ] ¿Precio por m² público en el catálogo o siempre "a cotización"? (hoy: sin precio público)
-- [ ] ¿Dominio definitivo? (¿portofino.com.mx? ya existe para el correo) → CNAME + DNS + actualizar `og:url`
+- [x] Dominio definitivo: `portofino.com.mx` (ya registrado por el cliente) → pendiente solo DNS + CNAME + `og:url`
 
 ## Ya resuelto
 
