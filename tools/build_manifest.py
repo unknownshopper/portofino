@@ -125,10 +125,13 @@ def main():
     if not src.is_dir():
         sys.exit(f'No existe la carpeta: {src}')
     # si el zip trae un solo contenedor (PRODUCTOS/), descender un nivel
-    subs = [d for d in src.iterdir() if d.is_dir() and not d.name.startswith('.')]
+    def real_dirs(p):
+        return [d for d in p.iterdir() if d.is_dir()
+                and not d.name.startswith(('.', '__'))]
+    subs = real_dirs(src)
     if len(subs) == 1 and subs[0].name.lower() in ('productos', 'producto'):
         src = subs[0]
-        subs = [d for d in src.iterdir() if d.is_dir() and not d.name.startswith('.')]
+        subs = real_dirs(src)
 
     if not dry:
         THUMBS.mkdir(parents=True, exist_ok=True)
@@ -142,7 +145,7 @@ def main():
         proyectos = []
         i = 0
         for prod_dir in sorted((d for d in rubro_dir.iterdir()
-                                if d.is_dir() and not d.name.startswith('.')), key=natural_key):
+                                if d.is_dir() and not d.name.startswith(('.', '__'))), key=natural_key):
             fotos_src = product_photos(prod_dir)
             if not fotos_src:
                 report.append(f'  · {rubro}/{prod_dir.name}: sin fotos (omitido)')

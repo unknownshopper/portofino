@@ -28,5 +28,11 @@ trap 'rm -rf "$TMP"' EXIT
 echo "Descargando carpeta Productos…"
 curl -sfL "$DL" -o "$TMP/productos.zip" || { echo "Fallo la descarga — revisa el vínculo"; exit 1; }
 
-unzip -q "$TMP/productos.zip" -d "$TMP/x"
+# zipfile de python maneja nombres UTF-8 (Fotografías, Mármoles) — unzip falla con ellos en CI
+python3 - "$TMP/productos.zip" "$TMP/x" <<'PY'
+import sys, zipfile
+with zipfile.ZipFile(sys.argv[1]) as zf:
+    zf.extractall(sys.argv[2])
+PY
+
 python3 tools/build_manifest.py "$TMP/x" "$@"
