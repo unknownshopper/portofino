@@ -1,7 +1,6 @@
 // Meta Pixel — PORTOFINO
-// Pegar el Pixel ID de Administrador de eventos (Events Manager → Orígenes de datos).
-// Mientras quede vacío no se carga nada — el sitio funciona igual.
-const META_PIXEL_ID = '';
+// Pixel ID de Administrador de eventos (Events Manager → Conjuntos de datos → portofino).
+const META_PIXEL_ID = '1124678623449829';
 
 if (META_PIXEL_ID) {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
