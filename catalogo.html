@@ -353,10 +353,14 @@
       </div>
       <input id="fCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
-      <button class="enviar mail" id="envMail" type="submit">Enviar solicitud por correo →</button>
-      <button class="enviar wa" id="envWa" type="button">Enviar por WhatsApp →</button>
+      <button class="enviar mail" id="enviar" type="submit">Enviar solicitud →</button>
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas, precio final y costo de envío a su ciudad. Envíos a todo México.</p>
     </form>
+    <div class="cot-ok" id="cotOk" hidden>
+      <h3>Solicitud recibida</h3>
+      <p id="cotOkTxt"></p>
+      <button class="enviar mail" id="cotOkBtn" type="button">Seguir explorando →</button>
+    </div>
   </div>
 </aside>
 
@@ -379,9 +383,7 @@
 <script src="imagenes.js?v=5"></script>
 <script src="fb.js"></script>
 <script>
-// ── datos de envío ──
-const WA_VENTAS = '529933939163';
-const CORREO_VENTAS = 'ventas@portofino.com.mx';
+// las solicitudes llegan al panel admin (Firestore); mail/WhatsApp quedan como alerta interna
 
 // ── catálogo: aplanar manifiesto a productos ──
 const ITEMS = [];
@@ -542,21 +544,28 @@ Comentarios: ${f('fMsg') || '—'}`,
   };
 }
 
-// correo = canal principal; WhatsApp = alterno
-document.getElementById('cotForm').addEventListener('submit', e => {
+// un solo envío: llega al panel admin (Firestore); mail/WhatsApp quedan como alerta interna
+const cotForm = document.getElementById('cotForm'), cotOk = document.getElementById('cotOk');
+cotForm.addEventListener('submit', async e => {
   e.preventDefault();
   const r = resumen();
-  guardarCotizacion({ ...r.datos, canal: 'correo' });
-  px('Lead', { canal: 'correo' });
-  location.href = `mailto:${CORREO_VENTAS}?subject=${encodeURIComponent('Solicitud de cotización — ' + r.datos.nombre)}&body=${encodeURIComponent(r.texto)}`;
+  const btn = document.getElementById('enviar');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  await guardarCotizacion({ ...r.datos, canal: 'web', texto: r.texto });
+  px('Lead', { canal: 'panel' });
+  cot = {}; guardar(); renderGrid(); renderFab();
+  renderPanel();
+  cotForm.hidden = true;
+  document.getElementById('cotOkTxt').textContent =
+    `Gracias, ${r.datos.nombre.split(' ')[0]} — un asesor le contactará hoy mismo para confirmar existencias, precio y envío a ${r.datos.ciudad}.`;
+  cotOk.hidden = false;
 });
-
-document.getElementById('envWa').onclick = () => {
-  if (!document.getElementById('cotForm').reportValidity()) return;
-  const r = resumen();
-  guardarCotizacion({ ...r.datos, canal: 'whatsapp' });
-  px('Lead', { canal: 'whatsapp' });
-  window.open(`https://wa.me/${WA_VENTAS}?text=${encodeURIComponent(r.texto)}`, '_blank');
+document.getElementById('cotOkBtn').onclick = () => {
+  cerrarPanel();
+  cotForm.hidden = false; cotOk.hidden = true;
+  cotForm.reset(); document.getElementById('fCiudad').value = 'México';
+  const btn = document.getElementById('enviar');
+  btn.disabled = false; btn.textContent = 'Enviar solicitud →';
 };
 
 // ── búsqueda + routing ──
