@@ -1,103 +1,8 @@
-// MUESTRA — se regenera desde la carpeta "Productos" en Dropbox
-// Rubros reales del cliente (Dropbox): CUARCITAS, CUARZOS, DEKTON, ECLOS, GRANITOS,
-//   MARMOLES, SELLADORES, SINTERIZADOS, TARJAS, TRAVERTINOS
-// Estructura por producto: <RUBRO>/<MODELO>/Fotografías/ + Descripción + Características y medidas
+// GENERADO por tools/build_manifest.py — no editar a mano
+// Fuente: carpeta "Productos" en Dropbox
 const PORTOFINO_DATA = [
  {
-  "rubro": "MÁRMOL",
-  "slug": "marmoles",
-  "proyectos": [
-   {
-    "nombre": "STATUARIETTO",
-    "fotos": [
-     "img/thumbs/muestra-marmoles-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-marmoles-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "CARRARA BLANCO",
-    "fotos": [
-     "img/thumbs/muestra-marmoles-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-marmoles-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "JURA BEIGE",
-    "fotos": [
-     "img/thumbs/muestra-marmoles-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-marmoles-2.webp",
-    "muestra": true
-   }
-  ],
-  "varios": []
- },
- {
-  "rubro": "GRANITO",
-  "slug": "granitos",
-  "proyectos": [
-   {
-    "nombre": "BLANCO CRISTAL",
-    "fotos": [
-     "img/thumbs/muestra-granitos-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-granitos-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "GRIS PERLA",
-    "fotos": [
-     "img/thumbs/muestra-granitos-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-granitos-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ROCKVILLE WHITE",
-    "fotos": [
-     "img/thumbs/muestra-granitos-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-granitos-2.webp",
-    "muestra": true
-   }
-  ],
-  "varios": []
- },
- {
-  "rubro": "CUARZO",
-  "slug": "cuarzos",
-  "proyectos": [
-   {
-    "nombre": "BLANCO ZEUS",
-    "fotos": [
-     "img/thumbs/muestra-silestone-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-silestone-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ETERNAL SERENA",
-    "fotos": [
-     "img/thumbs/muestra-silestone-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-silestone-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "CALACATTA GOLD",
-    "fotos": [
-     "img/thumbs/muestra-silestone-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-silestone-2.webp",
-    "muestra": true
-   }
-  ],
-  "varios": []
- },
- {
-  "rubro": "CUARCITA",
+  "rubro": "CUARCITAS",
   "slug": "cuarcitas",
   "proyectos": [
    {
@@ -128,38 +33,38 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "TRAVERTINO",
-  "slug": "travertinos",
+  "rubro": "CUARZOS",
+  "slug": "cuarzos",
   "proyectos": [
    {
-    "nombre": "TRAVERTINO ROMANO",
+    "nombre": "BLANCO ZEUS",
     "fotos": [
-     "img/thumbs/muestra-banos-0.webp"
+     "img/thumbs/muestra-silestone-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-banos-0.webp",
+    "thumb": "img/thumbs/muestra-silestone-0.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO BEIGE",
+    "nombre": "ETERNAL SERENA",
     "fotos": [
-     "img/thumbs/muestra-marmoles-0.webp"
+     "img/thumbs/muestra-silestone-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-marmoles-0.webp",
+    "thumb": "img/thumbs/muestra-silestone-1.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO NOCE",
+    "nombre": "CALACATTA GOLD",
     "fotos": [
-     "img/thumbs/muestra-granitos-3.webp"
+     "img/thumbs/muestra-silestone-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-3.webp",
+    "thumb": "img/thumbs/muestra-silestone-2.webp",
     "muestra": true
    }
   ],
   "varios": []
  },
  {
-  "rubro": "DEKTON®",
+  "rubro": "DEKTON",
   "slug": "dekton",
   "proyectos": [
    {
@@ -190,7 +95,7 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "ÉCLOS",
+  "rubro": "ECLOS",
   "slug": "eclos",
   "proyectos": [
    {
@@ -221,7 +126,100 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "SINTERIZADO",
+  "rubro": "GRANITOS",
+  "slug": "granitos",
+  "proyectos": [
+   {
+    "nombre": "BLANCO CRISTAL",
+    "fotos": [
+     "img/thumbs/muestra-granitos-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-granitos-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "GRIS PERLA",
+    "fotos": [
+     "img/thumbs/muestra-granitos-1.webp"
+    ],
+    "thumb": "img/thumbs/muestra-granitos-1.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "ROCKVILLE WHITE",
+    "fotos": [
+     "img/thumbs/muestra-granitos-2.webp"
+    ],
+    "thumb": "img/thumbs/muestra-granitos-2.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "MARMOLES",
+  "slug": "marmoles",
+  "proyectos": [
+   {
+    "nombre": "STATUARIETTO",
+    "fotos": [
+     "img/thumbs/muestra-marmoles-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-marmoles-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "CARRARA BLANCO",
+    "fotos": [
+     "img/thumbs/muestra-marmoles-1.webp"
+    ],
+    "thumb": "img/thumbs/muestra-marmoles-1.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "JURA BEIGE",
+    "fotos": [
+     "img/thumbs/muestra-marmoles-2.webp"
+    ],
+    "thumb": "img/thumbs/muestra-marmoles-2.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "SELLADORES",
+  "slug": "selladores",
+  "proyectos": [
+   {
+    "nombre": "SELLADOR PARA PIEDRA",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "SELLADOR 02",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "SELLADOR 03",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "SINTERIZADOS",
   "slug": "sinterizados",
   "proyectos": [
    {
@@ -283,31 +281,31 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "SELLADORES",
-  "slug": "selladores",
+  "rubro": "TRAVERTINO",
+  "slug": "travertinos",
   "proyectos": [
    {
-    "nombre": "SELLADOR PARA PIEDRA",
+    "nombre": "TRAVERTINO ROMANO",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-banos-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-banos-0.webp",
     "muestra": true
    },
    {
-    "nombre": "SELLADOR 02",
+    "nombre": "TRAVERTINO BEIGE",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-marmoles-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-marmoles-0.webp",
     "muestra": true
    },
    {
-    "nombre": "SELLADOR 03",
+    "nombre": "TRAVERTINO NOCE",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-granitos-3.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-granitos-3.webp",
     "muestra": true
    }
   ],
