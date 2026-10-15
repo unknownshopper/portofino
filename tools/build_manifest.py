@@ -57,29 +57,40 @@ def natural_key(p: Path):
 
 
 def resize(src: Path, dst: Path):
-    """Procesa a JPG max 1600px. sips (macOS) → ImageMagick → heif-convert."""
+    """Procesa a WebP max 1600px q70. cwebp → ImageMagick → sips (jpg de respaldo)."""
     dst.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        if shutil.which('sips'):
-            subprocess.run(['sips', '-Z', '1600', '-s', 'format', 'jpeg',
-                            '-s', 'formatOptions', '80', str(src), '--out', str(dst)],
+    tmp = src
+    if src.suffix.lower() == '.heic':
+        if shutil.which('heif-convert'):
+            tmp = dst.with_suffix('.tmp.jpg')
+            subprocess.run(['heif-convert', str(src), str(tmp)], check=True, capture_output=True)
+        elif shutil.which('sips'):
+            tmp = dst.with_suffix('.tmp.jpg')
+            subprocess.run(['sips', '-s', 'format', 'jpeg', str(src), '--out', str(tmp)],
                            check=True, capture_output=True)
+    try:
+        if shutil.which('cwebp'):
+            subprocess.run(['cwebp', '-q', '70', '-resize', '1600', '0',
+                            str(tmp), '-o', str(dst)], check=True, capture_output=True)
             return
         tool = 'magick' if shutil.which('magick') else 'convert'
         if shutil.which(tool):
-            subprocess.run([tool, str(src) + ('[0]' if src.suffix.lower() == '.heic' else ''),
-                            '-auto-orient', '-resize', '1600x1600>', '-quality', '82', str(dst)],
-                           check=True, capture_output=True)
+            subprocess.run([tool, str(tmp), '-auto-orient', '-resize', '1600x1600>',
+                            '-quality', '70', str(dst)], check=True, capture_output=True)
             return
-        if src.suffix.lower() == '.heic' and shutil.which('heif-convert'):
-            tmp = dst.with_suffix('.tmp.jpg')
-            subprocess.run(['heif-convert', str(src), str(tmp)], check=True, capture_output=True)
-            resize(tmp, dst)
-            tmp.unlink(missing_ok=True)
+        if shutil.which('sips'):  # sin webp → jpg de respaldo con el mismo nombre base
+            dst_jpg = dst.with_suffix('.jpg')
+            subprocess.run(['sips', '-Z', '1600', '-s', 'format', 'jpeg',
+                            '-s', 'formatOptions', '75', str(tmp), '--out', str(dst_jpg)],
+                           check=True, capture_output=True)
+            dst_jpg.rename(dst)
             return
         raise RuntimeError('sin herramienta de imagen')
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f'fallo procesando {src.name}: {e}')
+    finally:
+        if tmp != src:
+            tmp.unlink(missing_ok=True)
 
 
 def read_desc(prod_dir: Path):
@@ -155,7 +166,7 @@ def main():
 
     if not dry:
         THUMBS.mkdir(parents=True, exist_ok=True)
-        for old in THUMBS.glob('*.jpg'):
+        for old in list(THUMBS.glob('*.jpg')) + list(THUMBS.glob('*.webp')):
             if not old.name.startswith('muestra-'):   # las muestras viven hasta ser desplazadas
                 old.unlink()
 
@@ -173,8 +184,8 @@ def main():
                 continue
             fotos = []
             for ph in fotos_src:
-                thumb = f'img/thumbs/{rslug}-{i}.jpg'
-                report.append(f'    {rslug}-{i}.jpg ← {rubro_dir.name}/{prod_dir.name}/{ph.relative_to(prod_dir)}')
+                thumb = f'img/thumbs/{rslug}-{i}.webp'
+                report.append(f'    {rslug}-{i}.webp ← {rubro_dir.name}/{prod_dir.name}/{ph.relative_to(prod_dir)}')
                 if not dry:
                     resize(ph, ROOT / thumb)
                 fotos.append(thumb)
