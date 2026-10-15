@@ -78,6 +78,25 @@
 const ESTADOS = ['pendiente','en-proceso','cerrada'];
 let fb = null;
 
+// distancia aprox en km desde Villahermosa (matriz) — tabla estática, sin APIs
+const DIST = {
+  'villahermosa':0,'tabasco':15,'coatzacoalcos':170,'minatitlan':180,'comalcalco':60,
+  'veracruz':390,'xalapa':400,'jalapa':400,'boca del rio':395,'cordoba':330,
+  'tuxtla':250,'tuxtla gutierrez':250,'san cristobal':260,'chiapas':260,'tapachula':380,
+  'campeche':400,'cd del carmen':220,'ciudad del carmen':220,'merida':550,'yucatan':560,
+  'cancun':800,'playa del carmen':740,'chetumal':460,'quintana roo':700,
+  'oaxaca':550,'puebla':700,'cdmx':780,'ciudad de mexico':780,'mexico':780,'toluca':750,
+  'queretaro':950,'leon':1100,'guanajuato':1100,'aguascalientes':1200,
+  'guadalajara':1150,'jalisco':1150,'monterrey':1200,'nuevo leon':1200,
+  'saltillo':1180,'tampico':650,'hermosillo':2300,'tijuana':3200,'chihuahua':1900,
+};
+function distancia(ciudad){
+  if (!ciudad) return '';
+  const c = ciudad.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+  for (const k in DIST) if (c.includes(k)) return `≈${DIST[k]} km de Villahermosa`;
+  return '';
+}
+
 function fmt(ts){
   if (!ts) return '—';
   const d = ts.toDate ? ts.toDate() : new Date(ts);
@@ -101,7 +120,7 @@ async function cargar(){
         <span class="tag ${q.estado||'pendiente'}">${(q.estado||'pendiente').replace('-',' ')}</span>
       </div>
       <div class="meta">
-        <a href="tel:${q.telefono}">${q.telefono||''}</a>${q.correo?' · <a href="mailto:'+q.correo+'">'+q.correo+'</a>':''} · ${q.ciudad||''}
+        <a href="tel:${q.telefono}">${q.telefono||''}</a>${q.correo?' · <a href="mailto:'+q.correo+'">'+q.correo+'</a>':''} · ${q.ciudad||''}${distancia(q.ciudad)?` <b style="color:var(--ink);font-weight:600">${distancia(q.ciudad)}</b>`:''}
         · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${q.canal||'—'}</span>
       </div>
       <ul>${prods}</ul>

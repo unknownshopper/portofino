@@ -1,6 +1,6 @@
 // Firebase — PORTOFINO (cotizaciones → panel admin.html)
 // Config: console.firebase.google.com → tu proyecto → Configuración → Tus apps → Web.
-// Mientras apiKey quede vacío no se carga nada — el cotizador funciona igual (correo/WhatsApp).
+// La apiKey web identifica el proyecto, no autoriza nada — la seguridad son las reglas de Firestore.
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyA3jaMC7q1H81xt8P-8Baz10-chLVvJeSA',
   authDomain: 'portofino-1.firebaseapp.com',
@@ -11,7 +11,9 @@ const FIREBASE_CONFIG = {
 };
 const FB_V = '10.14.1';
 const FB_ON = !!FIREBASE_CONFIG.apiKey;
+const FS_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents`;
 
+// SDK completo solo para admin.html (auth + lectura)
 const __fbLoad = (async () => {
   if (!FB_ON) return null;
   const srcs = ['app', 'firestore', 'auth'].map(m =>
@@ -27,15 +29,32 @@ const __fbLoad = (async () => {
   return firebase;
 })();
 
-// guarda la solicitud — fire-and-forget, no bloquea el mailto/WhatsApp
+// valor JS → formato Firestore REST
+function __fs(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(__fs) } };
+  if (typeof v === 'object') {
+    const f = {};
+    for (const k in v) f[k] = __fs(v[k]);
+    return { mapValue: { fields: f } };
+  }
+  return { stringValue: String(v) };
+}
+
+// guarda la solicitud vía REST (un fetch común — el SDK lo bloquean varios ad-blockers)
+// fire-and-forget: no bloquea el mailto/WhatsApp
 async function guardarCotizacion(datos) {
+  if (!FB_ON) return;
+  const fields = {};
+  const doc = { ...datos, estado: 'pendiente', creado: new Date().toISOString() };
+  for (const k in doc) fields[k] = __fs(doc[k]);
   try {
-    const fb = await __fbLoad;
-    if (!fb) return;
-    await fb.firestore().collection('cotizaciones').add({
-      ...datos,
-      estado: 'pendiente',
-      creado: fb.firestore.FieldValue.serverTimestamp(),
+    await fetch(`${FS_URL}/cotizaciones?key=${FIREBASE_CONFIG.apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
     });
-  } catch (e) { /* sin config o sin red — el correo/WhatsApp ya salió */ }
+  } catch (e) { /* sin red — el correo/WhatsApp ya salió */ }
 }
