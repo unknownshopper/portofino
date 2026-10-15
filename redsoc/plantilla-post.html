@@ -2,7 +2,7 @@
 <!--
   PLANTILLA DE POST — PORTOFINO 1080×1080 (estilo overlay DM Stones)
   Uso:
-    plantilla-post.html?foto=../img/thumbs/marmoles-0.jpg&nombre=CARRARA BLANCO&rubro=MÁRMOL&acabado=PULIDO BRILLADO
+    plantilla-post.html?foto=../img/thumbs/muestra-marmoles-0.webp&nombre=CARRARA BLANCO&rubro=MÁRMOL&acabado=PULIDO BRILLADO
   Render (Chrome headless):
     chrome --headless --screenshot=post.png --window-size=1080,1080 \
       --virtual-time-budget=3000 "file://$PWD/plantilla-post.html?foto=...&nombre=..."
@@ -58,7 +58,7 @@
 </div>
 <script>
   const q = new URLSearchParams(location.search);
-  document.getElementById('foto').src = q.get('foto') || '../img/thumbs/marmoles-0.jpg';
+  document.getElementById('foto').src = q.get('foto') || '../img/thumbs/muestra-marmoles-0.webp';
   document.getElementById('nombre').textContent = q.get('nombre') || 'CARRARA BLANCO';
   const rubro = q.get('rubro') || 'MÁRMOL';
   const acabado = q.get('acabado');
