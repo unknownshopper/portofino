@@ -873,7 +873,7 @@ const chatChips = document.getElementById('chatChips');
 let chatGreeted = false;
 
 const RESPUESTAS = [
-  [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle productos, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver productos','Cotizar','Contactar asesor']],
+  [/hola|buenas|qu[eé] (tal|onda|pasa)|onda|quihubo|quiubo|hey|saludos|buen d[ií]a|buenas tardes|buenas noches/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle productos, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver productos','Cotizar','Contactar asesor']],
   [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del producto, la losa y las medidas — se cotiza por m². Arme su lista en el <a href="catalogo.html">cotizador</a> y un asesor le responde hoy con precio y envío a su ciudad.', ['Ver productos','Cotizar']],
   [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en el <a href="catalogo.html#marmoles">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en el <a href="catalogo.html#granitos">catálogo</a>.', ['Cotizar','Contactar asesor']],
