@@ -348,9 +348,10 @@
       <span class="k">Sus datos</span>
       <input id="fNombre" type="text" placeholder="Nombre *" required>
       <div class="fila">
-        <input id="fTel" type="tel" placeholder="Teléfono *" required>
+        <input id="fTel" type="tel" placeholder="Teléfono (10 dígitos) *" required>
         <input id="fCorreo" type="email" placeholder="Correo">
       </div>
+      <input id="fEmp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
       <input id="fCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
       <button class="enviar mail" id="enviar" type="submit">Enviar solicitud →</button>
@@ -546,18 +547,34 @@ Comentarios: ${f('fMsg') || '—'}`,
 
 // un solo envío: llega al panel admin (Firestore); mail/WhatsApp quedan como alerta interna
 const cotForm = document.getElementById('cotForm'), cotOk = document.getElementById('cotOk');
+
+function datosValidos(r) {
+  const tel = (r.datos.telefono || '').replace(/\D/g, '').replace(/^52/, '');
+  if (tel.length !== 10) { alert('Revise el teléfono — deben ser 10 dígitos (ej. 993 123 4567).'); return false; }
+  r.datos.telefono = tel;
+  if (r.datos.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.datos.correo)) { alert('Revise el correo — parece incompleto.'); return false; }
+  return true;
+}
+
 cotForm.addEventListener('submit', async e => {
   e.preventDefault();
   const r = resumen();
+  const esBot = document.getElementById('fEmp').value !== ''; // honeypot
+  const ultimo = +localStorage.getItem('pf_envio') || 0;
+  const flood = Date.now() - ultimo < 120000; // máx. 1 solicitud cada 2 min
+  if (!esBot && !flood && !datosValidos(r)) return;
   const btn = document.getElementById('enviar');
   btn.disabled = true; btn.textContent = 'Enviando…';
-  await guardarCotizacion({ ...r.datos, canal: 'web', texto: r.texto });
-  px('Lead', { canal: 'panel' });
+  if (!esBot && !flood) {
+    await guardarCotizacion({ ...r.datos, canal: 'web', texto: r.texto });
+    px('Lead', { canal: 'panel' });
+    localStorage.setItem('pf_envio', Date.now());
+  }
   cot = {}; guardar(); renderGrid(); renderFab();
   renderPanel();
   cotForm.hidden = true;
   document.getElementById('cotOkTxt').textContent =
-    `Gracias, ${r.datos.nombre.split(' ')[0]} — un asesor le contactará hoy mismo para confirmar existencias, precio y envío a ${r.datos.ciudad}.`;
+    `Cotización enviada — un ejecutivo le contactará en breve para confirmar existencias, precio y envío a ${r.datos.ciudad}.`;
   cotOk.hidden = false;
 });
 document.getElementById('cotOkBtn').onclick = () => {

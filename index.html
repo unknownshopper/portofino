@@ -694,8 +694,9 @@
   <h3>Déjenos sus datos — un asesor le responde hoy.</h3>
   <form id="cmodForm">
     <input id="cNombre" type="text" placeholder="Nombre *" required>
-    <input id="cTel" type="tel" placeholder="Teléfono / WhatsApp *" required>
+    <input id="cTel" type="tel" placeholder="Teléfono / WhatsApp (10 dígitos) *" required>
     <input id="cCorreo" type="email" placeholder="Correo">
+    <input id="cEmp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
     <input id="cCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
     <textarea id="cMsg" placeholder="¿Qué necesita? — producto, medidas aprox., tipo de proyecto…"></textarea>
     <button class="cmod-send" type="submit" id="cmodBtn">Continuar a WhatsApp →</button>
@@ -1028,8 +1029,18 @@ document.getElementById('cmodForm').onsubmit = e => {
     nombre: f('cNombre'), telefono: f('cTel'), correo: f('cCorreo') || null,
     ciudad: f('cCiudad'), mensaje: f('cMsg') || null, productos: [], tipo: 'contacto',
   };
-  guardarCotizacion({ ...datos, canal: 'contacto-' + cmodCanal });
-  px('Lead', { canal: 'contacto-' + cmodCanal });
+  const esBot = f('cEmp') !== ''; // honeypot
+  const ultimo = +localStorage.getItem('pf_envio') || 0;
+  const flood = Date.now() - ultimo < 120000; // máx. 1 envío cada 2 min
+  if (!esBot && !flood) {
+    const tel = datos.telefono.replace(/\D/g, '').replace(/^52/, '');
+    if (tel.length !== 10) { alert('Revise el teléfono — deben ser 10 dígitos (ej. 993 123 4567).'); return; }
+    datos.telefono = tel;
+    if (datos.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.correo)) { alert('Revise el correo — parece incompleto.'); return; }
+    guardarCotizacion({ ...datos, canal: 'contacto-' + cmodCanal });
+    px('Lead', { canal: 'contacto-' + cmodCanal });
+    localStorage.setItem('pf_envio', Date.now());
+  }
   const cuerpo =
 `CONTACTO WEB — PORTOFINO
 
