@@ -12,20 +12,27 @@ const FIREBASE_CONFIG = {
 // Gemini — clave de AI Studio RESTRINGIDA por HTTP referrer al dominio del sitio
 // (aistudio.google.com → Get API key → en Google Cloud agregar restricción de referrer:
 //  *.github.io/* · portofino.com.mx/* · localhost:*/*)
-const GEMINI_KEY = '';
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_KEY = 'AQ.Ab8RN6JMtg21UyLRH0576DGGuSd_hQDk9Uv6rEABd5dCZ1XmEQ';
+// las keys nuevas solo acceden a modelos 3.x; 3-flash = calidad, lite = respaldo rápido
+const GEMINI_MODEL = 'gemini-3-flash-preview';
+const GEMINI_MODEL_B = 'gemini-3.1-flash-lite-preview';
 const GEMINI_ON = !!GEMINI_KEY;
 
 async function gemini(prompt) {
   if (!GEMINI_ON) return null;
-  try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
-    const j = await r.json();
-    return j.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-  } catch (e) { return null; }
+  for (const model of [GEMINI_MODEL, GEMINI_MODEL_B]) {
+    try {
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+      if (!r.ok) continue; // 503/429 → intenta el modelo de respaldo
+      const j = await r.json();
+      const txt = j.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      if (txt) return txt;
+    } catch (e) { /* sin red */ }
+  }
+  return null;
 }
 
 const FB_V = '10.14.1';
