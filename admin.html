@@ -122,6 +122,7 @@ async function cargar(){
       <div class="meta">
         <a href="tel:${q.telefono}">${q.telefono||''}</a>${q.correo?' · <a href="mailto:'+q.correo+'">'+q.correo+'</a>':''} · ${q.ciudad||''}${distancia(q.ciudad)?` <b style="color:var(--ink);font-weight:600">${distancia(q.ciudad)}</b>`:''}
         · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${q.canal||'—'}</span>
+        ${q.instalacion?' · <b style="color:var(--ink)">🔧 con instalación</b>':''}
       </div>
       <ul>${prods}</ul>
       ${q.mensaje?`<div class="msg">“${q.mensaje}”</div>`:''}

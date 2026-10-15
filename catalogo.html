@@ -353,6 +353,10 @@
       </div>
       <input id="fEmp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
       <input id="fCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
+      <label style="display:flex;align-items:center;gap:8px;font-size:.8rem;cursor:pointer">
+        <input id="fInst" type="checkbox" style="accent-color:var(--ink);width:16px;height:16px">
+        Se requiere instalación (medición, corte y colocación)
+      </label>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
       <button class="enviar mail" id="enviar" type="submit">Enviar solicitud →</button>
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas, precio final y costo de envío a su ciudad. Envíos a todo México.</p>
@@ -527,7 +531,8 @@ function resumen() {
   return {
     datos: {
       nombre: f('fNombre'), telefono: f('fTel'), correo: f('fCorreo') || null,
-      ciudad: f('fCiudad'), mensaje: f('fMsg') || null, productos,
+      ciudad: f('fCiudad'), instalacion: document.getElementById('fInst').checked,
+      mensaje: f('fMsg') || null, productos,
     },
     texto:
 `SOLICITUD DE COTIZACIÓN — PORTOFINO
@@ -536,6 +541,7 @@ Nombre: ${f('fNombre')}
 Teléfono: ${f('fTel')}
 Correo: ${f('fCorreo') || '—'}
 Ciudad / Estado: ${f('fCiudad')}
+Instalación: ${document.getElementById('fInst').checked ? 'Sí' : 'No'}
 
 Productos:
 ${lineas}
