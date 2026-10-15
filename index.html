@@ -915,15 +915,39 @@ function setChips(list) {
   });
 }
 
-function botSay(text) {
+// contexto del catálogo para Gemini (se inyecta en cada prompt)
+const AI_CTX = (() => {
+  const cat = PORTOFINO_DATA.map(r =>
+    r.rubro + ': ' + r.proyectos.map(p => p.nombre).join(', ')).join('\n');
+  return `Eres el asistente de PORTOFINO, venta al menudeo de mármol, granito y superficies de alta gama con envíos a todo México (matriz en Villahermosa, Tabasco). Ventas: WhatsApp +52 993 393 9163 · ventas@portofino.com.mx.
+Catálogo actual por rubro:
+${cat}
+Reglas: español, máximo 3-4 líneas, tono cálido y premium, sin emojis excesivos. NUNCA inventes precios, existencias ni tiempos de entrega — para eso dirige al cotizador de catalogo.html (el cliente arma su lista y manda la solicitud). Si recomiendas material, usa rubros/productos reales del catálogo.
+Pregunta del cliente: `;
+})();
+
+async function botSay(text) {
   const t = document.createElement('div');
   t.className = 'msg bot typing';
   t.innerHTML = '<i></i><i></i><i></i>';
   chatLog.appendChild(t);
   chatLog.scrollTop = chatLog.scrollHeight;
   const hit = RESPUESTAS.find(([re]) => re.test(text.toLowerCase()));
-  const [ , reply, chips ] = hit || [null, CHAT_FALLBACK, ['Agendar cita']];
-  setTimeout(() => { t.remove(); addMsg(reply, 'bot'); setChips(chips); }, 800 + Math.random() * 500);
+  if (hit) {
+    const [ , reply, chips ] = hit;
+    setTimeout(() => { t.remove(); addMsg(reply, 'bot'); setChips(chips); }, 800 + Math.random() * 500);
+    return;
+  }
+  // sin match → Gemini; si no responde, fallback curado
+  const ai = await gemini(AI_CTX + text);
+  t.remove();
+  if (ai) {
+    addMsg(ai.replace(/\n/g, '<br>'), 'bot');
+    setChips(['Ver productos', 'Cotizar', 'Contactar asesor']);
+  } else {
+    addMsg(CHAT_FALLBACK, 'bot');
+    setChips(['Agendar cita']);
+  }
 }
 
 function sendMsg(text) {

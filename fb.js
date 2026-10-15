@@ -9,6 +9,25 @@ const FIREBASE_CONFIG = {
   messagingSenderId: '78595824301',
   appId: '1:78595824301:web:d5d75c42778e7e8ef80424',
 };
+// Gemini — clave de AI Studio RESTRINGIDA por HTTP referrer al dominio del sitio
+// (aistudio.google.com → Get API key → en Google Cloud agregar restricción de referrer:
+//  *.github.io/* · portofino.com.mx/* · localhost:*/*)
+const GEMINI_KEY = '';
+const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_ON = !!GEMINI_KEY;
+
+async function gemini(prompt) {
+  if (!GEMINI_ON) return null;
+  try {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+    const j = await r.json();
+    return j.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+  } catch (e) { return null; }
+}
+
 const FB_V = '10.14.1';
 const FB_ON = !!FIREBASE_CONFIG.apiKey;
 const FS_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents`;
