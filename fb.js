@@ -13,21 +13,26 @@ const FB_V = '10.14.1';
 const FB_ON = !!FIREBASE_CONFIG.apiKey;
 const FS_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents`;
 
-// SDK completo solo para admin.html (auth + lectura)
-const __fbLoad = (async () => {
-  if (!FB_ON) return null;
-  const srcs = ['app', 'firestore', 'auth'].map(m =>
-    `https://www.gstatic.com/firebasejs/${FB_V}/firebase-${m}-compat.js`);
-  for (const s of srcs) {
-    await new Promise((res, rej) => {
-      const el = document.createElement('script');
-      el.src = s; el.onload = res; el.onerror = rej;
-      document.head.appendChild(el);
-    });
+// SDK completo solo cuando lo pide admin.html (auth + lectura)
+function __fbLoad() {
+  if (!FB_ON) return Promise.resolve(null);
+  if (!window.__fbReady) {
+    window.__fbReady = (async () => {
+      const srcs = ['app', 'firestore', 'auth'].map(m =>
+        `https://www.gstatic.com/firebasejs/${FB_V}/firebase-${m}-compat.js`);
+      for (const s of srcs) {
+        await new Promise((res, rej) => {
+          const el = document.createElement('script');
+          el.src = s; el.onload = res; el.onerror = rej;
+          document.head.appendChild(el);
+        });
+      }
+      firebase.initializeApp(FIREBASE_CONFIG);
+      return firebase;
+    })();
   }
-  firebase.initializeApp(FIREBASE_CONFIG);
-  return firebase;
-})();
+  return window.__fbReady;
+}
 
 // valor JS → formato Firestore REST
 function __fs(v) {

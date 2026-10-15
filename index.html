@@ -667,6 +667,41 @@
   <span>Envíos a todo México</span>
 </footer>
 
+<!-- MODAL CONTACTO — captura datos antes de abrir WhatsApp/correo -->
+<style>
+  .cmod-bg { position:fixed; inset:0; background:rgba(22,24,26,.55); opacity:0; pointer-events:none; transition:.3s; z-index:80; }
+  .cmod-bg.open { opacity:1; pointer-events:auto; }
+  .cmod { position:fixed; top:50%; left:50%; transform:translate(-50%,-46%); opacity:0; pointer-events:none;
+    background:#fff; border-radius:14px; padding:30px 28px 26px; width:min(430px,92vw); z-index:81;
+    transition:.3s; box-shadow:0 30px 80px rgba(0,0,0,.28); }
+  .cmod.open { opacity:1; pointer-events:auto; transform:translate(-50%,-50%); }
+  .cmod-x { position:absolute; top:10px; right:14px; border:0; background:none; font-size:1.4rem; cursor:pointer; color:var(--accent); }
+  .cmod .k { color:var(--accent); letter-spacing:.32em; font-size:.68rem; font-weight:600; }
+  .cmod h3 { font-size:1.08rem; font-weight:600; margin:.5rem 0 1.1rem; }
+  .cmod input, .cmod textarea { width:100%; font:inherit; font-size:.85rem; padding:11px 12px;
+    border:1px solid rgba(22,24,26,.2); border-radius:8px; margin-bottom:10px; background:#fff; }
+  .cmod input:focus, .cmod textarea:focus { border-color:var(--accent); outline:none; }
+  .cmod textarea { min-height:78px; resize:vertical; }
+  .cmod-send { width:100%; background:var(--ink); color:var(--paper); border:0; border-radius:8px;
+    padding:12px; font:inherit; font-size:.85rem; cursor:pointer; letter-spacing:.04em; }
+  .cmod-aviso { font-size:.68rem; color:var(--accent); margin-top:10px; text-align:center; }
+</style>
+<div class="cmod-bg" id="cmodBg"></div>
+<div class="cmod" id="cmod" role="dialog" aria-label="Contacto Portofino">
+  <button class="cmod-x" id="cmodX" aria-label="Cerrar">×</button>
+  <span class="k">CONTACTO</span>
+  <h3>Déjenos sus datos — un asesor le responde hoy.</h3>
+  <form id="cmodForm">
+    <input id="cNombre" type="text" placeholder="Nombre *" required>
+    <input id="cTel" type="tel" placeholder="Teléfono / WhatsApp *" required>
+    <input id="cCorreo" type="email" placeholder="Correo">
+    <input id="cCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
+    <textarea id="cMsg" placeholder="¿Qué necesita? — producto, medidas aprox., tipo de proyecto…"></textarea>
+    <button class="cmod-send" type="submit" id="cmodBtn">Continuar a WhatsApp →</button>
+  </form>
+  <p class="cmod-aviso">Sus datos solo se usan para responder esta solicitud.</p>
+</div>
+
 <!-- CHAT -->
 <button class="chat-fab" id="chatFab" aria-label="Abrir asistente">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -686,6 +721,7 @@
 </div>
 
 <script src="imagenes.js?v=5"></script>
+<script src="fb.js"></script>
 <script>
 // loader — sale cuando carga la primera foto del hero (o 4.5s máx)
 const loader = document.getElementById('loader');
@@ -836,7 +872,7 @@ let chatGreeted = false;
 
 const RESPUESTAS = [
   [/hola|buenas|qu[eé] tal/, '¡Hola! Bienvenido a PORTOFINO — mármol, granito y superficies de alta gama. Puedo mostrarle productos, hablarle de precios o contactarlo con un asesor. ¿Qué busca?', ['Ver productos','Cotizar','Contactar asesor']],
-  [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del producto, la losa y las medidas — se cotiza por m². Mándenos las medidas de su proyecto por WhatsApp y le cotizamos hoy. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Cotizar <span>WhatsApp →</span></a></span>', ['Ver productos','Contactar asesor']],
+  [/precio|costo|cu[aá]nto|cotiza|vale|m2|metro/, 'El precio depende del producto, la losa y las medidas — se cotiza por m². Arme su lista en el <a href="catalogo.html">cotizador</a> y un asesor le responde hoy con precio y envío a su ciudad.', ['Ver productos','Cotizar']],
   [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en el <a href="catalogo.html#marmoles">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en el <a href="catalogo.html#granitos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/dekton|ultracompacto/, 'Somos distribuidores de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea el <a href="catalogo.html#dekton">catálogo</a>.', ['Cotizar','Contactar asesor']],
@@ -850,7 +886,7 @@ const RESPUESTAS = [
   [/cocina|cubierta|barra|meseta/, 'Fabricamos cubiertas de cocina en mármol, granito, cuarzo, Silestone y Dekton — corte e instalación incluidos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/ba[ñn]o|revestimiento|muro|fachada/, 'Hacemos baños y revestimientos en piedra natural y ultracompactos. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/losa|placa|material|producto|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de productos está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Dekton, Éclos, sinterizados y más.', ['Ver productos','Cotizar']],
-  [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y entrega se cotiza con el proyecto según ciudad y medidas. Escríbanos por WhatsApp. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Cotizar']],
+  [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El costo de instalación y envío se cotiza con el proyecto según ciudad y medidas — arme su lista en el <a href="catalogo.html">cotizador</a> y le confirmamos flete a su ubicación.', ['Cotizar']],
   [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Sucursales en el sureste y envíos a todo México. Escríbanos — le cotizamos material y entrega a su ciudad. <span class="wa-row"><a class="wa" href="https://wa.me/529933939163">Ventas <span>WhatsApp →</span></a></span>', ['Ver productos']],
   [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — seleccione productos y envíe su solicitud.', ['Cotizar','Contactar asesor']],
   [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
@@ -870,7 +906,11 @@ function setChips(list) {
   list.forEach(c => {
     const b = document.createElement('button');
     b.type = 'button'; b.textContent = c;
-    b.onclick = () => sendMsg(c);
+    b.onclick = () => {
+      if (/cotizar|ver productos/i.test(c)) location.href = 'catalogo.html';
+      else if (/contactar asesor|agendar cita/i.test(c)) abrirContacto('whatsapp');
+      else sendMsg(c);
+    };
     chatChips.appendChild(b);
   });
 }
@@ -905,6 +945,58 @@ document.getElementById('chatX').onclick = () => chatBox.classList.remove('open'
 document.getElementById('chatForm').onsubmit = e => {
   e.preventDefault();
   sendMsg(document.getElementById('chatIn').value);
+};
+
+// ── modal contacto — captura el lead y luego abre el canal ──
+const cmod = document.getElementById('cmod'), cmodBg = document.getElementById('cmodBg');
+let cmodCanal = 'whatsapp';
+function abrirContacto(canal) {
+  cmodCanal = canal;
+  document.getElementById('cmodBtn').textContent =
+    canal === 'mail' ? 'Continuar al correo →' : 'Continuar a WhatsApp →';
+  cmod.classList.add('open'); cmodBg.classList.add('open');
+  setTimeout(() => document.getElementById('cNombre').focus(), 250);
+}
+function cerrarContacto() { cmod.classList.remove('open'); cmodBg.classList.remove('open'); }
+document.getElementById('cmodX').onclick = cerrarContacto;
+cmodBg.onclick = cerrarContacto;
+
+// iconos y CTAs de contacto → modal, no directo
+document.querySelectorAll('#contacto a[href^="https://wa.me"]').forEach(a =>
+  a.addEventListener('click', e => { e.preventDefault(); abrirContacto('whatsapp'); }));
+document.querySelectorAll('#contacto a[href^="mailto:"]').forEach(a =>
+  a.addEventListener('click', e => { e.preventDefault(); abrirContacto('mail'); }));
+
+// enlaces wa dentro de los mensajes del chat → modal (misma captura)
+chatLog.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="https://wa.me"]');
+  if (a) { e.preventDefault(); abrirContacto('whatsapp'); }
+});
+
+document.getElementById('cmodForm').onsubmit = e => {
+  e.preventDefault();
+  const f = id => document.getElementById(id).value.trim();
+  const datos = {
+    nombre: f('cNombre'), telefono: f('cTel'), correo: f('cCorreo') || null,
+    ciudad: f('cCiudad'), mensaje: f('cMsg') || null, productos: [], tipo: 'contacto',
+  };
+  guardarCotizacion({ ...datos, canal: 'contacto-' + cmodCanal });
+  px('Lead', { canal: 'contacto-' + cmodCanal });
+  const cuerpo =
+`CONTACTO WEB — PORTOFINO
+
+Nombre: ${datos.nombre}
+Teléfono: ${datos.telefono}
+Correo: ${datos.correo || '—'}
+Ubicación: ${datos.ciudad}
+
+${datos.mensaje || '—'}`;
+  if (cmodCanal === 'mail') {
+    location.href = `mailto:ventas@portofino.com.mx?subject=${encodeURIComponent('Contacto web — ' + datos.nombre)}&body=${encodeURIComponent(cuerpo)}`;
+  } else {
+    window.open(`https://wa.me/529933939163?text=${encodeURIComponent(cuerpo)}`, '_blank');
+  }
+  cerrarContacto();
 };
 </script>
 

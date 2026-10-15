@@ -139,7 +139,7 @@ async function cargar(){
 }
 
 async function boot(){
-  fb = await __fbLoad;
+  fb = await __fbLoad();
   if (!fb){
     document.getElementById('err').textContent =
       'Firebase sin configurar — pega la config del proyecto en fb.js (console.firebase.google.com).';
