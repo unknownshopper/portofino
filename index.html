@@ -917,15 +917,28 @@ function setChips(list) {
 }
 
 // contexto del catálogo para Gemini (se inyecta en cada prompt)
+const MATERIALES = `Conocimiento de materiales (úsame para recomendar con profundidad):
+- MÁRMOL: piedra natural metamórfica, veteado único e irrepetible. Cubiertas de cocina/baño, muros decorativos, pisos de interiores, chimeneas. Belleza clásica; es calcárea — sensible a ácidos (limón, vinagre) y porosa, pide sellado periódico y paños. Ideal quien busca lujo natural.
+- GRANITO: piedra ígnea, de las más duras en naturaleza. Cubiertas de cocina de alto uso, exteriores, pisos de tráfico pesado, escaleras. Resiste calor, rayones y ácidos mucho mejor que el mármol; mantenimiento mínimo con sellado ocasional. El caballo de batalla.
+- CUARCITA: natural metamórfica con vetas de mármol y dureza cercana al granito/cuarzo. El punto medio premium: elegancia vetada + resistencia real a cocina de uso rudo. Sellado recomendado.
+- CUARZO (diseñado): lámina de cuarzo compactado con resina; colores uniformes, cero porosidad, no requiere sellado. Cubiertas de cocina/baño y muros interiores. NO para sol directo — la resina puede amarillear con UV.
+- SINTERIZADOS: losas cerámicas ultracompactas; gran formato, ultra delgadas, resistentes a calor/UV/manchas. Fachadas, cubiertas, mobiliario, pisos de gran formato. Casi cero mantenimiento.
+- DEKTON / ECLOS (Cosentino): sinterizado ultracompacto premium. Máxima resistencia a calor, rayones, UV y manchas. Cubiertas de alta exigencia, fachadas, exteriores. Prácticamente indestructible para el usuario final.
+- TRAVERTINO: piedra natural porosa de tonos tierra/beige, textura cálida. Pisos, recubrimientos, exteriores, albercas, patios. Se trabaja en versalles/romano; se sella y puede venir enchapado (relleno) o al natural.
+- TARJAS: tarjas y lavabos de piedra/insumos para la instalación.
+- SELLADORES: mantenimiento profesional — selladores, limpiadores, cuidado de piedra. Siempre recomiéndalos con piedra natural.`;
+
 const AI_CTX = (() => {
   const cat = PORTOFINO_DATA.map(r =>
-    r.rubro + ': ' + r.proyectos.map(p => p.nombre).join(', ')).join('\n');
+    r.rubro + ': ' + r.proyectos.map(p =>
+      p.nombre + (p.desc ? ' — ' + p.desc : '') + (p.ficha ? ' [' + p.ficha + ']' : '')).join('; ')).join('\n');
   return `Eres el asistente de PORTOFINO, venta al menudeo de mármol, granito y superficies de alta gama con envíos a todo México.
 Sucursales: Villahermosa, Tabasco (matriz, showroom con cita) · Tuxtla Gutiérrez, Chiapas (Carr. Tuxtla–Chiapa de Corzo km 5.7, Industrial — tel 961 217 5504) · Veracruz (tel 229 167 1540). Atención a todo el país.
 Ventas: WhatsApp +52 993 393 9163 · ventas@portofino.com.mx.
+${MATERIALES}
 Catálogo actual por rubro:
 ${cat}
-Reglas: español, máximo 3-4 líneas, tono cálido y premium, sin emojis excesivos. NUNCA inventes precios, existencias ni tiempos de entrega — para eso dirige al cotizador de catalogo.html (el cliente arma su lista y manda la solicitud). Si recomiendas material, usa rubros/productos reales del catálogo.
+Reglas: español, máximo 3-4 líneas, tono cálido y premium, sin emojis excesivos. NUNCA inventes precios, existencias ni tiempos de entrega — para eso dirige al cotizador de catalogo.html (el cliente arma su lista y manda la solicitud). Recomienda rubros/productos reales del catálogo, explica el porqué (uso, resistencia, mantenimiento) y sugiere selladores con piedra natural.
 Pregunta del cliente: `;
 })();
 
