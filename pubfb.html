@@ -84,6 +84,22 @@
   <div class="grid" id="grid"></div>
 
   <div class="cap" style="margin:8px 0 0">
+    <div class="kick">Modo promoción — estilo del slider del sitio</div>
+    <div class="row" style="align-items:center">
+      <select id="promoSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
+      <button class="pri" id="dlPromo">Descargar post 1080</button>
+      <button id="viewPromo">Vista previa grande</button>
+      <button id="capPromo">Usar caption de promo</button>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <input id="prTit" type="text" placeholder="Oferta — ej. precio especial en losa completa" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <input id="prDet" type="text" placeholder="Detalle — ej. en cubiertas: medición, corte e instalación incluidas" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <input id="prVig" type="text" placeholder="Vigencia — ej. hasta agotar existencias" style="flex:1;min-width:180px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+    </div>
+    <img id="promoPrev" alt="" style="display:none;width:300px;margin-top:16px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
+  </div>
+
+  <div class="cap" style="margin:8px 0 0">
     <div class="kick">Modo producto — 1 publicación: foto principal + variantes</div>
     <div class="row" style="align-items:center">
       <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
@@ -234,6 +250,49 @@ async function renderCard(p){
   return c;
 }
 
+// ── modo promoción: layout del slider del sitio ──
+function wrapTxt(x, txt, maxW){
+  const out=[]; let cur='';
+  for (const w of txt.split(' ')){
+    const t = cur ? cur+' '+w : w;
+    if (x.measureText(t).width > maxW && cur){ out.push(cur); cur=w; } else cur=t;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+
+async function renderPromo(p, titular, detalle, vigencia){
+  const c = document.createElement('canvas'); c.width = c.height = 1080;
+  const x = c.getContext('2d');
+  x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
+
+  // foto a la derecha, como el slider
+  const img = await loadImg(p.fotos[0]);
+  cover(x, img, 588, 160, 444, 760, 18);
+
+  // kicker
+  x.fillStyle = '#67757d'; x.font = '500 24px Inter, sans-serif'; x.textBaseline = 'alphabetic';
+  x.fillText('P R O M O C I Ó N   ·   P O R T O F I N O', 64, 120);
+
+  // titular: nombre — oferta
+  x.fillStyle = '#16181b'; x.font = '700 58px Inter, sans-serif';
+  let y = 220;
+  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 480)){ x.fillText(ln, 64, y); y += 66; }
+
+  // detalle + vigencia
+  y += 26;
+  x.fillStyle = '#67757d'; x.font = '400 28px Inter, sans-serif';
+  for (const ln of wrapTxt(x, detalle, 480)){ x.fillText(ln, 64, y); y += 40; }
+  x.font = 'italic 400 26px Inter, sans-serif';
+  for (const ln of wrapTxt(x, vigencia, 480)){ x.fillText(ln, 64, y); y += 38; }
+
+  // CTA
+  x.fillStyle = '#16181b'; x.font = '600 28px Inter, sans-serif';
+  x.fillText('C O T I Z A   P O R   W H A T S A P P  →', 64, 986);
+
+  return c;
+}
+
 // ── caption ──
 const tpl = p =>
 `La historia se escribe en piedra.
@@ -370,6 +429,58 @@ document.getElementById('viewCard').onclick = async()=>{
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
 previewCard();
+
+// ── modo promoción ──
+const promoSel = document.getElementById('promoSel');
+const promoPrev = document.getElementById('promoPrev');
+PRODS.forEach((p,i)=>{
+  const o = document.createElement('option');
+  o.value = i; o.textContent = `${p.nombre} — ${p.rubro}`;
+  promoSel.appendChild(o);
+});
+document.getElementById('prTit').value = 'precio especial en losa completa';
+document.getElementById('prDet').value = 'En cubiertas de cocina: medición, corte e instalación incluidas.';
+document.getElementById('prVig').value = 'Vigencia al 30 de noviembre o hasta agotar existencias.';
+
+const promoVals = () => ({
+  p: PRODS[+promoSel.value],
+  tit: document.getElementById('prTit').value.trim() || 'precio especial',
+  det: document.getElementById('prDet').value.trim(),
+  vig: document.getElementById('prVig').value.trim(),
+});
+
+let promoCanvas = null;
+async function previewPromo(){
+  const v = promoVals();
+  promoCanvas = await renderPromo(v.p, v.tit, v.det, v.vig);
+  promoPrev.src = promoCanvas.toDataURL('image/png');
+  promoPrev.style.display = 'block';
+}
+promoSel.onchange = previewPromo;
+['prTit','prDet','prVig'].forEach(id => document.getElementById(id).oninput = previewPromo);
+document.getElementById('dlPromo').onclick = async()=>{
+  const v = promoVals();
+  const c = promoCanvas || await renderPromo(v.p, v.tit, v.det, v.vig);
+  const a = document.createElement('a');
+  a.download = `portofino-promo-${slugTxt(v.p.nombre)}.png`;
+  a.href = c.toDataURL('image/png'); a.click();
+};
+document.getElementById('viewPromo').onclick = async()=>{
+  const w = window.open('','_blank');
+  const c = promoCanvas || await renderPromo(promoVals().p, promoVals().tit, promoVals().det, promoVals().vig);
+  w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
+};
+const tplPromo = (p,tit) =>
+`PROMOCIÓN — ${p.nombre}
+
+${tit.charAt(0).toUpperCase()+tit.slice(1)}. ${document.getElementById('prDet').value.trim()}
+
+${document.getElementById('prVig').value.trim()}
+Envíos a todo México — cotiza por WhatsApp o en portofino.com.mx
+
+#Portofino #Promocion #${p.rubro.charAt(0)+p.rubro.slice(1).toLowerCase()} #EnviosATodoMexico`;
+document.getElementById('capPromo').onclick = ()=>setCap(tplPromo(PRODS[+promoSel.value], promoVals().tit));
+previewPromo();
 
 detectOllama();
 render();
