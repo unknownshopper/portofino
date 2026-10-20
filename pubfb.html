@@ -83,6 +83,17 @@
 
   <div class="grid" id="grid"></div>
 
+  <div class="cap" style="margin:8px 0 0">
+    <div class="kick">Modo producto — 1 publicación: foto principal + variantes</div>
+    <div class="row" style="align-items:center">
+      <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
+      <button class="pri" id="dlCard">Descargar post 1080</button>
+      <button id="viewCard">Vista previa grande</button>
+      <label style="font-size:.75rem;color:var(--accent)"><input type="checkbox" id="capSingle"> caption solo de este producto</label>
+    </div>
+    <img id="cardPrev" alt="" style="display:none;width:300px;margin-top:16px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
+  </div>
+
   <div class="cap">
     <div class="kick">Caption de la publicación</div>
     <textarea id="cap"></textarea>
@@ -169,6 +180,60 @@ async function descargar(e, i, dia){
   a.href = c.toDataURL('image/png'); a.click();
 }
 
+// ── modo producto: 1 post = 1 producto con tira de variantes ──
+const PRODS = PORTOFINO_DATA.flatMap(r =>
+  r.proyectos.map(p => ({ nombre:p.nombre, rubro:r.rubro, slug:r.slug, fotos:p.fotos })));
+const slugTxt = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+function cover(x, img, dx, dy, dw, dh, rad){
+  const s = Math.max(dw/img.width, dh/img.height);
+  const w = img.width*s, h = img.height*s;
+  x.save();
+  x.beginPath();
+  if (rad) x.roundRect(dx, dy, dw, dh, rad); else x.rect(dx, dy, dw, dh);
+  x.clip();
+  x.drawImage(img, dx+(dw-w)/2, dy+(dh-h)/2, w, h);
+  x.restore();
+}
+
+async function renderCard(p){
+  const c = document.createElement('canvas'); c.width = c.height = 1080;
+  const x = c.getContext('2d');
+  x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
+
+  // encabezado: nombre + rubro + logo
+  x.fillStyle = '#16181b'; x.textBaseline = 'alphabetic';
+  x.font = '700 52px Inter, sans-serif';
+  x.fillText(p.nombre.toUpperCase(), 48, 118, 760);
+  x.font = '500 28px Inter, sans-serif'; x.fillStyle = '#67757d';
+  x.fillText(p.rubro.toUpperCase(), 48, 162, 760);
+  const lg = logoImg.ink;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 160, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, 1080-48-lw, 70, lw, lh);
+  }
+
+  // foto principal
+  const main = await loadImg(p.fotos[0]);
+  cover(x, main, 48, 210, 984, 560, 18);
+
+
+  // tira de variantes (hasta 4; si hay menos, reparte el ancho)
+  const vars = p.fotos.slice(1, 5);
+  if (vars.length){
+    const n = vars.length, gap = 20, tw = (984-(n-1)*gap)/n, th = 190, ty = 810;
+    for (let i=0;i<n;i++){
+      const im = await loadImg(vars[i]);
+      cover(x, im, 48+i*(tw+gap), ty, tw, th, 14);
+    }
+  }
+
+  // pie
+  x.font = '400 24px Inter, sans-serif'; x.fillStyle = '#67757d';
+  x.fillText(vars.length ? 'portofino.com.mx · envíos a todo México' : 'PORTOFINO — envíos a todo México', 48, 1052);
+  return c;
+}
+
 // ── caption ──
 const tpl = p =>
 `La historia se escribe en piedra.
@@ -180,13 +245,23 @@ Envíos a todo México — cotiza por WhatsApp
 
 #Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
 
+const tplSingle = p =>
+`${p.nombre.charAt(0) + p.nombre.slice(1).toLowerCase()} — ${p.rubro.toLowerCase()}.
+
+Hay materiales que no se compran: se eligen. Pieza a pieza, veta a veta — este es de los que definen un espacio por generaciones.
+
+Envíos a todo México — cotiza por WhatsApp o en portofino.com.mx
+
+#Portofino #${p.rubro.charAt(0) + p.rubro.slice(1).toLowerCase()} #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
+
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
 async function genOllama(){
   const tag = document.getElementById('ollamaTag');
   if (!model){ alert('Ollama no está corriendo.\n\nInstala: brew install ollama\nModelo: ollama pull llama3.2\nY corre: ollama serve'); return; }
   tag.textContent = 'Ollama: generando…';
-  const nombres = picks.map(e=>`${e.nombre} (${e.rubro})`).join(', ');
+  const single = document.getElementById('capSingle').checked ? PRODS[+prodSel.value] : null;
+  const nombres = single ? `${single.nombre} (${single.rubro})` : picks.map(e=>`${e.nombre} (${e.rubro})`).join(', ');
   const prompt =
 `Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, con envíos a todo México.
 La publicación muestra: ${nombres}.
@@ -256,6 +331,45 @@ document.getElementById('dlAll').onclick = async()=>{
   const dia=document.getElementById('dia').value;
   for(let i=0;i<picks.length;i++){ await descargar(picks[i],i,dia); await new Promise(r=>setTimeout(r,350)); }
 };
+
+// ── modo producto: select + preview + descarga + caption individual ──
+const prodSel = document.getElementById('prodSel');
+const cardPrev = document.getElementById('cardPrev');
+PRODS.forEach((p,i)=>{
+  const o = document.createElement('option');
+  o.value = i; o.textContent = `${p.nombre} — ${p.rubro}`;
+  prodSel.appendChild(o);
+});
+
+let prodCanvas = null;
+async function previewCard(){
+  const p = PRODS[+prodSel.value];
+  if (!p) return;
+  prodCanvas = await renderCard(p);
+  cardPrev.src = prodCanvas.toDataURL('image/png');
+  cardPrev.style.display = 'block';
+  if (document.getElementById('capSingle').checked) setCap(tplSingle(p));
+}
+prodSel.onchange = previewCard;
+document.getElementById('capSingle').onchange = () => {
+  const p = PRODS[+prodSel.value];
+  if (document.getElementById('capSingle').checked && p) setCap(tplSingle(p));
+  else setCap(tpl(picks));
+};
+document.getElementById('dlCard').onclick = async()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  const c = prodCanvas || await renderCard(p);
+  const a = document.createElement('a');
+  a.download = `portofino-post-${slugTxt(p.nombre)}.png`;
+  a.href = c.toDataURL('image/png'); a.click();
+};
+document.getElementById('viewCard').onclick = async()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  const c = prodCanvas || await renderCard(p);
+  const w = window.open('','_blank');
+  w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
+};
+previewCard();
 
 detectOllama();
 render();
