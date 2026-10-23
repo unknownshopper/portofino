@@ -243,9 +243,9 @@
     display: flex; gap: 1.5rem;
     overflow-x: auto; scroll-snap-type: x mandatory;
     scrollbar-width: none; padding-bottom: .5rem;
-    padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
-    padding-right: 2rem;
-    scroll-padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+    max-width: 1200px; margin: 0 auto;
+    padding-left: 2rem; padding-right: 2rem;
+    scroll-padding-left: 2rem;
   }
   .carr::-webkit-scrollbar { display: none; }
   .prod {
