@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Reporte de avance del sitio web de PORTOFINO — qué está hecho y qué falta.">
+<meta name="robots" content="noindex">
+<title>PORTOFINO — Reporte de avance</title>
+<link rel="icon" type="image/png" href="img/ico.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16181b;
+    --paper: #f3f4f4;
+    --accent: #67757d;
+    --hairline: rgba(22,24,26,.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif; font-weight: 300;
+    -webkit-font-smoothing: antialiased; line-height: 1.65;
+  }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem 2rem;
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+  }
+  nav img { height: 34px; display: block; }
+  nav a { color: var(--ink); text-decoration: none; opacity: .8; }
+  nav a:hover { opacity: 1; }
+
+  main { max-width: 780px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1.2rem;
+  }
+  h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 1rem; }
+  .intro { font-size: 1.02rem; opacity: .8; max-width: 580px; margin-bottom: 3rem; }
+  .fecha { font-size: .82rem; opacity: .55; margin-bottom: .5rem; }
+
+  h2 {
+    font-size: .72rem; letter-spacing: .28em; text-transform: uppercase; font-weight: 600;
+    color: var(--accent);
+    border-top: 1px solid var(--hairline);
+    padding-top: 2.2rem; margin-top: 2.6rem; margin-bottom: 1.1rem;
+  }
+  p { margin-bottom: .9rem; font-size: .94rem; }
+  main a { color: var(--accent); font-weight: 500; }
+  b, strong { font-weight: 600; }
+
+  .item { display: flex; gap: 1rem; margin-bottom: 1.15rem; align-items: flex-start; }
+  .item .ico {
+    flex-shrink: 0; width: 1.8rem; height: 1.8rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 700; margin-top: .1rem;
+  }
+  .item.hecho .ico { background: #e2efe3; color: #2e6b3e; }
+  .item.pend .ico { background: #f6e8d7; color: #8a5a1e; }
+  .item div p { margin-bottom: .3rem; }
+  .item .nota { font-size: .82rem; opacity: .65; }
+
+  .alerta {
+    border-left: 3px solid var(--accent);
+    background: rgba(103,117,125,.08);
+    padding: 1rem 1.3rem; border-radius: 0 10px 10px 0;
+    font-size: .9rem; margin: 1.4rem 0;
+  }
+
+  .flujo {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: .8rem; line-height: 1.9;
+    background: var(--ink); color: var(--paper);
+    border-radius: 12px; padding: 1.4rem 1.6rem;
+    overflow-x: auto; margin: 1.2rem 0 1.6rem;
+    white-space: pre;
+  }
+  .flujo .cm { opacity: .45; }
+
+  .descarga {
+    margin-top: 3.5rem; padding-top: 2.4rem;
+    border-top: 1px solid var(--hairline);
+    display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
+  }
+  .btn-pdf {
+    background: var(--ink); color: var(--paper);
+    border: none; border-radius: 99px;
+    padding: 1rem 1.9rem;
+    font-family: inherit; font-size: .68rem;
+    letter-spacing: .26em; text-transform: uppercase; font-weight: 600;
+    cursor: pointer; display: inline-flex; align-items: center; gap: .7rem;
+    transition: transform .2s, opacity .2s;
+  }
+  .btn-pdf:hover { transform: translateY(-1px); }
+  .btn-pdf svg { width: 15px; height: 15px; }
+  .descarga span { font-size: .78rem; opacity: .55; max-width: 320px; line-height: 1.5; }
+
+  footer {
+    padding: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; opacity: .5;
+  }
+
+  @media print {
+    nav, .descarga, footer { display: none; }
+    body { background: #fff; }
+    main { padding: 0 0 2rem; max-width: none; }
+    .flujo { background: #f4f4f4; color: #16181b; border: 1px solid #ddd; }
+    h2 { break-after: avoid; }
+    .alerta { background: #f4f4f4; }
+    a { color: inherit; text-decoration: none; }
+    @page { margin: 2cm 1.6cm; }
+  }
+</style>
+<script src="meta-pixel.js"></script>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" aria-label="PORTOFINO"><img src="img/logo-ink.png" alt="PORTOFINO — Mármol &amp; Granito"></a>
+  <a href="index.html#contacto">Contacto</a>
+</nav>
+
+<main>
+  <span class="k">Reporte interno</span>
+  <h1>Avance del sitio web</h1>
+  <p class="fecha" id="hoy"></p>
+  <p class="intro">Estado actual del proyecto <b>portofino.com.mx</b> — lo que ya funciona, lo que falta y de quién depende. El sitio ya está en línea en <a href="https://unknownshopper.github.io/portofino/">unknownshopper.github.io/portofino</a> mientras se conecta el dominio.</p>
+
+  <h2>Ya está funcionando</h2>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Sitio completo en línea</b> — portada, catálogo de productos, promociones, sucursales reales y contacto.</p>
+    <p class="nota">Diseño propio de la marca, optimizado para celular (imágenes ligeras en formato WebP).</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Cotizador en línea</b> — el cliente arma su lista de productos con medidas en m² y envía su solicitud; la oficina la recibe completa en un panel interno.</p>
+    <p class="nota">Incluye casilla de "se requiere instalación", validación de teléfono y anti-spam.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Panel interno de solicitudes</b> — cada cotización y contacto llega a un panel con contraseña: se puede filtrar por estado (pendiente / en proceso / cerrada), responder por WhatsApp con un clic y eliminar pruebas.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Asistente virtual en el sitio</b> — responde al instante dudas de materiales, recomendaciones por espacio (cocina, baño, terraza, playa) y estilos de diseño; si la pregunta es abierta la contesta IA con el catálogo real como contexto. Nunca inventa precios ni existencias — dirige al cotizador.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Respuestas automáticas en Facebook e Instagram</b> — saludo de bienvenida, mensaje fuera de horario, 4 preguntas frecuentes, respuesta automática a comentarios y palabras clave (precio / envío / ubicación). Todo dirige al cotizador o al WhatsApp de ventas.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Actualización automática del catálogo</b> — cada noche el sitio lee la carpeta de Dropbox y publica las fotos nuevas; no hay que avisar ni tocar nada. Las fotos se comprimen solas para que el sitio cargue rápido.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Medición con Meta Pixel</b> — registra visitas, qué productos se agregan a cotización, cuándo abren el panel y cuándo envían la solicitud. Datos reales para decidir campañas.</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Base legal y buscadores</b> — aviso de privacidad conforme a la LFPDPPP, sitemap, robots y datos estructurados de las 4 sucursales para Google.</p>
+  </div></div>
+
+  <h2>Cómo llega un cliente hoy</h2>
+  <div class="flujo">Comentario o DM en FB/IG  →  respuesta automática
+         ↓
+Cotizador en el sitio  →  solicitud al panel interno + WhatsApp
+         ↓                                        <span class="cm">(medido por el Pixel)</span>
+Ejecutivo responde y cierra</div>
+
+  <h2>Lo que falta — y de quién depende</h2>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Fotos reales de los productos</b> — <i>equipo Portofino</i>. Subirlas a la carpeta de Dropbox siguiendo <a href="instrucciones.html">esta guía de 5 pasos</a>. Con 2–3 productos por categoría el sitio ya se ve real.</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Dominio portofino.com.mx</b> — <i>en proceso</i>. Apuntar el DNS a GitHub Pages (o Cloudflare) y activar HTTPS. Sin esto, los links automáticos de FB/IG no abren todavía.</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Control total en ambas páginas de Facebook</b> — <i>equipo Portofino</i>. Hoy hay admin pero no control total; se necesita para fusionar <i>Portofino Veracruz</i> dentro de <i>Portofino Granitos y Mármoles</i>.</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Dirección física de Tuxtla Gutiérrez</b> — <i>equipo Portofino</i>. Hoy su tarjeta solo muestra ciudad y teléfono.</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>RFC / razón social</b> — <i>equipo Portofino</i>. Para completar el aviso de privacidad.</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Decidir: ¿precios públicos por m² o siempre a cotización?</b> — <i>equipo Portofino</i>. Hoy todo es "a cotización".</p>
+  </div></div>
+
+  <div class="item pend"><span class="ico">!</span><div>
+    <p><b>Aviso automático a la oficina por cada cotización</b> — <i>desarrollo, por decidir ruta</i>. Hoy el lead llega al panel pero nadie recibe notificación; opciones: correo automático o WhatsApp.</p>
+  </div></div>
+
+  <div class="alerta">
+    <b>Lo más urgente son las fotos.</b> Todo lo demás está listo para recibirlas — en cuanto entren a Dropbox, el catálogo se llena solo esa misma noche.
+  </div>
+
+  <div class="descarga">
+    <button class="btn-pdf" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      Descargar PDF
+    </button>
+    <span>Se abre el diálogo de impresión — elige <b>"Guardar como PDF"</b> para compartirlo por correo o WhatsApp.</span>
+  </div>
+</main>
+
+<footer>
+  <span>© PORTOFINO</span>
+  <span>Reporte interno — no indexado</span>
+</footer>
+
+<script>
+  document.getElementById('hoy').textContent =
+    'Generado el ' + new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+</script>
+
+</body>
+</html>
