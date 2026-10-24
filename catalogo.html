@@ -453,7 +453,10 @@ function renderGrid() {
       <span class="rubro">${it.rubro}</span>`;
     d.querySelector('.add').onclick = () => {
       if (cot[it.id]) delete cot[it.id];
-      else cot[it.id] = { m2: '' };
+      else {
+        cot[it.id] = { m2: '' };
+        px('AddToCart', { content_name: it.nombre, content_category: it.rubro });
+      }
       guardar(); renderGrid(); renderFab();
     };
     grid.appendChild(d);
@@ -503,6 +506,7 @@ function renderPanel() {
 
 function abrirPanel() {
   renderPanel();
+  if (Object.keys(cot).length) px('InitiateCheckout', { num_items: Object.keys(cot).length });
   panel.classList.add('open');
   panelBg.classList.add('open');
   renderFab();
