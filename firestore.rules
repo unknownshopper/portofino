@@ -1,0 +1,38 @@
+rules_version = '2';
+// PORTOFINO — reglas Firestore (colección "cotizaciones")
+// Público: SOLO crear solicitudes válidas. Lectura/edición/borrado: solo admin autenticado.
+// Pegar en console.firebase.google.com → proyecto portofino-1 → Firestore → Reglas → Publicar.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /cotizaciones/{doc} {
+      allow read, update, delete: if request.auth != null;
+      allow create: if
+        // solo estos campos — nada extra
+        request.resource.data.keys().hasOnly(
+          ['nombre','telefono','correo','ciudad','instalacion','mensaje',
+           'productos','tipo','canal','texto','estado','creado'])
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() > 1
+        && request.resource.data.nombre.size() <= 120
+        // teléfono MX ya normalizado a 10 dígitos por el formulario
+        && request.resource.data.telefono is string
+        && request.resource.data.telefono.matches('^[0-9]{10}$')
+        && request.resource.data.ciudad is string
+        && request.resource.data.ciudad.size() <= 100
+        && request.resource.data.productos is list
+        && request.resource.data.productos.size() <= 50
+        && request.resource.data.creado is string
+        && request.resource.data.estado == 'pendiente'
+        // opcionales: null o cadena acotada
+        && (request.resource.data.correo == null
+            || (request.resource.data.correo is string
+                && request.resource.data.correo.size() <= 120))
+        && (request.resource.data.mensaje == null
+            || (request.resource.data.mensaje is string
+                && request.resource.data.mensaje.size() <= 2000))
+        && (request.resource.data.texto == null
+            || (request.resource.data.texto is string
+                && request.resource.data.texto.size() <= 4000));
+    }
+  }
+}
