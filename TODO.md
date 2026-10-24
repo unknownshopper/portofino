@@ -18,7 +18,6 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
-- [ ] Publicar `firestore.rules` endurecidas en consola (Firestore → Reglas → pegar → Publicar) — ya escritas en el repo
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (cuando el dominio apunte al sitio)
 - [ ] **Google Search Console** (con el dominio activo): verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
@@ -26,6 +25,7 @@
 
 ## Ya resuelto
 
+- [x] `firestore.rules` endurecidas publicadas — verificado: create público OK, lectura sin login = 403
 - [x] Sucursales reales: Villahermosa matriz, Villahermosa Sabina, Veracruz y Tuxtla — visibles + en contexto del chat IA
 - [x] Automatizaciones Meta Business Suite (FB + IG): respuesta instantánea, mensaje de ausencia, 4 FAQs, comentario→DM, palabras clave ×3 — todo embala a cotizador/WhatsApp
 - [x] Cotizador → Firestore + admin autenticado (filtros por estado, eliminar, badge instalación, XSS tapado)
