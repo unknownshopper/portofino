@@ -234,6 +234,9 @@ def main():
     if dry:
         print('\n[dry-run] no se escribió nada')
         return
+    if out.exists() and out.read_text() == js:
+        print('\nSin cambios en el catálogo — no se sube ?v ni se regenera')
+        return
     out.write_text(js)
     v = bump_version()
     print(f'\nimagenes.js regenerado · ?v={v} en los HTML')
