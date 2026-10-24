@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PORTOFINO — Mármol &amp; Granito. Especialistas en superficies de alta gama: mármoles, granitos exóticos, Silestone y Dekton. Envíos a todo México.">
-<meta property="og:title" content="PORTOFINO — Mármol &amp; Granito">
+<meta name="description" content="Venta de mármol, granito, cuarzo, Dekton, sinterizados y travertino en Villahermosa, Veracruz y Tuxtla Gutiérrez. Cubiertas de cocina, pisos, fachadas e instalación. Cotice en línea — envíos a todo México.">
+<meta property="og:title" content="PORTOFINO — Mármol y Granito | Villahermosa · Veracruz · Tuxtla">
 <meta property="og:description" content="Superficies de alta gama para proyectos arquitectónicos. Mármol, granito, Silestone y Dekton.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://unknownshopper.github.io/portofino/img/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:url" content="https://unknownshopper.github.io/portofino/">
 <link rel="canonical" href="https://portofino.com.mx/">
-<title>PORTOFINO — Mármol &amp; Granito</title>
+<title>PORTOFINO — Mármol y Granito en Villahermosa, Veracruz y Tuxtla | Envíos a todo México</title>
 <link rel="icon" type="image/png" href="img/ico.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,6 +97,41 @@
       "name": "PORTOFINO",
       "publisher": { "@id": "https://portofino.com.mx/#org" },
       "inLanguage": "es-MX"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es mejor para una cubierta de cocina: granito o mármol?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Para uso diario recomendamos granito o sinterizado: resisten calor, rayones y ácidos mucho mejor que el mármol. La cuarcita es el punto medio premium con veteado natural. El mármol destaca en baños, muros y piezas de bajo tráfico." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta el mármol o el granito por m²?",
+          "acceptedAnswer": { "@type": "Answer", "text": "El precio depende del material, el formato y las medidas del proyecto. Arme su lista en el cotizador en línea de portofino.com.mx y un ejecutivo confirma precio, existencia y envío el mismo día." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Hacen envíos fuera de Villahermosa y Veracruz?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sí, enviamos material a todo México. El flete se cotiza según la ciudad y las medidas del pedido. Sucursales: Villahermosa (Periférico y Sabina), Veracruz y Tuxtla Gutiérrez." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Incluyen medición, corte e instalación?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sí, manejamos el proyecto completo: medición a domicilio, corte a medida e instalación profesional. Al cotizar en línea puede marcar la casilla 'se requiere instalación'." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es Dekton y qué diferencia tiene con el granito?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Dekton es una superficie ultracompacta sinterizada de Cosentino que resiste calor, rayones, UV y manchas casi por completo — ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural única y muy resistente." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Dónde están sus sucursales?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Villahermosa matriz: Periférico Carlos Pellicer Cámara 102, tel. 993 141 6774. Villahermosa Sabina: Av. 20 de Noviembre 1115, tel. 993 383 8740. Veracruz: Carr. Veracruz–Medellín km 1.5, tel. 229 167 1540. Tuxtla Gutiérrez: tel. 961 217 5504." }
+        }
+      ]
     }
   ]
 }
@@ -248,6 +283,43 @@
     max-width: 26ch;
     margin: 0 auto;
   }
+  .manifesto .man-sub {
+    font-size: .92rem; font-weight: 300; letter-spacing: 0;
+    line-height: 1.8; color: var(--accent);
+    max-width: 620px; margin: 2.6rem auto 0;
+  }
+
+  /* ── preguntas frecuentes (SEO) ── */
+  .faq {
+    background: var(--paper); color: var(--ink);
+    padding: 2rem 2rem 7rem;
+  }
+  .faq-in { max-width: 780px; margin: 0 auto; }
+  .faq .k {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 1rem;
+  }
+  .faq h2 {
+    font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.2rem);
+    letter-spacing: -.02em; margin-bottom: 1.6rem;
+  }
+  .faq details { border-bottom: 1px solid var(--hairline); }
+  .faq summary {
+    cursor: pointer; list-style: none;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    font-weight: 500; font-size: .98rem; padding: 1.3rem .2rem;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: '+'; font-size: 1.3rem; font-weight: 300; color: var(--accent);
+    transition: transform .25s;
+  }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p {
+    font-size: .9rem; line-height: 1.8; color: var(--accent);
+    padding: 0 .2rem 1.4rem; max-width: 640px;
+  }
+  .faq details p a { color: var(--ink); font-weight: 500; }
 
   /* ── promoción vigente: slider ── */
   .promo { background: var(--paper); color: var(--ink); border-bottom: 1px solid rgba(22,24,26,.12); overflow: hidden; }
@@ -663,6 +735,7 @@
 <section class="manifesto" id="filosofia">
   <span class="k">Nuestra filosofía</span>
   <p>La piedra no se fabrica.<br>Se selecciona, se corta y permanece.</p>
+  <p class="man-sub">Venta de mármol, granito, cuarzo, Dekton, sinterizados y travertino para cubiertas de cocina, pisos, fachadas y proyectos arquitectónicos — con medición, corte e instalación en Villahermosa, Veracruz y Tuxtla Gutiérrez, y envíos a todo México.</p>
 </section>
 
 <!-- MATERIALES -->
@@ -689,6 +762,38 @@
     <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
   </div>
 </div>
+
+<!-- FAQ — contenido indexable + FAQPage schema -->
+<section class="faq" id="faq">
+  <div class="faq-in">
+    <span class="k">Dudas frecuentes</span>
+    <h2>Preguntas sobre mármol y granito</h2>
+    <details>
+      <summary>¿Qué es mejor para una cubierta de cocina: granito o mármol?</summary>
+      <p>Para uso diario recomendamos <b>granito o sinterizado</b>: resisten calor, rayones y ácidos mucho mejor que el mármol. Si busca el veteado clásico con dureza, la <b>cuarcita</b> es el punto medio premium. El mármol brilla más en baños, muros y piezas de bajo tráfico. Compare las opciones en nuestro <a href="catalogo.html">catálogo</a>.</p>
+    </details>
+    <details>
+      <summary>¿Cuánto cuesta el mármol o el granito por m²?</summary>
+      <p>El precio depende del material, el formato (losa o corte) y las medidas del proyecto — por eso trabajamos a cotización: arme su lista en el <a href="catalogo.html">cotizador en línea</a> con los m² aproximados y un ejecutivo le confirma precio, existencia y envío el mismo día.</p>
+    </details>
+    <details>
+      <summary>¿Hacen envíos fuera de Villahermosa y Veracruz?</summary>
+      <p>Sí — enviamos material a todo México. El flete se cotiza según la ciudad y las medidas del pedido, y lo confirmamos junto con su cotización. Las sucursales están en Villahermosa (Periférico y Sabina), Veracruz y Tuxtla Gutiérrez.</p>
+    </details>
+    <details>
+      <summary>¿Incluyen medición, corte e instalación?</summary>
+      <p>Sí — manejamos el proyecto completo: medición a domicilio, corte a medida e instalación profesional. Al armar su cotización marque la casilla "se requiere instalación" y lo incluimos en la propuesta.</p>
+    </details>
+    <details>
+      <summary>¿Qué es Dekton y qué diferencia tiene con el granito?</summary>
+      <p><b>Dekton®</b> es una superficie ultracompacta sinterizada de Cosentino — resiste calor, rayones, UV y manchas casi por completo, ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural: cada pieza es única y también muy resistente. En costa o exterior con sol directo, Dekton y sinterizados son la elección segura.</p>
+    </details>
+    <details>
+      <summary>¿Dónde están sus sucursales?</summary>
+      <p><b>Villahermosa matriz:</b> Periférico Carlos Pellicer Cámara 102, tel. 993 141 6774. <b>Villahermosa Sabina:</b> Av. 20 de Noviembre 1115, tel. 993 383 8740. <b>Veracruz:</b> Carr. Veracruz–Medellín km 1.5, tel. 229 167 1540. <b>Tuxtla Gutiérrez:</b> tel. 961 217 5504.</p>
+    </details>
+  </div>
+</section>
 
 <!-- CONTACTO -->
 <section class="contacto" id="contacto">
