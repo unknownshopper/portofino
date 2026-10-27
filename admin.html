@@ -64,89 +64,6 @@
   .q .total .gt { color:var(--accent); }
   main { padding:24px 0 60px; }
 
-  /* documento PDF (fuera de pantalla, se renderiza con html2pdf) */
-  .pdf-doc {
-    position: fixed; left: -10000px; top: 0;
-    width: 794px; background: #fff; color: var(--ink);
-    font-family: 'Inter', sans-serif; padding: 56px 60px 48px;
-    font-weight: 300;
-  }
-  .pdf-doc .pd-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 26px; border-bottom: 1px solid rgba(22,24,26,.16); }
-  .pdf-doc .pd-head img { height: 52px; }
-  .pdf-doc .pd-brand { font-size: 8px; letter-spacing: .32em; text-transform: uppercase; color: var(--accent); text-align: right; line-height: 2; }
-  .pdf-doc .pd-tit { font-size: 30px; font-weight: 700; letter-spacing: -.01em; margin: 34px 0 6px; }
-  .pdf-doc .pd-kick { font-size: 8.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 26px; }
-  .pdf-doc .pd-cli { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 40px; font-size: 11.5px; margin-bottom: 30px; }
-  .pdf-doc .pd-cli span { color: var(--accent); font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase; display: block; }
-  .pdf-doc table { width: 100%; border-collapse: collapse; }
-  .pdf-doc th { font-size: 8.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); font-weight: 600; text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(22,24,26,.25); }
-  .pdf-doc th.n, .pdf-doc td.n { text-align: right; }
-  .pdf-doc td { font-size: 12px; padding: 11px 0; border-bottom: 1px solid rgba(22,24,26,.07); vertical-align: top; }
-  .pdf-doc td .rub { font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
-  .pdf-doc td .med { font-size: 10px; color: var(--accent); margin-top: 2px; }
-  .pdf-doc .pd-tots { margin-top: 22px; margin-left: auto; width: 300px; font-size: 12px; }
-  .pdf-doc .pd-tots .row { display: flex; justify-content: space-between; padding: 5px 0; }
-  .pdf-doc .pd-tots .row.gt { border-top: 1px solid rgba(22,24,26,.25); margin-top: 8px; padding-top: 12px; font-size: 15px; font-weight: 700; }
-  .pdf-doc .pd-tots .row span { color: var(--accent); }
-  .pdf-doc .pd-tots .row.gt span { color: var(--ink); }
-  .pdf-doc .pd-nota { margin-top: 34px; font-size: 9.5px; line-height: 1.7; color: var(--accent); }
-  .pdf-doc .pd-foot { margin-top: 30px; padding-top: 18px; border-top: 1px solid rgba(22,24,26,.16); display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
-</style>
-</head>
-<body>
-<header>
-  <div class="wrap bar">
-    <div class="brand">PORTOFINO <span>· cotizaciones</span></div>
-    <div class="tools" id="tools" style="display:none">
-      <span class="count" id="count"></span>
-      <button id="salir">Salir</button>
-    </div>
-  </div>
-</header>
-
-<main class="wrap">
-  <div class="login" id="login">
-    <div class="kick">Acceso</div>
-    <h1>Panel de cotizaciones</h1>
-    <input id="mail" type="email" placeholder="Correo" autocomplete="username">
-    <input id="pass" type="password" placeholder="Contraseña" autocomplete="current-password">
-    <button class="pri" id="entrar">Entrar</button>
-    <div class="err" id="err"></div>
-  </div>
-  <div class="filtros" id="filtros" style="display:none">
-    <button data-f="todas" class="on">Todas</button>
-    <button data-f="pendiente">Pendientes</button>
-    <button data-f="en-proceso">En proceso</button>
-    <button data-f="cerrada">Cerradas</button>
-  </div>
-  <div id="lista" style="display:none"></div>
-</main>
-
-<script src="fb.js"></script>
-<script src="precios.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-const ESTADOS = ['pendiente','en-proceso','cerrada'];
-let fb = null;
-
-// distancia aprox en km desde Villahermosa (matriz) — tabla estática, sin APIs
-const DIST = {
-  'villahermosa':0,'tabasco':15,'coatzacoalcos':170,'minatitlan':180,'comalcalco':60,
-  'veracruz':390,'xalapa':400,'jalapa':400,'boca del rio':395,'cordoba':330,
-  'tuxtla':250,'tuxtla gutierrez':250,'san cristobal':260,'chiapas':260,'tapachula':380,
-  'campeche':400,'cd del carmen':220,'ciudad del carmen':220,'merida':550,'yucatan':560,
-  'cancun':800,'playa del carmen':740,'chetumal':460,'quintana roo':700,
-  'oaxaca':550,'puebla':700,'cdmx':780,'ciudad de mexico':780,'mexico':780,'toluca':750,
-  'queretaro':950,'leon':1100,'guanajuato':1100,'aguascalientes':1200,
-  'guadalajara':1150,'jalisco':1150,'monterrey':1200,'nuevo leon':1200,
-  'saltillo':1180,'tampico':650,'hermosillo':2300,'tijuana':3200,'chihuahua':1900,
-};
-function distancia(ciudad){
-  if (!ciudad) return '';
-  const c = ciudad.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-  for (const k in DIST) if (c.includes(k)) return `≈${DIST[k]} km de Villahermosa`;
-  return '';
-}
 
 function fmt(ts){
   if (!ts) return '—';
@@ -243,68 +160,84 @@ async function cargar(){
     recalc();
     const pdfBtn = div.querySelector('.pdf');
     if (pdfBtn) pdfBtn.onclick = async () => {
-      if (typeof html2pdf === 'undefined') { alert('No cargó el generador de PDF — revisa tu conexión.'); return; }
-      pdfBtn.disabled = true; pdfBtn.textContent = 'Generando…';
-      let mat = 0;
-      const filasPdf = (q.productos||[]).map((p,i) => {
-        const m2 = m2De(p);
-        const v = parseFloat(precios[i]) || 0;
-        const line = v ? (m2 ? v*m2 : v) : 0;
-        mat += line;
-        return `<tr>
-          <td>${esc(p.nombre)}<div class="rub">${esc(p.rubro)}</div>${p.medidas?`<div class="med">${esc(p.medidas)}</div>`:''}</td>
-          <td class="n">${p.m2?esc(p.m2):'1'}</td>
-          <td class="n">${v?money(v):'—'}</td>
-          <td class="n">${v?money(line):'—'}</td>
-        </tr>`;
-      }).join('');
-      const fl = parseFloat(div.querySelector('.flete')?.value) || 0;
-      const ot = parseFloat(div.querySelector('.otros')?.value) || 0;
-      const gt = mat + fl + ot;
-      const docEl = document.createElement('div');
-      docEl.className = 'pdf-doc';
-      docEl.innerHTML = `
-        <div class="pd-head">
-          <img src="img/logo-ink.png" alt="PORTOFINO">
-          <div class="pd-brand">Mármol · Granito · Cuarcita<br>Cuarzo · Dekton · Travertino</div>
-        </div>
-        <div class="pd-tit">Cotización</div>
-        <div class="pd-kick">${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</div>
-        <div class="pd-cli">
-          <div><span>Cliente</span>${esc(q.nombre)||'—'}</div>
-          <div><span>Ciudad</span>${esc(q.ciudad)||'—'}</div>
-          <div><span>Teléfono</span>${esc(q.telefono)||'—'}</div>
-          <div><span>Correo</span>${esc(q.correo)||'—'}</div>
-        </div>
-        <table>
-          <thead><tr><th>Producto</th><th class="n">m²</th><th class="n">Precio m²</th><th class="n">Importe</th></tr></thead>
-          <tbody>${filasPdf}</tbody>
-        </table>
-        <div class="pd-tots">
-          ${mat?`<div class="row"><span>Materiales</span>${money(mat)}</div>`:''}
-          ${fl?`<div class="row"><span>Envío${q.ciudad?' — '+esc(q.ciudad):''}</span>${money(fl)}</div>`:''}
-          ${ot?`<div class="row"><span>Otros conceptos</span>${money(ot)}</div>`:''}
-          <div class="row gt"><span>Total</span>${money(gt)}</div>
-        </div>
-        <div class="pd-nota">
-          Precios en MXN, sujetos a existencia y medición final en sitio. Vigencia de cotización: 15 días naturales.
-          ${q.instalacion?'El cliente marcó interés en instalación.'+'<br>':''}La medición, corte e instalación corren por cuenta del cliente o su contratista.
-        </div>
-        <div class="pd-foot">
-          <span>portofino.com.mx</span><span>ventas@portofino.com.mx</span><span>WhatsApp 993 302 3903</span><span>@portofino.granitosymarmoles</span>
-        </div>`;
-      document.body.appendChild(docEl);
-      const nom = (q.nombre||'cliente').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+      const JsPDF = window.jspdf && window.jspdf.jsPDF;
+      if (!JsPDF) { alert('No cargó el generador de PDF — revisa tu conexión.'); return; }
+      pdfBtn.disabled = true; pdfBtn.textContent = 'Generando\u2026';
       try {
-        await html2pdf().set({
-          margin: 0,
-          filename: `cotizacion-portofino-${nom||'cliente'}.pdf`,
-          image: { type: 'jpeg', quality: .96 },
-          html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-          jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
-        }).from(docEl).save();
-      } catch(e){ alert('No se pudo generar el PDF.'); }
-      docEl.remove();
+        const D = new JsPDF({ unit: 'mm', format: 'letter' });
+        const ML = 18, MR = 198;
+        const ink = [22,24,26], acc = [103,117,125];
+        try {
+          const im = new Image(); im.src = 'img/logo-ink.png';
+          await new Promise(r => { im.onload = r; im.onerror = r; });
+          if (im.naturalWidth) D.addImage(im, 'PNG', ML, 11, 12 * im.naturalWidth / im.naturalHeight, 12);
+        } catch(e) {}
+        D.setFont('helvetica', 'normal'); D.setFontSize(7); D.setTextColor(...acc);
+        D.text('M\u00c1RMOL \u00b7 GRANITO \u00b7 CUARCITA', MR, 16, { align: 'right' });
+        D.text('CUARZO \u00b7 DEKTON \u00b7 TRAVERTINO', MR, 20, { align: 'right' });
+        D.setDrawColor(...ink); D.setLineWidth(.35); D.line(ML, 30, MR, 30);
+        D.setFont('helvetica', 'bold'); D.setFontSize(22); D.setTextColor(...ink);
+        D.text('Cotizaci\u00f3n', ML, 42);
+        D.setFont('helvetica', 'normal'); D.setFontSize(7.5); D.setTextColor(...acc);
+        D.text(new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase(), ML, 48);
+        const cli = [['CLIENTE', q.nombre], ['CIUDAD', q.ciudad], ['TEL\u00c9FONO', q.telefono], ['CORREO', q.correo]];
+        cli.forEach(([k, v], i) => {
+          const x = ML + (i % 2) * 95, y = 58 + Math.floor(i / 2) * 9;
+          D.setFontSize(6.5); D.setTextColor(...acc); D.text(k, x, y);
+          D.setFontSize(10.5); D.setTextColor(...ink); D.text(String(v || '\u2014'), x, y + 4.5);
+        });
+        let y = 82;
+        D.setDrawColor(...ink); D.setLineWidth(.3); D.line(ML, y, MR, y);
+        D.setFontSize(7); D.setTextColor(...acc); D.setFont('helvetica', 'bold');
+        D.text('PRODUCTO', ML, y + 5); D.text('M\u00b2', 140, y + 5, { align: 'right' });
+        D.text('PRECIO M\u00b2', 168, y + 5, { align: 'right' }); D.text('IMPORTE', MR, y + 5, { align: 'right' });
+        y += 8; D.line(ML, y, MR, y); y += 2;
+        let mat = 0;
+        (q.productos || []).forEach((p, i) => {
+          const m2 = m2De(p);
+          const v = parseFloat(precios[i]) || 0;
+          const line = v ? (m2 ? v * m2 : v) : 0;
+          mat += line;
+          D.setFont('helvetica', 'bold'); D.setFontSize(10); D.setTextColor(...ink);
+          D.text(String(p.nombre || ''), ML, y + 4);
+          D.setFont('helvetica', 'normal'); D.setFontSize(6.5); D.setTextColor(...acc);
+          let ty = y + 8;
+          if (p.rubro) { D.text(String(p.rubro).toUpperCase(), ML, ty); ty += 3.4; }
+          if (p.medidas) { D.text(String(p.medidas), ML, ty); ty += 3.4; }
+          D.setFontSize(10); D.setTextColor(...ink);
+          D.text(String(p.m2 || '1'), 140, y + 4, { align: 'right' });
+          D.text(v ? money(v) : '\u2014', 168, y + 4, { align: 'right' });
+          D.text(v ? money(line) : '\u2014', MR, y + 4, { align: 'right' });
+          y = ty + 2;
+          D.setDrawColor(220); D.setLineWidth(.1); D.line(ML, y, MR, y);
+          y += 3;
+        });
+        const fl = parseFloat(div.querySelector('.flete')?.value) || 0;
+        const ot = parseFloat(div.querySelector('.otros')?.value) || 0;
+        const gt = mat + fl + ot;
+        y += 4;
+        [['Materiales', mat], ['Env\u00edo' + (q.ciudad ? ' \u2014 ' + q.ciudad : ''), fl], ['Otros conceptos', ot]]
+          .filter(r => r[1]).forEach(([k, v]) => {
+            D.setFont('helvetica', 'normal'); D.setFontSize(9); D.setTextColor(...acc); D.text(k, 150, y);
+            D.setTextColor(...ink); D.text(money(v), MR, y, { align: 'right' }); y += 5.5;
+          });
+        D.setDrawColor(...ink); D.setLineWidth(.3); D.line(140, y - 1, MR, y - 1);
+        D.setFont('helvetica', 'bold'); D.setFontSize(13); D.setTextColor(...ink);
+        D.text('Total', 140, y + 6); D.text(money(gt), MR, y + 6, { align: 'right' });
+        y += 16;
+        D.setFont('helvetica', 'normal'); D.setFontSize(7.5); D.setTextColor(...acc);
+        const nota = 'Precios en MXN, sujetos a existencia y medici\u00f3n final en sitio. Vigencia de cotizaci\u00f3n: 15 d\u00edas naturales. La medici\u00f3n, corte e instalaci\u00f3n corren por cuenta del cliente o su contratista.';
+        D.text(D.splitTextToSize(nota, MR - ML), ML, y);
+        D.setDrawColor(...ink); D.setLineWidth(.2); D.line(ML, 268, MR, 268);
+        D.setFontSize(6.8); D.setTextColor(...acc);
+        const foot = ['PORTOFINO.COM.MX', 'VENTAS@PORTOFINO.COM.MX', 'WHATSAPP 993 302 3903', '@PORTOFINO.GRANITOSYMARMOLES'];
+        const esp = (MR - ML) / foot.length;
+        foot.forEach((t, i) => D.text(t, ML + esp * i + esp / 2, 273, { align: 'center' }));
+        const nom = (q.nombre || 'cliente').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        D.save(`cotizacion-portofino-${nom || 'cliente'}.pdf`);
+      } catch(e) {
+        alert('No se pudo generar el PDF.');
+      }
       pdfBtn.disabled = false; pdfBtn.textContent = 'Descargar PDF';
     };
     div.querySelector('select').onchange = async e => {
