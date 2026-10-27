@@ -1,5 +1,19 @@
 # Pendientes PORTOFINO
 
+## Reunión con Gladys — miércoles 28-oct, 4 pm (presencial)
+
+- [ ] **Vincular WhatsApp Business 993 302 3903 a la bandeja de Business Suite** — 27-oct falló el intento remoto: se le mandó captura del QR, aceptó "Compartir todos los chats" pero "No se pudo escanear el código" (el QR caduca en minutos, es de un solo uso y lo leyó desde foto/galería). Mañana en persona:
+  1. Gladys actualiza WhatsApp Business en App Store **antes** de empezar
+  2. Business Suite → Mensajes → WhatsApp → Empezar → "Comparte tus contactos y chats" (QR)
+  3. En su cel: Configuración → Cuenta → **Plataforma para empresas** → Escanear código QR → apuntar la cámara **directo a la pantalla** (no captura). Si tarda: "Volver" y reentrar para QR nuevo
+  4. "Compartir todos los chats" (hasta 6 meses de historial) → Confirmar
+  - Es el modo en que la app del cel sigue funcionando y ambos ven los chats. Si Meta dice que el número se quitará de la app → CANCELAR
+  - Después: revisar en Automatizaciones si WhatsApp aparece como canal; configurar en la app bienvenida / ausencia / respuestas rápidas / catálogo
+- [ ] **Instagram "Confirmar acceso"** en la bandeja — pedir a Gladys la contraseña/login de `@portofino.granitosymarmoles` si Meta la pide
+- [ ] **2FA del portfolio** (hoy "Nadie") → subir a "Solicitar a administradores"; avisar a Gladys que al entrar con ventas@ le pedirá código
+- [ ] **Google Maps**: preguntar si identificaron `vi...@gmail.com`. Ojo: `portofino.com.mx` usa Google Workspace (SPF `_spf.google.com`) → **`ventas@portofino.com.mx` ya es cuenta Google corporativa**: usarla como propietaria de la ficha
+- [ ] Denominación/razón social, dirección de Tuxtla y precios públicos (ver "Para preguntar a Eduardo") — aprovechar si Gladys sabe
+
 ## Bloqueado — esperando externos
 
 - [ ] **Eduardo: subir fotos reales a `Productos/`** — la estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro
@@ -17,14 +31,14 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
-- [ ] **Asociar WhatsApp Business 993 302 3903 a la bandeja de Business Suite** (Mensajes → WhatsApp → Empezar; tener el cel a la mano para el código de verificación). Debe ser vinculación de la **app WhatsApp Business** (el cel sigue funcionando y ambos ven los chats). Si Meta pide migrar a API/Cloud o dice que el número se quitará de la app → CANCELAR
-- [ ] **Centro de seguridad Meta**: (a) ~~dominio de confianza~~ HECHO 27-oct; (b) ~~passkey en "Ventas Portofino"~~ HECHO 27-oct (guardada en Administrador de contraseñas de Google/Chrome). NO eliminar "UnclaimedBusinessUser FromPool" (@portofino.granitosymarmoles): es el usuario-placeholder del login de Instagram, probablemente ligado al "Confirmar acceso" de IG en la bandeja; si la alerta persiste por él, ignorarla; (c) 2FA del portfolio está en "Nadie" → subir a admins/todos
-- [ ] **Google Search Console**: verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
+- [ ] **Google Search Console**: el DNS ya tiene un TXT `google-site-verification=KfpF8…` → alguien ya verificó el dominio; averiguar con qué cuenta (probable Workspace de Portofino) y pedir acceso en vez de re-verificar. Luego: enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
-- [ ] Pixel: re-verificar eventos en Events Manager tras el dominio nuevo
+- [ ] Pixel: re-verificar eventos en Events Manager tras el dominio nuevo (dominio ya verificado en Meta → desbloqueado; configurar eventos agregados si lo pide)
+- [ ] **Fase 2: bot IA (Gemini) en WhatsApp** — requiere Cloud API; evaluar tras vincular la app (coexistencia), no antes
 
 ## Ya resuelto
 
+- [x] **Centro de seguridad Meta (27-oct)**: dominio de confianza agregado + passkey en Ventas Portofino (guardada en Administrador de contraseñas de Google/Chrome; la contraseña normal sigue vigente para Gladys). **NO eliminar "UnclaimedBusinessUser FromPool"** (@portofino.granitosymarmoles): es el usuario-placeholder del login de Instagram y el admin alternativo; si la alerta de passkey persiste por él, ignorarla. 2FA → pendiente en reunión con Gladys
 - [x] **Dominio `portofino.com.mx` verificado en Meta** (27-oct) — la falla era una `q` de más en el código de la metaetiqueta. Hoy quedan 2 métodos activos: metaetiqueta en `index.html` + archivo `63tzrb6sfo543gfu4h28mqgfa42u4n.html` en raíz. **NO borrar ninguno** (Meta re-verifica periódicamente). Ya no se necesita el TXT en GoDaddy
 - [x] **Business Manager: correo `ventas@portofino.com.mx` y WhatsApp Business 993 302 3903 verificados** (27-oct, códigos confirmados con Portofino)
 - [x] **Dominio `portofino.com.mx` en producción** — DNS (A + CNAME www) → GitHub Pages, certificado Let's Encrypt emitido (apex + www), Enforce HTTPS activado por API, `og:url`/`og:image` migrados a portofino.com.mx
