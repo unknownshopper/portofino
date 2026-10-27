@@ -14,6 +14,12 @@
 - [ ] **Google Maps**: preguntar si identificaron `vi...@gmail.com`. Ojo: `portofino.com.mx` usa Google Workspace (SPF `_spf.google.com`) → **`ventas@portofino.com.mx` ya es cuenta Google corporativa**: usarla como propietaria de la ficha
 - [ ] Denominación/razón social, dirección de Tuxtla y precios públicos (ver "Para preguntar a Eduardo") — aprovechar si Gladys sabe
 
+## Urgente — Messenger (prueba como cliente 27-oct)
+
+- [ ] **Respuesta duplicada con número viejo** — a "¿Hacen envíos?" contestan DOS automatizaciones: una con `wa.me/529933939163` (viejo) y otra con `wa.me/529933023903`. Revisar en Business Suite → Automatizaciones: FAQ "envíos", palabra clave "envío", y la sugerencia de respuesta/Business AI. Dejar UNA, con 993 302 3903. Buscar el 9163 en TODAS (bienvenida, ausencia, FAQs, comentario→DM, palabras clave) y en FB + IG
+- [ ] **Preguntas libres sin respuesta** — "¿tienen un catálogo?" no recibió nada. Agregar palabra clave "catálogo/catalogo/productos/fotos" → link a `https://portofino.com.mx/catalogo.html` + WhatsApp. Valorar una respuesta "comodín" que mande al cotizador/WhatsApp
+- [ ] Repetir la prueba desde perfil personal en Messenger e Instagram tras corregir
+
 ## Bloqueado — esperando externos
 
 - [ ] **Eduardo: subir fotos reales a `Productos/`** — la estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro

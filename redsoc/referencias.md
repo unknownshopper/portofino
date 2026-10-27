@@ -82,7 +82,7 @@ de `img/thumbs/`.
   https://www.facebook.com/pirichingon (automatización de mensajes,
   respuestas en el feed, publicaciones y campañas — va en la iguala)
 - Instagram: @portofino.granitosymarmoles
-- WhatsApp ventas: 993 393 9163
+- WhatsApp ventas: 993 302 3903 (único; el 993 393 9163 ya NO se usa)
 
 ## Pendientes
 
