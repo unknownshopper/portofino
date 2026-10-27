@@ -17,6 +17,7 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
+- [ ] **Confirmar códigos de Business Manager** (mañana): Meta mandó código de 6 dígitos a `ventas@portofino.com.mx` (correo) y otro por WhatsApp al `993 302 3903` — caducan en 60 min, si expiran dar "Reenviar código". Requiere acceso al buzón de ventas@ y al celular de ventas
 - [ ] **Asociar WhatsApp Business 993 302 3903 a la bandeja de Business Suite** (Mensajes → WhatsApp → Empezar; tener el cel a la mano para el código de verificación)
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (dominio ya activo)
 - [ ] **Google Search Console**: verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
