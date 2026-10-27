@@ -244,6 +244,15 @@
   .cot-form input:focus, .cot-form textarea:focus { border-color: var(--accent); }
   .cot-form textarea { resize: vertical; min-height: 74px; }
   .cot-form .fila { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .cot-form .geo-wrap { position: relative; }
+  .cot-form .geo-wrap input { width: 100%; padding-right: 42px; }
+  .cot-form .geo {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; padding: 6px;
+    color: var(--accent); display: inline-flex; border-radius: 6px;
+  }
+  .cot-form .geo:hover { color: var(--ink); background: rgba(22,24,26,.06); }
+  .cot-form .geo svg { width: 17px; height: 17px; }
   .enviar {
     border: none; border-radius: 99px;
     padding: .95rem; font-family: inherit;
@@ -315,7 +324,7 @@
     <span class="k">Catálogo</span>
     <h1>Productos</h1>
   </div>
-  <p class="nota">Seleccione los productos de su proyecto y envíe la solicitud — un asesor le cotiza medidas, corte e instalación.</p>
+  <p class="nota">Seleccione los productos de su proyecto y envíe la solicitud — un asesor le cotiza material, precio y envío.</p>
 </header>
 
 <div class="toolbar">
@@ -353,11 +362,10 @@
         <input id="fCorreo" type="email" placeholder="Correo">
       </div>
       <input id="fEmp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
-      <input id="fCiudad" type="text" value="México" placeholder="Ciudad, estado o código postal *" required>
-      <label style="display:flex;align-items:center;gap:8px;font-size:.8rem;cursor:pointer">
-        <input id="fInst" type="checkbox" style="accent-color:var(--ink);width:16px;height:16px">
-        Se requiere instalación (medición, corte y colocación)
-      </label>
+      <div class="geo-wrap">
+        <input id="fCiudad" type="text" placeholder="Ciudad, estado o código postal *" required>
+        <button type="button" class="geo" id="fGeo" aria-label="Usar mi ubicación actual" title="Usar mi ubicación actual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></button>
+      </div>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
       <button class="enviar mail" id="enviar" type="submit">Enviar solicitud →</button>
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas, precio final y costo de envío a su ciudad. Envíos a todo México.</p>
@@ -536,7 +544,7 @@ function resumen() {
   return {
     datos: {
       nombre: f('fNombre'), telefono: f('fTel'), correo: f('fCorreo') || null,
-      ciudad: f('fCiudad'), instalacion: document.getElementById('fInst').checked,
+      ciudad: f('fCiudad'),
       mensaje: f('fMsg') || null, productos,
     },
     texto:
@@ -546,7 +554,6 @@ Nombre: ${f('fNombre')}
 Teléfono: ${f('fTel')}
 Correo: ${f('fCorreo') || '—'}
 Ciudad / Estado: ${f('fCiudad')}
-Instalación: ${document.getElementById('fInst').checked ? 'Sí' : 'No'}
 
 Productos:
 ${lineas}
@@ -591,9 +598,26 @@ cotForm.addEventListener('submit', async e => {
 document.getElementById('cotOkBtn').onclick = () => {
   cerrarPanel();
   cotForm.hidden = false; cotOk.hidden = true;
-  cotForm.reset(); document.getElementById('fCiudad').value = 'México';
+  cotForm.reset();
   const btn = document.getElementById('enviar');
   btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+};
+
+// ubicación: geolocalización del navegador → ciudad vía reverse geocode (OSM)
+document.getElementById('fGeo').onclick = () => {
+  const btn = document.getElementById('fGeo');
+  if (!navigator.geolocation) { alert('Su navegador no permite compartir ubicación — escríbala manualmente.'); return; }
+  btn.style.opacity = '.4';
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude: lat, longitude: lon } = pos.coords;
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=es`);
+      const a = (await r.json()).address || {};
+      const ciudad = a.city || a.town || a.municipality || a.village || a.county || '';
+      fCiudad.value = [ciudad, a.state].filter(Boolean).join(', ') || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+    } catch(e) { fCiudad.value = `${lat.toFixed(4)}, ${lon.toFixed(4)}`; }
+    btn.style.opacity = '';
+  }, () => { alert('No pudimos obtener su ubicación — escríbala manualmente.'); btn.style.opacity = ''; }, { timeout: 10000 });
 };
 
 // ── búsqueda + routing ──
