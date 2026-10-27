@@ -17,6 +17,7 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
+- [ ] **Asociar WhatsApp Business 993 302 3903 a la bandeja de Business Suite** (Mensajes → WhatsApp → Empezar; tener el cel a la mano para el código de verificación)
 - [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (dominio ya activo)
 - [ ] **Google Search Console**: verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
@@ -25,6 +26,7 @@
 ## Ya resuelto
 
 - [x] **Dominio `portofino.com.mx` en producción** — DNS (A + CNAME www) → GitHub Pages, certificado Let's Encrypt emitido (apex + www), Enforce HTTPS activado por API, `og:url`/`og:image` migrados a portofino.com.mx
+- [x] **WhatsApp único de ventas 993 302 3903** — ícono central en contacto, promociones, chat, modal y aviso migrados; automatizaciones Meta actualizadas al mismo número
 - [x] `firestore.rules` endurecidas publicadas — verificado: create público OK, lectura sin login = 403
 - [x] Sucursales reales: Villahermosa matriz, Villahermosa Sabina, Veracruz y Tuxtla — visibles + en contexto del chat IA
 - [x] Automatizaciones Meta Business Suite (FB + IG): respuesta instantánea, mensaje de ausencia, 4 FAQs, comentario→DM, palabras clave ×3 — todo embala a cotizador/WhatsApp
