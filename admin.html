@@ -63,6 +63,34 @@
   .q .total { text-align:right; font-weight:700; font-size:.95rem; margin-top:10px; }
   .q .total .gt { color:var(--accent); }
   main { padding:24px 0 60px; }
+
+  /* documento PDF (fuera de pantalla, se renderiza con html2pdf) */
+  .pdf-doc {
+    position: fixed; left: -10000px; top: 0;
+    width: 794px; background: #fff; color: var(--ink);
+    font-family: 'Inter', sans-serif; padding: 56px 60px 48px;
+    font-weight: 300;
+  }
+  .pdf-doc .pd-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 26px; border-bottom: 1px solid rgba(22,24,26,.16); }
+  .pdf-doc .pd-head img { height: 52px; }
+  .pdf-doc .pd-brand { font-size: 8px; letter-spacing: .32em; text-transform: uppercase; color: var(--accent); text-align: right; line-height: 2; }
+  .pdf-doc .pd-tit { font-size: 30px; font-weight: 700; letter-spacing: -.01em; margin: 34px 0 6px; }
+  .pdf-doc .pd-kick { font-size: 8.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 26px; }
+  .pdf-doc .pd-cli { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 40px; font-size: 11.5px; margin-bottom: 30px; }
+  .pdf-doc .pd-cli span { color: var(--accent); font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase; display: block; }
+  .pdf-doc table { width: 100%; border-collapse: collapse; }
+  .pdf-doc th { font-size: 8.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); font-weight: 600; text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(22,24,26,.25); }
+  .pdf-doc th.n, .pdf-doc td.n { text-align: right; }
+  .pdf-doc td { font-size: 12px; padding: 11px 0; border-bottom: 1px solid rgba(22,24,26,.07); vertical-align: top; }
+  .pdf-doc td .rub { font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+  .pdf-doc td .med { font-size: 10px; color: var(--accent); margin-top: 2px; }
+  .pdf-doc .pd-tots { margin-top: 22px; margin-left: auto; width: 300px; font-size: 12px; }
+  .pdf-doc .pd-tots .row { display: flex; justify-content: space-between; padding: 5px 0; }
+  .pdf-doc .pd-tots .row.gt { border-top: 1px solid rgba(22,24,26,.25); margin-top: 8px; padding-top: 12px; font-size: 15px; font-weight: 700; }
+  .pdf-doc .pd-tots .row span { color: var(--accent); }
+  .pdf-doc .pd-tots .row.gt span { color: var(--ink); }
+  .pdf-doc .pd-nota { margin-top: 34px; font-size: 9.5px; line-height: 1.7; color: var(--accent); }
+  .pdf-doc .pd-foot { margin-top: 30px; padding-top: 18px; border-top: 1px solid rgba(22,24,26,.16); display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
 </style>
 </head>
 <body>
@@ -96,6 +124,7 @@
 
 <script src="fb.js"></script>
 <script src="precios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 const ESTADOS = ['pendiente','en-proceso','cerrada'];
 let fb = null;
@@ -175,7 +204,7 @@ async function cargar(){
       <div class="ops">
         Estado <select>${ESTADOS.map(e=>`<option ${e===(q.estado||'pendiente')?'selected':''}>${e}</option>`).join('')}</select>
         <a href="https://wa.me/52${(q.telefono||'').replace(/\D/g,'').replace(/^52/,'')}" target="_blank" style="font-size:.74rem">Responder por WhatsApp →</a>
-        ${(q.productos||[]).length?'<button class="copia">Copiar cotización</button>':''}
+        ${(q.productos||[]).length?'<button class="pdf">Descargar PDF</button>':''}
         <button class="del">Eliminar</button>
       </div>`;
     const recalc = () => {
@@ -212,26 +241,71 @@ async function cargar(){
       if (el) el.oninput = () => recalc();
     });
     recalc();
-    const copiaBtn = div.querySelector('.copia');
-    if (copiaBtn) copiaBtn.onclick = async () => {
+    const pdfBtn = div.querySelector('.pdf');
+    if (pdfBtn) pdfBtn.onclick = async () => {
+      if (typeof html2pdf === 'undefined') { alert('No cargó el generador de PDF — revisa tu conexión.'); return; }
+      pdfBtn.disabled = true; pdfBtn.textContent = 'Generando…';
       let mat = 0;
-      const lines = (q.productos||[]).map((p,i) => {
+      const filasPdf = (q.productos||[]).map((p,i) => {
         const m2 = m2De(p);
         const v = parseFloat(precios[i]) || 0;
-        const line = m2 ? v*m2 : v;
+        const line = v ? (m2 ? v*m2 : v) : 0;
         mat += line;
-        return `• ${p.nombre}${p.rubro?' ('+p.rubro+')':''}${p.medidas?` — ${p.medidas}`:(m2?` — ${p.m2} m²`:'')}${v?` × ${money(v)}${m2?'/m²':''} = ${money(line)}`:' — precio pendiente'}`;
-      });
+        return `<tr>
+          <td>${esc(p.nombre)}<div class="rub">${esc(p.rubro)}</div>${p.medidas?`<div class="med">${esc(p.medidas)}</div>`:''}</td>
+          <td class="n">${p.m2?esc(p.m2):'1'}</td>
+          <td class="n">${v?money(v):'—'}</td>
+          <td class="n">${v?money(line):'—'}</td>
+        </tr>`;
+      }).join('');
       const fl = parseFloat(div.querySelector('.flete')?.value) || 0;
       const ot = parseFloat(div.querySelector('.otros')?.value) || 0;
       const gt = mat + fl + ot;
-      const desglose = [mat && `Materiales: ${money(mat)}`, fl && `Envío: ${money(fl)}`, ot && `Otros: ${money(ot)}`, gt && `TOTAL: ${money(gt)}`].filter(Boolean).join('\n');
-      const txt = `Cotización PORTOFINO${q.nombre?' — '+q.nombre:''}\n\n${lines.join('\n')}${gt?'\n\n'+desglose:''}`;
+      const docEl = document.createElement('div');
+      docEl.className = 'pdf-doc';
+      docEl.innerHTML = `
+        <div class="pd-head">
+          <img src="img/logo-ink.png" alt="PORTOFINO">
+          <div class="pd-brand">Mármol · Granito · Cuarcita<br>Cuarzo · Dekton · Travertino</div>
+        </div>
+        <div class="pd-tit">Cotización</div>
+        <div class="pd-kick">${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</div>
+        <div class="pd-cli">
+          <div><span>Cliente</span>${esc(q.nombre)||'—'}</div>
+          <div><span>Ciudad</span>${esc(q.ciudad)||'—'}</div>
+          <div><span>Teléfono</span>${esc(q.telefono)||'—'}</div>
+          <div><span>Correo</span>${esc(q.correo)||'—'}</div>
+        </div>
+        <table>
+          <thead><tr><th>Producto</th><th class="n">m²</th><th class="n">Precio m²</th><th class="n">Importe</th></tr></thead>
+          <tbody>${filasPdf}</tbody>
+        </table>
+        <div class="pd-tots">
+          ${mat?`<div class="row"><span>Materiales</span>${money(mat)}</div>`:''}
+          ${fl?`<div class="row"><span>Envío${q.ciudad?' — '+esc(q.ciudad):''}</span>${money(fl)}</div>`:''}
+          ${ot?`<div class="row"><span>Otros conceptos</span>${money(ot)}</div>`:''}
+          <div class="row gt"><span>Total</span>${money(gt)}</div>
+        </div>
+        <div class="pd-nota">
+          Precios en MXN, sujetos a existencia y medición final en sitio. Vigencia de cotización: 15 días naturales.
+          ${q.instalacion?'El cliente marcó interés en instalación.'+'<br>':''}La medición, corte e instalación corren por cuenta del cliente o su contratista.
+        </div>
+        <div class="pd-foot">
+          <span>portofino.com.mx</span><span>ventas@portofino.com.mx</span><span>WhatsApp 993 302 3903</span><span>@portofino.granitosymarmoles</span>
+        </div>`;
+      document.body.appendChild(docEl);
+      const nom = (q.nombre||'cliente').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
       try {
-        await navigator.clipboard.writeText(txt);
-        copiaBtn.textContent = '✓ Copiada';
-        setTimeout(() => copiaBtn.textContent = 'Copiar cotización', 1600);
-      } catch(e){ alert('No se pudo copiar — selecciona el texto manualmente.'); }
+        await html2pdf().set({
+          margin: 0,
+          filename: `cotizacion-portofino-${nom||'cliente'}.pdf`,
+          image: { type: 'jpeg', quality: .96 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+          jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+        }).from(docEl).save();
+      } catch(e){ alert('No se pudo generar el PDF.'); }
+      docEl.remove();
+      pdfBtn.disabled = false; pdfBtn.textContent = 'Descargar PDF';
     };
     div.querySelector('select').onchange = async e => {
       await fb.firestore().collection('cotizaciones').doc(doc.id).update({estado: e.target.value});
