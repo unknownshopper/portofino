@@ -18,7 +18,6 @@
 ## Por hacer (técnico, sin bloqueo)
 
 - [ ] **Asociar WhatsApp Business 993 302 3903 a la bandeja de Business Suite** (Mensajes → WhatsApp → Empezar; tener el cel a la mano para el código de verificación). Debe ser vinculación de la **app WhatsApp Business** (el cel sigue funcionando y ambos ven los chats). Si Meta pide migrar a API/Cloud o dice que el número se quitará de la app → CANCELAR
-- [ ] **Eduardo: TXT de verificación de dominio en GoDaddy** — meta tag falló (crawler de Meta); método correcto = TXT. En DNS de `portofino.com.mx` agregar: tipo **TXT**, host `@`, valor `facebook-domain-verification=63tzrb6sfo543gfu4h28mqgfa42u4n` (confirmar el valor exacto en Business Manager → Seguridad de marca → Dominios → opción TXT — es el mismo código de la metaetiqueta). NO tocar A/CNAME/MX. Luego clic en "Verificar dominio"
 - [ ] **Centro de seguridad Meta**: (a) ~~dominio de confianza~~ HECHO 27-oct; (b) ~~passkey en "Ventas Portofino"~~ HECHO 27-oct (guardada en Administrador de contraseñas de Google/Chrome). NO eliminar "UnclaimedBusinessUser FromPool" (@portofino.granitosymarmoles): es el usuario-placeholder del login de Instagram, probablemente ligado al "Confirmar acceso" de IG en la bandeja; si la alerta persiste por él, ignorarla; (c) 2FA del portfolio está en "Nadie" → subir a admins/todos
 - [ ] **Google Search Console**: verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
@@ -26,6 +25,7 @@
 
 ## Ya resuelto
 
+- [x] **Dominio `portofino.com.mx` verificado en Meta** (27-oct) — la falla era una `q` de más en el código de la metaetiqueta. Hoy quedan 2 métodos activos: metaetiqueta en `index.html` + archivo `63tzrb6sfo543gfu4h28mqgfa42u4n.html` en raíz. **NO borrar ninguno** (Meta re-verifica periódicamente). Ya no se necesita el TXT en GoDaddy
 - [x] **Business Manager: correo `ventas@portofino.com.mx` y WhatsApp Business 993 302 3903 verificados** (27-oct, códigos confirmados con Portofino)
 - [x] **Dominio `portofino.com.mx` en producción** — DNS (A + CNAME www) → GitHub Pages, certificado Let's Encrypt emitido (apex + www), Enforce HTTPS activado por API, `og:url`/`og:image` migrados a portofino.com.mx
 - [x] **WhatsApp único de ventas 993 302 3903** — ícono central en contacto, promociones, chat, modal y aviso migrados; automatizaciones Meta actualizadas al mismo número
