@@ -6,28 +6,100 @@ const PORTOFINO_DATA = [
   "slug": "cuarcitas",
   "proyectos": [
    {
-    "nombre": "CUARCITA BLANCA",
+    "nombre": "ADAMANTIUM",
     "fotos": [
-     "img/thumbs/muestra-silestone-3.webp"
+     "img/thumbs/cuarcitas-0.webp",
+     "img/thumbs/cuarcitas-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-3.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarcitas-0.webp"
    },
    {
-    "nombre": "CUARCITA DORADA",
+    "nombre": "ALPHINE WHITE",
     "fotos": [
-     "img/thumbs/muestra-marmoles-2.webp"
+     "img/thumbs/cuarcitas-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-marmoles-2.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarcitas-2.webp"
    },
    {
-    "nombre": "CUARCITA VERDE",
+    "nombre": "BLUE ROMA",
     "fotos": [
-     "img/thumbs/muestra-marmoles-3.webp"
+     "img/thumbs/cuarcitas-3.webp",
+     "img/thumbs/cuarcitas-4.webp"
     ],
-    "thumb": "img/thumbs/muestra-marmoles-3.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarcitas-3.webp"
+   },
+   {
+    "nombre": "CRISTALLO",
+    "fotos": [
+     "img/thumbs/cuarcitas-5.webp",
+     "img/thumbs/cuarcitas-6.webp",
+     "img/thumbs/cuarcitas-7.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-5.webp"
+   },
+   {
+    "nombre": "CRISTALLO DE MARE",
+    "fotos": [
+     "img/thumbs/cuarcitas-8.webp",
+     "img/thumbs/cuarcitas-9.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-8.webp"
+   },
+   {
+    "nombre": "FUSION RED",
+    "fotos": [
+     "img/thumbs/cuarcitas-10.webp",
+     "img/thumbs/cuarcitas-11.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-10.webp"
+   },
+   {
+    "nombre": "GALAPAGOS",
+    "fotos": [
+     "img/thumbs/cuarcitas-12.webp",
+     "img/thumbs/cuarcitas-13.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-12.webp"
+   },
+   {
+    "nombre": "KALAHARI",
+    "fotos": [
+     "img/thumbs/cuarcitas-14.webp",
+     "img/thumbs/cuarcitas-15.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-14.webp"
+   },
+   {
+    "nombre": "LAVEZZI",
+    "fotos": [
+     "img/thumbs/cuarcitas-16.webp",
+     "img/thumbs/cuarcitas-17.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-16.webp"
+   },
+   {
+    "nombre": "LEBLON",
+    "fotos": [
+     "img/thumbs/cuarcitas-18.webp",
+     "img/thumbs/cuarcitas-19.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-18.webp"
+   },
+   {
+    "nombre": "MIDNIGTH",
+    "fotos": [
+     "img/thumbs/cuarcitas-20.webp",
+     "img/thumbs/cuarcitas-21.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-20.webp"
+   },
+   {
+    "nombre": "PARADISE CRYSTAL",
+    "fotos": [
+     "img/thumbs/cuarcitas-22.webp",
+     "img/thumbs/cuarcitas-23.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-22.webp"
    }
   ],
   "varios": []
@@ -223,28 +295,181 @@ const PORTOFINO_DATA = [
   "slug": "sinterizados",
   "proyectos": [
    {
-    "nombre": "SINTERIZADO BLANCO",
+    "nombre": "ARABESCATO VIOLA",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/sinterizados-0.webp",
+     "img/thumbs/sinterizados-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
-    "muestra": true
+    "thumb": "img/thumbs/sinterizados-0.webp"
    },
    {
-    "nombre": "SINTERIZADO GRIS",
+    "nombre": "BIANCO EXTRA",
     "fotos": [
-     "img/thumbs/muestra-dekton-1.webp"
+     "img/thumbs/sinterizados-2.webp",
+     "img/thumbs/sinterizados-3.webp"
     ],
-    "thumb": "img/thumbs/muestra-dekton-1.webp",
-    "muestra": true
+    "thumb": "img/thumbs/sinterizados-2.webp"
    },
    {
-    "nombre": "SINTERIZADO 03",
+    "nombre": "BRECCIA STONE BEIGE",
     "fotos": [
-     "img/thumbs/muestra-dekton-3.webp"
+     "img/thumbs/sinterizados-4.webp",
+     "img/thumbs/sinterizados-5.webp"
     ],
-    "thumb": "img/thumbs/muestra-dekton-3.webp",
-    "muestra": true
+    "thumb": "img/thumbs/sinterizados-4.webp"
+   },
+   {
+    "nombre": "BUSH FLOWER",
+    "fotos": [
+     "img/thumbs/sinterizados-6.webp",
+     "img/thumbs/sinterizados-7.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-6.webp"
+   },
+   {
+    "nombre": "CALACATTA AMBRA",
+    "fotos": [
+     "img/thumbs/sinterizados-8.webp",
+     "img/thumbs/sinterizados-9.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-8.webp"
+   },
+   {
+    "nombre": "CARAVAGGIO GOLD",
+    "fotos": [
+     "img/thumbs/sinterizados-10.webp",
+     "img/thumbs/sinterizados-11.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-10.webp"
+   },
+   {
+    "nombre": "CEPPO DI GRE",
+    "fotos": [
+     "img/thumbs/sinterizados-12.webp",
+     "img/thumbs/sinterizados-13.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-12.webp"
+   },
+   {
+    "nombre": "CHATEAUX D'ARGILLERS",
+    "fotos": [
+     "img/thumbs/sinterizados-14.webp",
+     "img/thumbs/sinterizados-15.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-14.webp"
+   },
+   {
+    "nombre": "CORCHIA MICHELANGELO",
+    "fotos": [
+     "img/thumbs/sinterizados-16.webp",
+     "img/thumbs/sinterizados-17.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-16.webp"
+   },
+   {
+    "nombre": "GLAM IVORY",
+    "fotos": [
+     "img/thumbs/sinterizados-18.webp",
+     "img/thumbs/sinterizados-19.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-18.webp"
+   },
+   {
+    "nombre": "HERMITAGE",
+    "fotos": [
+     "img/thumbs/sinterizados-20.webp",
+     "img/thumbs/sinterizados-21.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-20.webp"
+   },
+   {
+    "nombre": "LINCOLN DORADO",
+    "fotos": [
+     "img/thumbs/sinterizados-22.webp",
+     "img/thumbs/sinterizados-23.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-22.webp"
+   },
+   {
+    "nombre": "MACAUBAS BEIGE",
+    "fotos": [
+     "img/thumbs/sinterizados-24.webp",
+     "img/thumbs/sinterizados-25.webp",
+     "img/thumbs/sinterizados-26.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-24.webp"
+   },
+   {
+    "nombre": "MONT BLANC",
+    "fotos": [
+     "img/thumbs/sinterizados-27.webp",
+     "img/thumbs/sinterizados-28.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-27.webp"
+   },
+   {
+    "nombre": "NERO EXTRA",
+    "fotos": [
+     "img/thumbs/sinterizados-29.webp",
+     "img/thumbs/sinterizados-30.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-29.webp"
+   },
+   {
+    "nombre": "PORTORO",
+    "fotos": [
+     "img/thumbs/sinterizados-31.webp",
+     "img/thumbs/sinterizados-32.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-31.webp"
+   },
+   {
+    "nombre": "PRECIOUS STONE",
+    "fotos": [
+     "img/thumbs/sinterizados-33.webp",
+     "img/thumbs/sinterizados-34.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-33.webp"
+   },
+   {
+    "nombre": "ROSSO LEPANTO",
+    "fotos": [
+     "img/thumbs/sinterizados-35.webp",
+     "img/thumbs/sinterizados-36.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-35.webp"
+   },
+   {
+    "nombre": "SAHARA BLACK",
+    "fotos": [
+     "img/thumbs/sinterizados-37.webp",
+     "img/thumbs/sinterizados-38.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-37.webp"
+   },
+   {
+    "nombre": "STATUARIO CREMA",
+    "fotos": [
+     "img/thumbs/sinterizados-39.webp",
+     "img/thumbs/sinterizados-40.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-39.webp"
+   },
+   {
+    "nombre": "TAJ MAHAL",
+    "fotos": [
+     "img/thumbs/sinterizados-41.webp",
+     "img/thumbs/sinterizados-42.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-41.webp"
+   },
+   {
+    "nombre": "TRAVERTINO BEIGE",
+    "fotos": [
+     "img/thumbs/sinterizados-43.webp",
+     "img/thumbs/sinterizados-44.webp"
+    ],
+    "thumb": "img/thumbs/sinterizados-43.webp"
    }
   ],
   "varios": []
