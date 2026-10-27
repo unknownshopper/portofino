@@ -51,10 +51,16 @@
   .tools { display:flex; gap:8px; }
   .tools button { font-size:.74rem; padding:7px 12px; border-radius:6px; border:1px solid rgba(22,24,26,.2); background:#fff; }
   .count { color:var(--accent); font-size:.8rem; }
-  .px-row { display:flex; align-items:center; gap:8px; margin:4px 0 2px; font-size:.78rem; color:var(--accent); }
-  .px-row .precio { width:96px; font:inherit; font-size:.78rem; padding:4px 8px; border:1px solid rgba(22,24,26,.2); border-radius:6px; }
-  .px-row .lt { font-weight:600; font-size:.78rem; color:var(--ink); min-width:90px; }
-  .q .total { text-align:right; font-weight:700; font-size:.88rem; margin-top:8px; }
+  .tbl { width:100%; border-collapse:collapse; margin:8px 0 4px; }
+  .tbl th { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; text-align:left; padding:4px 8px 6px 0; border-bottom:1px solid rgba(22,24,26,.12); }
+  .tbl td { font-size:.84rem; padding:7px 8px 7px 0; border-bottom:1px dashed rgba(22,24,26,.08); vertical-align:middle; }
+  .tbl th.num, .tbl td.num { text-align:right; }
+  .tbl .precio, .ex-row input { width:92px; font:inherit; font-size:.78rem; padding:4px 8px; border:1px solid rgba(22,24,26,.2); border-radius:6px; text-align:right; }
+  .tbl .lt { font-weight:600; font-size:.8rem; white-space:nowrap; }
+  .ex-row { display:flex; gap:10px; align-items:center; justify-content:flex-end; margin-top:10px; font-size:.76rem; color:var(--accent); flex-wrap:wrap; }
+  .ex-row input { width:88px; }
+  .q .total { text-align:right; font-weight:700; font-size:.95rem; margin-top:10px; }
+  .q .total .gt { color:var(--accent); }
   main { padding:24px 0 60px; }
 </style>
 </head>
@@ -88,6 +94,7 @@
 </main>
 
 <script src="fb.js"></script>
+<script src="precios.js"></script>
 <script>
 const ESTADOS = ['pendiente','en-proceso','cerrada'];
 let fb = null;
@@ -132,12 +139,20 @@ async function cargar(){
     const money = n => n.toLocaleString('es-MX',{style:'currency',currency:'MXN'});
     const precios = [...(q.precios||[])];
     const m2De = p => parseFloat(p && p.m2) || 0;
-    const prods = (q.productos||[]).map((p,i) => {
+    const baseDe = p => p && PRECIOS_BASE[p.nombre] != null ? PRECIOS_BASE[p.nombre]
+                     : p && PRECIOS_BASE['_'+p.rubro] != null ? PRECIOS_BASE['_'+p.rubro] : null;
+    const nprod = (q.productos||[]).length;
+    const filas = (q.productos||[]).map((p,i) => {
       const m2 = m2De(p);
-      const pv = precios[i] == null ? '' : precios[i];
-      return `<li>• <b>${esc(p.nombre)}</b> <span style="color:var(--accent)">(${esc(p.rubro)})</span>${p.medidas?` — ${esc(p.medidas)}`:(p.m2?` — ${esc(p.m2)} m² aprox.`:'')}
-        <div class="px-row">$ <input class="precio" data-i="${i}" type="number" min="0" step="any" value="${esc(pv)}" placeholder="${m2?'$/m²':'$'}"><span class="lt">${(pv && m2)?money(m2*pv):''}</span></div></li>`;
+      const pv = precios[i] == null ? (baseDe(p) ?? '') : precios[i];
+      return `<tr>
+        <td><b>${esc(p.nombre)}</b> <span style="color:var(--accent);font-size:.72rem">${esc(p.rubro)}</span>${p.medidas?`<div style="font-size:.72rem;color:var(--accent)">${esc(p.medidas)}</div>`:''}</td>
+        <td class="num">${m2?esc(p.m2):'—'}</td>
+        <td class="num"><input class="precio" data-i="${i}" type="number" min="0" step="any" value="${esc(pv)}" placeholder="${m2?'$/m²':'$'}"></td>
+        <td class="num lt">${(pv!=='' && m2)?money(m2*pv):((pv!=='' && !m2)?money(pv):'')}</td>
+      </tr>`;
     }).join('');
+    const prods = nprod ? `<table class="tbl"><thead><tr><th>Producto</th><th class="num">m²</th><th class="num">$/m²</th><th class="num">Total</th></tr></thead><tbody>${filas}</tbody></table>` : '';
     div.innerHTML = `
       <div class="top">
         <span class="who">${esc(q.nombre)||'—'}</span>
@@ -148,8 +163,12 @@ async function cargar(){
         · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${esc(q.canal)||'—'}</span>
         ${q.instalacion?' · <b style="color:var(--ink)">🔧 con instalación</b>':''}
       </div>
-      <ul>${prods}</ul>
-      ${(q.productos||[]).length?'<div class="total">Total materiales: <span class="gt">—</span></div>':''}
+      ${prods}
+      ${nprod?`<div class="ex-row">
+        <span>+ Envío $ <input class="flete" type="number" min="0" step="any" value="${esc(q.flete||'')}"></span>
+        <span>+ Otros $ <input class="otros" type="number" min="0" step="any" value="${esc(q.otros||'')}"></span>
+      </div>
+      <div class="total">Total: <span class="gt">—</span></div>`:''}
       ${q.mensaje?`<div class="msg">“${esc(q.mensaje)}”</div>`:''}
       <div class="ops">
         Estado <select>${ESTADOS.map(e=>`<option ${e===(q.estado||'pendiente')?'selected':''}>${e}</option>`).join('')}</select>
@@ -158,36 +177,54 @@ async function cargar(){
         <button class="del">Eliminar</button>
       </div>`;
     const recalc = () => {
-      let gt = 0;
+      let mat = 0;
       div.querySelectorAll('.precio').forEach(inp => {
         const i = +inp.dataset.i;
         const p = (q.productos||[])[i];
         const m2 = m2De(p);
         const v = parseFloat(inp.value) || 0;
-        inp.parentElement.querySelector('.lt').textContent = (v && p) ? money(m2 ? v*m2 : v) : '';
-        if (p) gt += m2 ? v*m2 : v;
+        const td = inp.closest('td').nextElementSibling;
+        td.textContent = (v && p) ? money(m2 ? v*m2 : v) : '';
+        if (p) mat += m2 ? v*m2 : v;
       });
+      const fl = parseFloat(div.querySelector('.flete')?.value) || 0;
+      const ot = parseFloat(div.querySelector('.otros')?.value) || 0;
       const gtEl = div.querySelector('.gt');
-      if (gtEl) gtEl.textContent = gt ? money(gt) : '—';
+      if (gtEl) gtEl.textContent = (mat || fl || ot) ? money(mat + fl + ot) : '—';
+    };
+    const guardar = async campo => {
+      try { await fb.firestore().collection('cotizaciones').doc(doc.id).update(campo); }
+      catch(e){ alert('No se pudo guardar — revisa tu conexión.'); }
     };
     div.querySelectorAll('.precio').forEach(inp => inp.onchange = async () => {
       precios[+inp.dataset.i] = parseFloat(inp.value) || null;
-      try { await fb.firestore().collection('cotizaciones').doc(doc.id).update({precios}); }
-      catch(e){ alert('No se pudo guardar el precio — revisa tu conexión.'); }
+      await guardar({precios});
       recalc();
+    });
+    ['.flete','.otros'].forEach(sel => {
+      const el = div.querySelector(sel);
+      if (el) el.onchange = async () => {
+        await guardar({ [sel.slice(1)]: parseFloat(el.value) || null });
+        recalc();
+      };
+      if (el) el.oninput = () => recalc();
     });
     recalc();
     const copiaBtn = div.querySelector('.copia');
     if (copiaBtn) copiaBtn.onclick = async () => {
-      let gt = 0;
+      let mat = 0;
       const lines = (q.productos||[]).map((p,i) => {
         const m2 = m2De(p);
         const v = parseFloat(precios[i]) || 0;
         const line = m2 ? v*m2 : v;
-        gt += line;
+        mat += line;
         return `• ${p.nombre}${p.rubro?' ('+p.rubro+')':''}${p.medidas?` — ${p.medidas}`:(m2?` — ${p.m2} m²`:'')}${v?` × ${money(v)}${m2?'/m²':''} = ${money(line)}`:' — precio pendiente'}`;
       });
-      const txt = `Cotización PORTOFINO${q.nombre?' — '+q.nombre:''}\n\n${lines.join('\n')}${gt?`\n\nTotal materiales: ${money(gt)}\n(flete e instalación por confirmar)`:''}`;
+      const fl = parseFloat(div.querySelector('.flete')?.value) || 0;
+      const ot = parseFloat(div.querySelector('.otros')?.value) || 0;
+      const gt = mat + fl + ot;
+      const desglose = [mat && `Materiales: ${money(mat)}`, fl && `Envío: ${money(fl)}`, ot && `Otros: ${money(ot)}`, gt && `TOTAL: ${money(gt)}`].filter(Boolean).join('\n');
+      const txt = `Cotización PORTOFINO${q.nombre?' — '+q.nombre:''}\n\n${lines.join('\n')}${gt?'\n\n'+desglose:''}`;
       try {
         await navigator.clipboard.writeText(txt);
         copiaBtn.textContent = '✓ Copiada';
