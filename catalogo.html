@@ -554,7 +554,8 @@ function resumen() {
   const f = id => document.getElementById(id).value.trim();
   const productos = Object.keys(cot).map(id => {
     const it = ITEMS.find(x => x.id === id);
-    const m = parseFloat(String(cot[id].medidas || '').replace(',', '.'));
+    const dims = String(cot[id].medidas || '').replace(/[,x×]/gi, ' ').match(/\d+\.?\d*/g);
+    const m = dims ? (dims.length > 1 ? dims.reduce((a, b) => a * +b, 1) : +dims[0]) : NaN;
     return it ? { nombre: it.nombre, rubro: it.rubro, medidas: cot[id].medidas || null, m2: isNaN(m) ? null : m } : null;
   }).filter(Boolean);
   return {
