@@ -19,7 +19,7 @@
 
 - [ ] **Confirmar códigos de Business Manager** (mañana): Meta mandó código de 6 dígitos a `ventas@portofino.com.mx` (correo) y otro por WhatsApp al `993 302 3903` — caducan en 60 min, si expiran dar "Reenviar código". Requiere acceso al buzón de ventas@ y al celular de ventas
 - [ ] **Asociar WhatsApp Business 993 302 3903 a la bandeja de Business Suite** (Mensajes → WhatsApp → Empezar; tener el cel a la mano para el código de verificación)
-- [ ] Verificación de dominio en Business Manager → meta tag o TXT en DNS (dominio ya activo)
+- [ ] **Eduardo: TXT de verificación de dominio en GoDaddy** — meta tag falló (crawler de Meta); método correcto = TXT. En DNS de `portofino.com.mx` agregar: tipo **TXT**, host `@`, valor `facebook-domain-verification=63tzrb6sfo543gfu4h28mqqgfa42u4n` (confirmar el valor exacto en Business Manager → Seguridad de marca → Dominios → opción TXT — es el mismo código de la metaetiqueta). NO tocar A/CNAME/MX. Luego clic en "Verificar dominio"
 - [ ] **Google Search Console**: verificar propiedad, enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
 - [ ] Pixel: re-verificar eventos en Events Manager tras el dominio nuevo
