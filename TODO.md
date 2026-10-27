@@ -11,7 +11,7 @@
 
 ## Para preguntar a Eduardo
 
-- [ ] **RFC / razón social** para el aviso de privacidad
+- [ ] **Denominación/razón social** para el aviso de privacidad (solo el nombre legal — la LFPDPPP pide identidad del responsable, no el RFC; el RFC se omite por decisión de Portofino)
 - [ ] ¿Precio por m² público en el catálogo o siempre "a cotización"? (hoy: sin precio público)
 - [ ] Dirección física de Tuxtla Gutiérrez (hoy solo ciudad + tel 961 217 5504)
 
