@@ -265,6 +265,20 @@
   .enviar.wa { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
   .enviar:disabled { opacity: .4; cursor: default; transform: none; }
   .cot-aviso { font-size: .72rem; opacity: .55; line-height: 1.6; margin-top: .4rem; }
+  .cot-form[hidden] { display: none; }
+  .cot-form.enviando > :not(#enviar) { display: none; }
+  .cot-ok { text-align: center; padding: 3.5rem 1rem 2.5rem; }
+  .cot-ok[hidden] { display: none; }
+  .ok-badge {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: #e2efe3; color: #2e6b3e;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.3rem;
+  }
+  .ok-badge svg { width: 34px; height: 34px; }
+  .cot-ok h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .6rem; }
+  .cot-ok p { font-size: .85rem; opacity: .7; line-height: 1.65; margin-bottom: 1.8rem; }
+  .cot-ok .enviar { max-width: 320px; margin: 0 auto; }
 
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -371,7 +385,8 @@
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas, precio final y costo de envío a su ciudad. Envíos a todo México.</p>
     </form>
     <div class="cot-ok" id="cotOk" hidden>
-      <h3>Solicitud recibida</h3>
+      <div class="ok-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h3>Solicitud enviada</h3>
       <p id="cotOkTxt"></p>
       <button class="enviar mail" id="cotOkBtn" type="button">Seguir explorando →</button>
     </div>
@@ -583,13 +598,22 @@ cotForm.addEventListener('submit', async e => {
   if (!esBot && !flood && !datosValidos(r)) return;
   const btn = document.getElementById('enviar');
   btn.disabled = true; btn.textContent = 'Enviando…';
+  cotForm.classList.add('enviando');
   if (!esBot && !flood) {
-    await guardarCotizacion({ ...r.datos, canal: 'web', texto: r.texto });
-    px('Lead', { canal: 'panel' });
-    localStorage.setItem('pf_envio', Date.now());
+    try {
+      await guardarCotizacion({ ...r.datos, canal: 'web', texto: r.texto });
+      px('Lead', { canal: 'panel' });
+      localStorage.setItem('pf_envio', Date.now());
+    } catch(err) {
+      cotForm.classList.remove('enviando');
+      btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+      alert('No se pudo enviar la solicitud — revise su conexión e inténtelo de nuevo.');
+      return;
+    }
   }
   cot = {}; guardar(); renderGrid(); renderFab();
   renderPanel();
+  cotForm.classList.remove('enviando');
   cotForm.hidden = true;
   document.getElementById('cotOkTxt').textContent =
     `Cotización enviada — un ejecutivo le contactará en breve para confirmar existencias, precio y envío a ${r.datos.ciudad}.`;
@@ -597,6 +621,7 @@ cotForm.addEventListener('submit', async e => {
 });
 document.getElementById('cotOkBtn').onclick = () => {
   cerrarPanel();
+  cotForm.classList.remove('enviando');
   cotForm.hidden = false; cotOk.hidden = true;
   cotForm.reset();
   const btn = document.getElementById('enviar');
