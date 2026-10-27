@@ -477,7 +477,7 @@ function renderGrid() {
     d.querySelector('.add').onclick = () => {
       if (cot[it.id]) delete cot[it.id];
       else {
-        cot[it.id] = { m2: '' };
+        cot[it.id] = { medidas: '' };
         px('AddToCart', { content_name: it.nombre, content_category: it.rubro });
       }
       guardar(); renderGrid(); renderFab();
@@ -518,10 +518,10 @@ function renderPanel() {
       <div>
         <div class="nom">${it.nombre}</div>
         <div class="rub">${it.rubro}</div>
-        <input class="m2" type="number" min="0" step="0.5" placeholder="Área en m² (aprox.)" value="${cot[id].m2 || ''}">
+        <input class="m2" type="text" inputmode="decimal" placeholder="Medidas — ej. 55 m² o 2.5 × 0.6" value="${cot[id].medidas || ''}">
       </div>
       <button class="quitar" aria-label="Quitar">×</button>`;
-    row.querySelector('.m2').oninput = e => { cot[id].m2 = e.target.value; guardar(); };
+    row.querySelector('.m2').oninput = e => { cot[id].medidas = e.target.value; guardar(); };
     row.querySelector('.quitar').onclick = () => { delete cot[id]; guardar(); renderPanel(); renderGrid(); renderFab(); };
     lista.appendChild(row);
   });
@@ -549,12 +549,13 @@ function resumen() {
   const lineas = Object.keys(cot).map(id => {
     const it = ITEMS.find(x => x.id === id);
     if (!it) return '';
-    return `• ${it.nombre} (${it.rubro})` + (cot[id].m2 ? ` — ${cot[id].m2} m² aprox.` : '');
+    return `• ${it.nombre} (${it.rubro})` + (cot[id].medidas ? ` — ${cot[id].medidas}` : '');
   }).filter(Boolean).join('\n');
   const f = id => document.getElementById(id).value.trim();
   const productos = Object.keys(cot).map(id => {
     const it = ITEMS.find(x => x.id === id);
-    return it ? { nombre: it.nombre, rubro: it.rubro, m2: cot[id].m2 || null } : null;
+    const m = parseFloat(String(cot[id].medidas || '').replace(',', '.'));
+    return it ? { nombre: it.nombre, rubro: it.rubro, medidas: cot[id].medidas || null, m2: isNaN(m) ? null : m } : null;
   }).filter(Boolean);
   return {
     datos: {

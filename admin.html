@@ -135,7 +135,7 @@ async function cargar(){
     const prods = (q.productos||[]).map((p,i) => {
       const m2 = m2De(p);
       const pv = precios[i] == null ? '' : precios[i];
-      return `<li>• <b>${esc(p.nombre)}</b> <span style="color:var(--accent)">(${esc(p.rubro)})</span>${p.m2?` — ${esc(p.m2)} m² aprox.`:''}
+      return `<li>• <b>${esc(p.nombre)}</b> <span style="color:var(--accent)">(${esc(p.rubro)})</span>${p.medidas?` — ${esc(p.medidas)}`:(p.m2?` — ${esc(p.m2)} m² aprox.`:'')}
         <div class="px-row">$ <input class="precio" data-i="${i}" type="number" min="0" step="any" value="${esc(pv)}" placeholder="${m2?'$/m²':'$'}"><span class="lt">${(pv && m2)?money(m2*pv):''}</span></div></li>`;
     }).join('');
     div.innerHTML = `
@@ -185,7 +185,7 @@ async function cargar(){
         const v = parseFloat(precios[i]) || 0;
         const line = m2 ? v*m2 : v;
         gt += line;
-        return `• ${p.nombre}${p.rubro?' ('+p.rubro+')':''}${m2?` — ${p.m2} m²`:''}${v?` × ${money(v)}${m2?'/m²':''} = ${money(line)}`:' — precio pendiente'}`;
+        return `• ${p.nombre}${p.rubro?' ('+p.rubro+')':''}${p.medidas?` — ${p.medidas}`:(m2?` — ${p.m2} m²`:'')}${v?` × ${money(v)}${m2?'/m²':''} = ${money(line)}`:' — precio pendiente'}`;
       });
       const txt = `Cotización PORTOFINO${q.nombre?' — '+q.nombre:''}\n\n${lines.join('\n')}${gt?`\n\nTotal materiales: ${money(gt)}\n(flete e instalación por confirmar)`:''}`;
       try {
