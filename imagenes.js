@@ -100,6 +100,44 @@ const PORTOFINO_DATA = [
      "img/thumbs/cuarcitas-23.webp"
     ],
     "thumb": "img/thumbs/cuarcitas-22.webp"
+   },
+   {
+    "nombre": "POLARIS",
+    "fotos": [
+     "img/thumbs/cuarcitas-24.webp",
+     "img/thumbs/cuarcitas-25.webp",
+     "img/thumbs/cuarcitas-26.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-24.webp"
+   },
+   {
+    "nombre": "POLARIS GOLD",
+    "fotos": [
+     "img/thumbs/cuarcitas-27.webp",
+     "img/thumbs/cuarcitas-28.webp",
+     "img/thumbs/cuarcitas-29.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-27.webp"
+   },
+   {
+    "nombre": "SANTORINI",
+    "fotos": [
+     "img/thumbs/cuarcitas-30.webp",
+     "img/thumbs/cuarcitas-31.webp",
+     "img/thumbs/cuarcitas-32.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-30.webp"
+   },
+   {
+    "nombre": "TAJ MAHAL",
+    "fotos": [
+     "img/thumbs/cuarcitas-33.webp",
+     "img/thumbs/cuarcitas-34.webp",
+     "img/thumbs/cuarcitas-35.webp",
+     "img/thumbs/cuarcitas-36.webp",
+     "img/thumbs/cuarcitas-37.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-33.webp"
    }
   ],
   "varios": []
