@@ -2,7 +2,7 @@
 
 ## Reunión con Gladys — miércoles 28-oct, 4 pm (presencial)
 
-- [ ] **Vincular WhatsApp Business 993 302 3903 a la bandeja de Business Suite** — 27-oct falló el intento remoto: se le mandó captura del QR, aceptó "Compartir todos los chats" pero "No se pudo escanear el código" (el QR caduca en minutos, es de un solo uso y lo leyó desde foto/galería). Mañana en persona:
+- [x] **WhatsApp 993 302 3903 VINCULADO a la bandeja de Business Suite (28-oct, con Gladys)** — sincronizando contactos e historial. Pendiente: revisar si WhatsApp aparece como canal en Automatizaciones; configurar en la app bienvenida/ausencia/respuestas rápidas/catálogo. Historial (referencia): 27-oct falló el intento remoto: se le mandó captura del QR, aceptó "Compartir todos los chats" pero "No se pudo escanear el código" (el QR caduca en minutos, es de un solo uso y lo leyó desde foto/galería). Mañana en persona:
   1. Gladys actualiza WhatsApp Business en App Store **antes** de empezar
   2. Business Suite → Mensajes → WhatsApp → Empezar → "Comparte tus contactos y chats" (QR)
   3. En su cel: Configuración → Cuenta → **Plataforma para empresas** → Escanear código QR → apuntar la cámara **directo a la pantalla** (no captura). Si tarda: "Volver" y reentrar para QR nuevo
@@ -30,7 +30,7 @@
 
 ## Bloqueado — esperando externos
 
-- [ ] **Eduardo: subir fotos reales a `Productos/`** — la estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro
+- [ ] **Eduardo: subir fotos reales a `Productos/`** — 28-oct: YA hay reales en **CUARCITAS (16 productos, 38 fotos; falta foto de MARE BIANCO)** y **SINTERIZADOS (22, 45 fotos)**, publicadas por el sync de las 8:56 am. Siguen vacías (con muestras de relleno): CUARZOS, DEKTON, GRANITOS, MÁRMOLES, SELLADORES (carpetas PRODUCTO 01/02/03); ECLOS, TARJAS y TRAVERTINO también con relleno. La estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro
 - [ ] **Fusión de páginas FB** — falta control total en ambas (hoy solo admin). Conservar `Portofino Granitos y Mármoles`, absorber `portofinoveracruz`. Al tener el handle final: actualizar link en CTA contacto + tarjeta Veracruz + `sameAs` del JSON-LD
 - [ ] **Google Business Profile** — ya existe ficha "PORTOFINO - Mármoles y Granitos" (matriz, 5.0★). **Sí tiene dueño: `vi...@gmail.com`** (27-oct, Eduardo preguntando a Gladys quién es). Si alguien de Portofino la controla → que agregue la cuenta corporativa como propietario y a nosotros como admin. Si no → "Solicitar acceso" desde cuenta corporativa (el dueño tiene unos días para responder; si no contesta, Google suele habilitar reclamarla). NO con cuenta personal. Horario en ficha dice "cierra 5:30 a.m." — corregir. Luego: subir fotos nuevas (las actuales dicen "Stonia"), agregar sitio web, y crear fichas de Sabina, Veracruz y Tuxtla
 - [ ] **Alertas al recibir cotización** — hoy el lead solo llega al panel admin; falta aviso a la oficina. Opciones: Cloud Function (requiere plan Blaze/tarjeta), extensión "Trigger Email" de Firebase, o webhook Make/Zapier gratis → correo a `ventas@portofino.com.mx`. Decidir ruta con Eduardo
