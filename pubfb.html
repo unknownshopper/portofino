@@ -114,7 +114,7 @@
     <div class="kick">Caption de la publicación</div>
     <textarea id="cap"></textarea>
     <div class="row">
-      <button class="pri" id="genOllama">✦ Generar con Ollama</button>
+      <button class="pri" id="genOllama">✦ Generar con IA</button>
       <button id="genTpl">Plantilla</button>
       <button id="copyCap">Copiar caption</button>
       <button id="dlAll">Descargar las 4 fotos</button>
@@ -127,6 +127,7 @@
 </footer>
 
 <script src="imagenes.js"></script>
+<script src="fb.js"></script>
 <script>
 const OLLAMA = 'http://localhost:11434';
 let picks = [], salt = 0, model = null;
@@ -294,59 +295,73 @@ async function renderPromo(p, titular, detalle, vigencia){
 }
 
 // ── caption ──
+const WA = 'https://wa.me/529933023903';
+const CAT = 'https://portofino.com.mx/catalogo.html';
+const tit = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + c.toUpperCase())
+  .replace(/ (De|Del|La|Las|Los|Y|Di|E) /g, w => w.toLowerCase());
+const RUBRO_1 = { CUARCITAS:'Cuarcita', CUARZOS:'Cuarzo', GRANITOS:'Granito', MARMOLES:'Mármol', SINTERIZADOS:'Sinterizado', TRAVERTINO:'Travertino', DEKTON:'Dekton', ECLOS:'Éclos', TARJAS:'Tarja', SELLADORES:'Sellador' };
+const rubro1 = r => RUBRO_1[r] || tit(r);
+const CIERRE = `Envíos a todo México.
+🧾 Cotiza en 2 minutos: ${CAT}
+💬 WhatsApp: ${WA}`;
+
 const tpl = p =>
 `La historia se escribe en piedra.
 
 Hay vetas que tardan milenios en formarse — y un solo instante en encontrar su lugar: tu cocina, tu muro, tu espacio.
 
-Hoy: ${p.map(e=>e.nombre.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())).join(' · ')}
-Envíos a todo México — cotiza por WhatsApp
+Hoy: ${p.map(e=>tit(e.nombre)).join(' · ')}
+
+${CIERRE}
 
 #Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
 
 const tplSingle = p =>
-`${p.nombre.charAt(0) + p.nombre.slice(1).toLowerCase()} — ${p.rubro.toLowerCase()}.
+`${tit(p.nombre)} — ${rubro1(p.rubro)}.
 
 Hay materiales que no se compran: se eligen. Pieza a pieza, veta a veta — este es de los que definen un espacio por generaciones.
 
-Envíos a todo México — cotiza por WhatsApp o en portofino.com.mx
+${CIERRE}
 
-#Portofino #${p.rubro.charAt(0) + p.rubro.slice(1).toLowerCase()} #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
+#Portofino #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #LaHistoriaSeEscribeEnPiedra #Interiorismo #EnviosATodoMexico`;
 
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
+// Gemini primero (fb.js); Ollama local solo como respaldo si está corriendo
 async function genOllama(){
   const tag = document.getElementById('ollamaTag');
-  if (!model){ alert('Ollama no está corriendo.\n\nInstala: brew install ollama\nModelo: ollama pull llama3.2\nY corre: ollama serve'); return; }
-  tag.textContent = 'Ollama: generando…';
   const single = document.getElementById('capSingle').checked ? PRODS[+prodSel.value] : null;
-  const nombres = single ? `${single.nombre} (${single.rubro})` : picks.map(e=>`${e.nombre} (${e.rubro})`).join(', ');
+  const nombres = single ? `${tit(single.nombre)} (${rubro1(single.rubro)})` : picks.map(e=>`${tit(e.nombre)} (${rubro1(e.rubro)})`).join(', ');
   const prompt =
 `Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, con envíos a todo México.
 La publicación muestra: ${nombres}.
 Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
-Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → línea de alcance (envíos a todo México) + CTA cotizar por WhatsApp → 5-7 hashtags. Máximo 80 palabras antes de hashtags. Solo el caption, sin comillas ni explicaciones.`;
-  try{
-    const r = await fetch(OLLAMA+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model, prompt, stream:false})});
-    const j = await r.json();
-    setCap(j.response.trim());
-    tag.textContent = 'Ollama: '+model;
-  }catch(e){ tag.textContent='Ollama: error'; }
+Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → este cierre EXACTO, sin cambiarlo:
+${CIERRE}
+→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas, sin markdown ni explicaciones.`;
+  tag.textContent = 'IA: generando…';
+  let txt = await gemini(prompt), via = 'Gemini';
+  if (!txt && model){
+    try{
+      const r = await fetch(OLLAMA+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model, prompt, stream:false})});
+      txt = (await r.json()).response?.trim(); via = 'Ollama '+model;
+    }catch(e){}
+  }
+  if (txt){ setCap(txt.replace(/\*\*/g,'')); tag.className='ollama on'; tag.textContent='IA: '+via; }
+  else { tag.className='ollama off'; tag.textContent='IA: sin respuesta — usa Plantilla'; }
 }
 
 async function detectOllama(){
   const tag = document.getElementById('ollamaTag');
+  tag.className = GEMINI_ON ? 'ollama on' : 'ollama off';
+  tag.textContent = GEMINI_ON ? 'IA: Gemini' : 'IA: sin Gemini';
   try{
-    const r = await fetch(OLLAMA+'/api/tags');
-    const j = await r.json();
+    const j = await (await fetch(OLLAMA+'/api/tags')).json();
     const names = j.models.map(m=>m.name);
     model = names.find(n=>/llama3|mistral|gemma|qwen/i.test(n)) || names[0];
-    tag.className='ollama on';
-    tag.textContent = model ? 'Ollama: '+model : 'Ollama: sin modelos (ollama pull llama3.2)';
-  }catch(e){
-    tag.textContent='Ollama: no detectado — brew install ollama && ollama pull llama3.2';
-  }
+    if (model) tag.textContent += ' · respaldo Ollama';
+  }catch(e){}
 }
 
 // ── render ──
@@ -470,15 +485,16 @@ document.getElementById('viewPromo').onclick = async()=>{
   const c = promoCanvas || await renderPromo(promoVals().p, promoVals().tit, promoVals().det, promoVals().vig);
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
-const tplPromo = (p,tit) =>
-`PROMOCIÓN — ${p.nombre}
+const tplPromo = (p,oferta) =>
+`PROMOCIÓN — ${tit(p.nombre)}
 
-${tit.charAt(0).toUpperCase()+tit.slice(1)}. ${document.getElementById('prDet').value.trim()}
+${oferta.charAt(0).toUpperCase()+oferta.slice(1)}. ${document.getElementById('prDet').value.trim()}
 
 ${document.getElementById('prVig').value.trim()}
-Envíos a todo México — cotiza por WhatsApp o en portofino.com.mx
 
-#Portofino #Promocion #${p.rubro.charAt(0)+p.rubro.slice(1).toLowerCase()} #EnviosATodoMexico`;
+${CIERRE}
+
+#Portofino #Promocion #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #EnviosATodoMexico`;
 document.getElementById('capPromo').onclick = ()=>setCap(tplPromo(PRODS[+promoSel.value], promoVals().tit));
 previewPromo();
 

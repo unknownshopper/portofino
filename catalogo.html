@@ -139,7 +139,56 @@
     transition: transform 1s cubic-bezier(.2,.6,.2,1);
   }
   .item:hover .item-fig img { transform: scale(1.04); }
+  .vars { display: flex; flex-wrap: wrap; gap: .45rem; }
+  .vars button {
+    width: 40px; height: 40px; border-radius: 9px; overflow: hidden;
+    border: 1px solid rgba(22,24,26,.14); padding: 0; cursor: pointer; background: #e7e9e9;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .vars button.on { border-color: var(--accent); box-shadow: 0 0 0 1.5px var(--accent); }
+  .vars img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 520px) { .vars button { width: 32px; height: 32px; border-radius: 7px; } }
+  .item-fig img { cursor: zoom-in; }
   .item h3 { font-size: .95rem; font-weight: 500; }
+
+  /* ── vista completa ── */
+  .vista {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(14,15,16,.88); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center; padding: 3.2rem 1.2rem 1.4rem;
+    opacity: 0; pointer-events: none; transition: opacity .25s;
+  }
+  .vista.open { opacity: 1; pointer-events: auto; }
+  .vista-box { width: min(1100px, 100%); max-height: 100%; display: flex; flex-direction: column; gap: .9rem; }
+  .vista-fig { position: relative; flex: 1; min-height: 0; display: flex; justify-content: center; }
+  .vista-fig img {
+    max-width: 100%; max-height: calc(100vh - 13rem); object-fit: contain;
+    border-radius: 10px; background: #1c1e20; display: block;
+  }
+  .vista-nav, .vista-x {
+    position: absolute; border: none; cursor: pointer; font-family: inherit;
+    background: rgba(255,255,255,.9); color: var(--ink); border-radius: 50%;
+  }
+  .vista-nav { top: 50%; transform: translateY(-50%); width: 2.6rem; height: 2.6rem; font-size: 1rem; }
+  .vista-nav:hover, .vista-x:hover { background: #fff; }
+  .vista-nav.prev { left: .7rem; }
+  .vista-nav.next { right: .7rem; }
+  .vista.una .vista-nav { display: none; }
+  .vista-x { top: .8rem; right: .9rem; width: 2.3rem; height: 2.3rem; font-size: 1.4rem; line-height: 1; z-index: 2; }
+  .vista-info { display: flex; align-items: center; gap: 1rem; color: var(--paper); }
+  .vista-info > div { flex: 1; display: flex; flex-direction: column; gap: .35rem; }
+  .vista-info h3 { font-size: 1.15rem; font-weight: 500; }
+  .vista-info .rubro { font-size: .58rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); }
+  .vista-cnt { font-size: .75rem; opacity: .6; letter-spacing: .1em; }
+  .vista-info .add { position: static; transform: none; }
+  .vista-info .add:hover { transform: translateY(-1px); }
+  .vista .vars { justify-content: center; }
+  .vista .vars button { width: 54px; height: 54px; border-color: rgba(255,255,255,.2); }
+  @media (max-width: 520px) {
+    .vista .vars button { width: 40px; height: 40px; }
+    .vista-info { flex-wrap: wrap; }
+    .vista-fig img { max-height: calc(100vh - 15rem); }
+  }
   .item .rubro {
     font-size: .58rem; letter-spacing: .26em; text-transform: uppercase;
     color: var(--accent); margin-top: -.35rem;
@@ -359,6 +408,27 @@
   Cotización <span class="badge" id="cotN">0</span>
 </button>
 
+<!-- VISTA completa del producto -->
+<div class="vista" id="vista" role="dialog" aria-modal="true" aria-label="Vista del producto">
+  <button class="vista-x" id="vistaX" aria-label="Cerrar">×</button>
+  <div class="vista-box">
+    <div class="vista-fig">
+      <img id="vistaImg" alt="">
+      <button class="vista-nav prev" id="vistaPrev" aria-label="Anterior">←</button>
+      <button class="vista-nav next" id="vistaNext" aria-label="Siguiente">→</button>
+    </div>
+    <div class="vista-info">
+      <div>
+        <h3 id="vistaNom"></h3>
+        <span class="rubro" id="vistaRubro"></span>
+      </div>
+      <span class="vista-cnt" id="vistaCnt"></span>
+      <button class="add" id="vistaAdd"></button>
+    </div>
+    <div class="vars" id="vistaVars"></div>
+  </div>
+</div>
+
 <!-- PANEL cotización -->
 <div class="panel-bg" id="panelBg"></div>
 <aside class="panel" id="panel" role="dialog" aria-label="Solicitud de cotización">
@@ -422,7 +492,8 @@ PORTOFINO_DATA.forEach(r => {
     nombre: p.nombre,
     rubro: r.rubro,
     slug: r.slug,
-    img: p.thumb || p.fotos[0]
+    img: p.thumb || p.fotos[0],
+    fotos: p.fotos.length ? p.fotos : [p.thumb]
   }));
 });
 
@@ -459,29 +530,100 @@ function pasaFiltro(it) {
   return (it.nombre + ' ' + it.rubro).toLowerCase().includes(q);
 }
 
+const varSel = {};
+function toggleCot(it) {
+  if (cot[it.id]) delete cot[it.id];
+  else {
+    cot[it.id] = { m2: '' };
+    px('AddToCart', { content_name: it.nombre, content_category: it.rubro });
+  }
+  guardar(); renderGrid(); renderFab();
+}
+
+// ── vista completa del producto ──
+const vista = document.getElementById('vista');
+const vImg = document.getElementById('vistaImg');
+let vIt = null;
+function pintarVista() {
+  const vi = varSel[vIt.id] || 0, n = vIt.fotos.length, enCot = !!cot[vIt.id];
+  vImg.src = vIt.fotos[vi];
+  vImg.alt = vIt.nombre;
+  document.getElementById('vistaNom').textContent = vIt.nombre;
+  document.getElementById('vistaRubro').textContent = vIt.rubro;
+  document.getElementById('vistaCnt').textContent = n > 1 ? `${vi + 1} / ${n}` : '';
+  vista.classList.toggle('una', n < 2);
+  const add = document.getElementById('vistaAdd');
+  add.className = 'add' + (enCot ? ' in' : '');
+  add.textContent = enCot ? '✓ En cotización' : '+ Cotizar';
+  document.getElementById('vistaVars').innerHTML = n > 1 ? vIt.fotos.map((f, i) =>
+    `<button data-i="${i}" class="${i === vi ? 'on' : ''}" aria-label="Variante ${i + 1}"><img src="${f}" alt=""></button>`).join('') : '';
+  document.querySelectorAll('#vistaVars button').forEach(b => { b.onclick = () => moverVista(+b.dataset.i, true); });
+}
+function moverVista(i, abs) {
+  const n = vIt.fotos.length;
+  varSel[vIt.id] = ((abs ? i : (varSel[vIt.id] || 0) + i) + n) % n;
+  pintarVista();
+}
+function abrirVista(it) {
+  vIt = it;
+  pintarVista();
+  vista.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  px('ViewContent', { content_name: it.nombre, content_category: it.rubro });
+}
+function cerrarVista() {
+  if (!vIt) return;
+  vista.classList.remove('open');
+  document.body.style.overflow = '';
+  vIt = null;
+  renderGrid();
+}
+document.getElementById('vistaX').onclick = cerrarVista;
+vista.onclick = e => { if (e.target === vista) cerrarVista(); };
+document.getElementById('vistaPrev').onclick = () => moverVista(-1);
+document.getElementById('vistaNext').onclick = () => moverVista(1);
+document.getElementById('vistaAdd').onclick = () => { toggleCot(vIt); pintarVista(); };
+document.addEventListener('keydown', e => {
+  if (!vIt) return;
+  if (e.key === 'ArrowLeft') moverVista(-1);
+  if (e.key === 'ArrowRight') moverVista(1);
+});
+let tx = null;
+vImg.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+vImg.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 40) moverVista(dx < 0 ? 1 : -1);
+});
+
 function renderGrid() {
   grid.innerHTML = '';
   let n = 0;
   ITEMS.filter(pasaFiltro).forEach(it => {
     n++;
     const enCot = !!cot[it.id];
+    const vi = varSel[it.id] || 0;
     const d = document.createElement('article');
     d.className = 'item';
     d.innerHTML = `
       <div class="item-fig">
-        <img src="${it.img}" alt="${it.nombre}" loading="lazy">
+        <img src="${it.fotos[vi]}" alt="${it.nombre}" loading="lazy">
         <button class="add ${enCot ? 'in' : ''}">${enCot ? '✓ En cotización' : '+ Cotizar'}</button>
       </div>
+      ${it.fotos.length > 1 ? `<div class="vars">${it.fotos.map((f, i) =>
+        `<button data-i="${i}" class="${i === vi ? 'on' : ''}" aria-label="${it.nombre} — variante ${i + 1}"><img src="${f}" alt="" loading="lazy"></button>`
+      ).join('')}</div>` : ''}
       <h3>${it.nombre}</h3>
       <span class="rubro">${it.rubro}</span>`;
-    d.querySelector('.add').onclick = () => {
-      if (cot[it.id]) delete cot[it.id];
-      else {
-        cot[it.id] = { m2: '' };
-        px('AddToCart', { content_name: it.nombre, content_category: it.rubro });
-      }
-      guardar(); renderGrid(); renderFab();
-    };
+    const fig = d.querySelector('.item-fig img');
+    fig.onclick = () => abrirVista(it);
+    d.querySelectorAll('.vars button').forEach(b => {
+      b.onclick = () => {
+        varSel[it.id] = +b.dataset.i;
+        fig.src = it.fotos[varSel[it.id]];
+        d.querySelectorAll('.vars button').forEach(x => x.classList.toggle('on', x === b));
+      };
+    });
+    d.querySelector('.add').onclick = () => toggleCot(it);
     grid.appendChild(d);
   });
   totalEl.textContent = `${n} producto${n === 1 ? '' : 's'}`;
@@ -542,7 +684,7 @@ function cerrarPanel() {
 fab.onclick = abrirPanel;
 document.getElementById('panelX').onclick = cerrarPanel;
 panelBg.onclick = cerrarPanel;
-document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPanel(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (vIt) cerrarVista(); else cerrarPanel(); } });
 
 // ── envío ──
 function resumen() {
