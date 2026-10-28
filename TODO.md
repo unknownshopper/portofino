@@ -12,16 +12,17 @@
 - [ ] **Instagram "Confirmar acceso"** en la bandeja — pedir a Gladys la contraseña/login de `@portofino.granitosymarmoles` si Meta la pide
 - [ ] **2FA del portfolio** (hoy "Nadie") → subir a "Solicitar a administradores"; avisar a Gladys que al entrar con ventas@ le pedirá código
 - [ ] **Google Maps**: preguntar si identificaron `vi...@gmail.com`. Ojo: `portofino.com.mx` usa Google Workspace (SPF `_spf.google.com`) → **`ventas@portofino.com.mx` ya es cuenta Google corporativa**: usarla como propietaria de la ficha
+- [ ] **Horario real de atención** por día (matriz, Sabina, Veracruz, Tuxtla) → página FB, tarjeta Horario, JSON-LD, chatbot y Google Maps
 - [ ] Denominación/razón social, dirección de Tuxtla y precios públicos (ver "Para preguntar a Eduardo") — aprovechar si Gladys sabe
 
 ## Messenger / Instagram — automatizaciones (27-oct)
 
 - [x] **Número viejo 993 393 9163** corregido en la respuesta de envíos y en las FAQs (había muchas con el viejo) → todas a `https://wa.me/529933023903` (sin `?fbclid=`)
 - [x] **Palabras clave "Catálogo"** (2 automatizaciones por el límite de 5 palabras): `catálogo · productos · fotos · muestra · materiales` y `catalogo · catálogos · catalogos · modelos · muestras` → mensaje + botón "Ver catálogo" a `catalogo.html`
-- [ ] **Verificar que las 2 de catálogo estén ACTIVADAS** (se crean desactivadas)
+- [x] Las 2 de catálogo ACTIVADAS ("Catalogo" + "catálogo2") y probadas con éxito (27-oct)
 - [ ] **Palabra clave envíos**: agregar variantes `envío · envio · envíos · envios · flete` (límite 5; si faltan `envían/mandan`, segunda automatización). "envios" sin acento no disparó nada
 - [ ] **Re-probar** "¿Cuánto cuesta?", "envios", "¿tienen catalogo?" y cada FAQ en Messenger + IG. **Ojo: Meta solo dispara palabras clave si el chat lleva ≥15 min inactivo** → esperar 15 min entre pruebas o usar otra cuenta. Debe llegar UNA respuesta con 993 302 3903
-- [ ] Tarjeta **Horario**: la página tiene horario específico (el mensaje de ausencia sí salió 6:15 pm) → se puede activar; quitar "horario" de palabras clave si estuviera
+- [ ] Tarjeta **Horario**: NO deja guardar ("No se guardó el cambio"; al activar se borra todo) → la página no tiene horario por día (solo muestra "Abierto ahora"; el mensaje de ausencia usa su propio horario de Business Suite, no el de la página). **Pedir a Gladys el horario real** (matriz + sucursales) → Página → Editar información → Horario → "Horario específico" → luego activar tarjeta. Agregar también `openingHours` al JSON-LD y al chatbot, y corregir Google Maps (dice "cierra 5:30 a.m.")
 - [ ] Tarjeta **Información de contacto**: activar con 993 302 3903 + ventas@ (NO activar tarjeta Ubicación: ya hay palabra clave)
 - [ ] Captions viejos en `redsoc/imgs/20261012-*/caption.txt` traen 993 393 9163 — si esos posts siguen publicados, editar el texto en FB/IG
 - [x] JSON-LD `areaServed` con las 10 ciudades del área de servicio de la página FB + México
