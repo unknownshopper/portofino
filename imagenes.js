@@ -298,34 +298,9 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "SELLADORES",
-  "slug": "selladores",
-  "proyectos": [
-   {
-    "nombre": "SELLADOR PARA PIEDRA",
-    "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "SELLADOR 02",
-    "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "SELLADOR 03",
-    "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
-    "muestra": true
-   }
-  ],
+  "rubro": "PRODUCTOS PROFESIONALES",
+  "slug": "productos-profesionales",
+  "proyectos": [],
   "varios": []
  },
  {
@@ -569,6 +544,37 @@ const PORTOFINO_DATA = [
      "img/thumbs/muestra-granitos-3.webp"
     ],
     "thumb": "img/thumbs/muestra-granitos-3.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "SELLADORES",
+  "slug": "selladores",
+  "proyectos": [
+   {
+    "nombre": "SELLADOR PARA PIEDRA",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "SELLADOR 02",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "SELLADOR 03",
+    "fotos": [
+     "img/thumbs/muestra-cocinas-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-cocinas-0.webp",
     "muestra": true
    }
   ],
