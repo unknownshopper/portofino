@@ -513,7 +513,7 @@ const guardar = () => localStorage.setItem('pf_cot', JSON.stringify(cot));
 
 function renderCats() {
   const cats = [{ slug: 'todos', rubro: 'Todos', n: ITEMS.length },
-    ...PORTOFINO_DATA.map(r => ({ slug: r.slug, rubro: r.rubro, n: r.proyectos.length }))];
+    ...PORTOFINO_DATA.filter(r => r.proyectos.length).map(r => ({ slug: r.slug, rubro: r.rubro, n: r.proyectos.length }))];
   catsEl.innerHTML = '';
   cats.forEach(c => {
     const b = document.createElement('button');

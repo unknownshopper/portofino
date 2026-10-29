@@ -62,7 +62,7 @@
       <input type="date" id="dia">
       <button class="ghost" id="otra">↺ Otra selección</button>
       <label style="font-size:.75rem;color:var(--accent);">Logo
-        <select id="logoSel"><option value="auto">auto</option><option value="w">blanco</option><option value="ink">tinta</option></select>
+        <select id="logoSel"><option value="auto">blanco</option><option value="ink">tinta</option></select>
       </label>
       <label style="font-size:.75rem;color:var(--accent);">
         <input type="checkbox" id="ovl" checked> overlay nombre
@@ -169,23 +169,35 @@ async function renderPost(e){
   const w=img.width*s, h=img.height*s;
   x.drawImage(img,(1080-w)/2,(1080-h)/2,w,h);
 
+  // logo completo (placa + PORTOFINO) abajo y centrado, como en la marca; blanco por defecto
   const mode = document.getElementById('logoSel').value;
-  const dark = lum(img, Math.floor(img.width*.75), Math.floor(img.height*.8), Math.floor(img.width*.25), Math.floor(img.height*.2)) < 128;
-  const lg = (mode==='w'||(mode==='auto'&&dark)) ? logoImg.w : logoImg.ink;
-
-  if (document.getElementById('ovl').checked){
-    const g=x.createLinearGradient(0,700,0,1080);
-    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');
-    x.fillStyle=g;x.fillRect(0,700,1080,380);
-    x.fillStyle='#fff';x.textBaseline='bottom';
-    x.font='700 46px Inter, sans-serif';
-    x.fillText(e.nombre.toUpperCase(),48,986,780);
-    x.font='500 30px Inter, sans-serif';x.fillStyle='rgba(255,255,255,.85)';
-    x.fillText(e.rubro.toUpperCase(),48,1032,780);
+  const claro = lum(img, Math.floor(img.width*.3), Math.floor(img.height*.7), Math.floor(img.width*.4), Math.floor(img.height*.3)) > 150;
+  const lg = mode==='ink' ? logoImg.ink : logoImg.w;
+  if (mode!=='ink'){
+    const g=x.createLinearGradient(0,620,0,1080);
+    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,`rgba(0,0,0,${claro?.42:.28})`);
+    x.fillStyle=g;x.fillRect(0,620,1080,460);
   }
   if (lg.complete && lg.naturalWidth){
-    const lw=150, lh=lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, 1080-48-lw, 1080-44-lh, lw, lh);
+    const lw=380, lh=lw*lg.naturalHeight/lg.naturalWidth;
+    if (mode!=='ink'){ x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=18; }
+    x.drawImage(lg, (1080-lw)/2, 1080-56-lh, lw, lh);
+    x.shadowBlur=0; x.shadowColor='transparent';
+  }
+
+  // texto mínimo: producto / rubro arriba a la izquierda
+  if (document.getElementById('ovl').checked){
+    const gt=x.createLinearGradient(0,0,0,170);
+    gt.addColorStop(0,'rgba(0,0,0,.28)');gt.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=gt;x.fillRect(0,0,1080,170);
+    x.fillStyle='#fff';x.textBaseline='top';
+    x.shadowColor='rgba(0,0,0,.55)';x.shadowBlur=8;
+    x.letterSpacing='3px';
+    x.font='600 20px Inter, sans-serif';
+    x.fillText(e.nombre.toUpperCase(),44,44,700);
+    x.font='500 13px Inter, sans-serif';x.fillStyle='rgba(255,255,255,.85)';
+    x.fillText(e.rubro.toUpperCase(),44,74,700);
+    x.letterSpacing='0px';x.shadowBlur=0;x.shadowColor='transparent';
   }
   return c;
 }
@@ -218,36 +230,34 @@ async function renderCard(p){
   const x = c.getContext('2d');
   x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
 
-  // encabezado: nombre + rubro + logo
-  x.fillStyle = '#16181b'; x.textBaseline = 'alphabetic';
-  x.font = '700 52px Inter, sans-serif';
-  x.fillText(p.nombre.toUpperCase(), 48, 118, 760);
-  x.font = '500 28px Inter, sans-serif'; x.fillStyle = '#67757d';
-  x.fillText(p.rubro.toUpperCase(), 48, 162, 760);
-  const lg = logoImg.ink;
-  if (lg.complete && lg.naturalWidth){
-    const lw = 160, lh = lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, 1080-48-lw, 70, lw, lh);
-  }
+  // encabezado mínimo: nombre + rubro
+  x.fillStyle = '#16181b'; x.textBaseline = 'alphabetic'; x.letterSpacing = '3px';
+  x.font = '600 22px Inter, sans-serif';
+  x.fillText(p.nombre.toUpperCase(), 48, 74, 984);
+  x.font = '500 14px Inter, sans-serif'; x.fillStyle = '#67757d';
+  x.fillText(p.rubro.toUpperCase(), 48, 100, 984);
+  x.letterSpacing = '0px';
 
-  // foto principal
+  // foto principal (más alta si no hay variantes)
+  const vars = p.fotos.slice(1, 5);
   const main = await loadImg(p.fotos[0]);
-  cover(x, main, 48, 210, 984, 560, 18);
-
+  cover(x, main, 48, 128, 984, vars.length ? 610 : 780, 18);
 
   // tira de variantes (hasta 4; si hay menos, reparte el ancho)
-  const vars = p.fotos.slice(1, 5);
   if (vars.length){
-    const n = vars.length, gap = 20, tw = (984-(n-1)*gap)/n, th = 190, ty = 810;
+    const n = vars.length, gap = 20, tw = (984-(n-1)*gap)/n, th = 150, ty = 758;
     for (let i=0;i<n;i++){
       const im = await loadImg(vars[i]);
       cover(x, im, 48+i*(tw+gap), ty, tw, th, 14);
     }
   }
 
-  // pie
-  x.font = '400 24px Inter, sans-serif'; x.fillStyle = '#67757d';
-  x.fillText(vars.length ? 'portofino.com.mx · envíos a todo México' : 'PORTOFINO — envíos a todo México', 48, 1052);
+  // logo completo abajo y centrado
+  const lg = logoImg.ink;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 220, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, (1080-lw)/2, 1080-44-lh, lw, lh);
+  }
   return c;
 }
 

@@ -53,6 +53,10 @@
       "@id": "https://portofino.com.mx/#matriz",
       "name": "PORTOFINO Villahermosa — Matriz",
       "parentOrganization": { "@id": "https://portofino.com.mx/#org" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:30", "closes": "17:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:30", "closes": "14:00" }
+      ],
       "telephone": "+52 993 141 6774",
       "address": {
         "@type": "PostalAddress",
@@ -68,6 +72,10 @@
       "@id": "https://portofino.com.mx/#sabina",
       "name": "PORTOFINO Villahermosa — Sabina",
       "parentOrganization": { "@id": "https://portofino.com.mx/#org" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:30", "closes": "17:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:30", "closes": "14:00" }
+      ],
       "telephone": "+52 993 383 8740",
       "address": {
         "@type": "PostalAddress",
@@ -83,6 +91,10 @@
       "@id": "https://portofino.com.mx/#veracruz",
       "name": "PORTOFINO Veracruz",
       "parentOrganization": { "@id": "https://portofino.com.mx/#org" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:30", "closes": "17:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:30", "closes": "14:00" }
+      ],
       "telephone": "+52 229 167 1540",
       "address": {
         "@type": "PostalAddress",
@@ -98,6 +110,10 @@
       "@id": "https://portofino.com.mx/#tuxtla",
       "name": "PORTOFINO Tuxtla Gutiérrez",
       "parentOrganization": { "@id": "https://portofino.com.mx/#org" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:30", "closes": "17:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:30", "closes": "14:00" }
+      ],
       "telephone": "+52 961 217 5504",
       "address": {
         "@type": "PostalAddress",
@@ -532,6 +548,7 @@
     font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
   }
   .suc .dato b { font-weight: 400; color: var(--accent); margin-right: .8rem; display: inline-flex; align-items: center; gap: .55rem; }
+  .contacto .horario { text-align: center; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; opacity: .75; margin: 2.2rem 0 0; }
   .suc .iconos { display: flex; gap: 1.5rem; margin-top: auto; padding-top: 1.6rem; justify-content: center; }
   .suc .iconos a { border-bottom: none; color: var(--light); display: inline-flex; }
   .suc .iconos a:hover { color: var(--accent); }
@@ -813,7 +830,7 @@
     </details>
     <details>
       <summary>¿Dónde están sus sucursales?</summary>
-      <p><b>Villahermosa matriz:</b> Periférico Carlos Pellicer Cámara 102, tel. 993 141 6774. <b>Villahermosa Sabina:</b> Av. 20 de Noviembre 1115, tel. 993 383 8740. <b>Veracruz:</b> Carr. Veracruz–Medellín km 1.5, tel. 229 167 1540. <b>Tuxtla Gutiérrez:</b> tel. 961 217 5504.</p>
+      <p><b>Villahermosa matriz:</b> Periférico Carlos Pellicer Cámara 102, tel. 993 141 6774. <b>Villahermosa Sabina:</b> Av. 20 de Noviembre 1115, tel. 993 383 8740. <b>Veracruz:</b> Carr. Veracruz–Medellín km 1.5, tel. 229 167 1540. <b>Tuxtla Gutiérrez:</b> tel. 961 217 5504. <b>Horario en todas:</b> lunes a viernes 8:30 a 17:00 y sábado 8:30 a 14:00.</p>
     </details>
   </div>
 </section>
@@ -862,6 +879,8 @@
       <span class="dato"><b>Tel.</b> 961 217 5504</span>
     </div>
   </div>
+
+  <p class="horario">Lunes a viernes 8:30 – 17:00 · Sábado 8:30 – 14:00</p>
 
   <a class="wa-central" href="https://wa.me/529933023903" target="_blank" rel="noopener" aria-label="WhatsApp ventas 993 302 3903"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp ventas <b>993 302 3903</b></a>
 
@@ -1107,7 +1126,7 @@ const RESPUESTAS = [
   [/ba[ñn]o|revestimiento|muro/, 'Para baños y muros: mármol y travertino dan el acabado cálido, cuarzo y sinterizados piden menos mantenimiento. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/losa|placa|material|producto|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de productos está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Dekton, Éclos, sinterizados y más.', ['Ver productos','Cotizar']],
   [/instala|colocaci[oó]n|entrega|env[ií]o|flete/, 'El flete se cotiza con el proyecto según ciudad y medidas — arme su lista en el <a href="catalogo.html">cotizador</a> y le confirmamos el costo de envío a su ubicación.', ['Cotizar']],
-  [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Sucursales: Villahermosa matriz (Periférico Pellicer Cámara 102, Primero de Mayo — tel. 993 141 6774), Villahermosa Sabina (Av. 20 de Noviembre 1115, Col. Sabina — tel. 993 383 8740), Veracruz (Carr. Veracruz–Medellín km 1.5, Lorenzo Barcelata — tel. 229 167 1540) y Tuxtla Gutiérrez, Chis. (tel. 961 217 5504) — con envíos a todo México. <span class="wa-row"><a class="wa" href="https://wa.me/529933023903">Ventas <span>WhatsApp →</span></a></span>', ['Ver productos']],
+  [/tabasco|villahermosa|chiapas|tuxtla|veracruz|campeche|ciudad|ubicaci[oó]n|direcci[oó]n|d[oó]nde|sucursal|showroom|visita|cita|horario|agenda|contacto|asesor|whatsapp|tel[eé]fono|llamada/, 'Sucursales: Villahermosa matriz (Periférico Pellicer Cámara 102, Primero de Mayo — tel. 993 141 6774), Villahermosa Sabina (Av. 20 de Noviembre 1115, Col. Sabina — tel. 993 383 8740), Veracruz (Carr. Veracruz–Medellín km 1.5, Lorenzo Barcelata — tel. 229 167 1540) y Tuxtla Gutiérrez, Chis. (tel. 961 217 5504) — con envíos a todo México. <b>Horario:</b> lunes a viernes 8:30–17:00 y sábado 8:30–14:00. <span class="wa-row"><a class="wa" href="https://wa.me/529933023903">Ventas <span>WhatsApp →</span></a></span>', ['Ver productos']],
   [/galer[ií]a|foto|cat[aá]logo/, 'El catálogo completo con cotizador está en <a href="catalogo.html">catalogo.html</a> — seleccione productos y envíe su solicitud.', ['Cotizar','Contactar asesor']],
   [/gracias|adi[oó]s|perfecto|ok/, 'Con gusto. Cuando quiera cotizar, estamos a un mensaje. ¡Hasta pronto!', []],
 ];
@@ -1152,7 +1171,7 @@ const AI_CTX = (() => {
     r.rubro + ': ' + r.proyectos.map(p =>
       p.nombre + (p.desc ? ' — ' + p.desc : '') + (p.ficha ? ' [' + p.ficha + ']' : '')).join('; ')).join('\n');
   return `Eres el asistente de PORTOFINO, venta al menudeo de mármol, granito y superficies de alta gama con envíos a todo México.
-Sucursales: Villahermosa, Tabasco — matriz (Periférico Carlos Pellicer Cámara 102, 86190 Primero de Mayo, tel 993 141 6774, showroom con cita) · Villahermosa Sabina (Av. 20 de Noviembre 1115, 86153 Col. Sabina, tel 993 383 8740) · Veracruz (Carretera Veracruz–Medellín km 1.5, 91966 Lorenzo Barcelata, tel 229 167 1540, FB facebook.com/portofinoveracruz) · Tuxtla Gutiérrez, Chiapas (tel 961 217 5504). Envíos a todo México.
+Sucursales: Villahermosa, Tabasco — matriz (Periférico Carlos Pellicer Cámara 102, 86190 Primero de Mayo, tel 993 141 6774, showroom con cita) · Villahermosa Sabina (Av. 20 de Noviembre 1115, 86153 Col. Sabina, tel 993 383 8740) · Veracruz (Carretera Veracruz–Medellín km 1.5, 91966 Lorenzo Barcelata, tel 229 167 1540, FB facebook.com/portofinoveracruz) · Tuxtla Gutiérrez, Chiapas (tel 961 217 5504). Horario (todas las sucursales): lunes a viernes 8:30 a 17:00 y sábado 8:30 a 14:00. Envíos a todo México.
 Ventas: WhatsApp +52 993 302 3903 · ventas@portofino.com.mx.
 ${MATERIALES}
 Catálogo actual por rubro:

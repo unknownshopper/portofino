@@ -9,12 +9,12 @@
   4. "Compartir todos los chats" (hasta 6 meses de historial) → Confirmar
   - Es el modo en que la app del cel sigue funcionando y ambos ven los chats. Si Meta dice que el número se quitará de la app → CANCELAR
   - Después: revisar en Automatizaciones si WhatsApp aparece como canal; configurar en la app bienvenida / ausencia / respuestas rápidas / catálogo
-- [ ] **Instagram "Confirmar acceso"** en la bandeja — pedir a Gladys la contraseña/login de `@portofino.granitosymarmoles` si Meta la pide
+- [x] **Instagram y WhatsApp asociados a Business Suite** (29-oct, confirmado por Alberto)
 - [ ] **2FA del portfolio** (hoy "Nadie") → subir a "Solicitar a administradores"; avisar a Gladys que al entrar con ventas@ le pedirá código
 - [ ] **Google Maps**: preguntar si identificaron `vi...@gmail.com`. Ojo: `portofino.com.mx` usa Google Workspace (SPF `_spf.google.com`) → **`ventas@portofino.com.mx` ya es cuenta Google corporativa**: usarla como propietaria de la ficha
 - [ ] **Perfil personal "Portofino Vhsa"** (antes `facebook.com/yamile.cejin`, 28-oct se le cambió usuario y nombre) — convertido en cuenta de apoyo que redirige a la fanpage. Confirmar con Gladys de quién es y si es admin de la página/portfolio; asegurar que la fanpage tenga otro admin con perfil personal real (respaldo). Privacidad → solicitudes de amistad → "Amigos de amigos"
-- [ ] **Horario real de atención** por día (matriz, Sabina, Veracruz, Tuxtla) → confirmar el de la página FB y llevarlo a JSON-LD (`openingHours`), chatbot y Google Maps (dice "cierra 5:30 a.m.")
-- [ ] Denominación/razón social, dirección de Tuxtla y precios públicos (ver "Para preguntar a Eduardo") — aprovechar si Gladys sabe
+- [x] **Horario confirmado (29-oct): L-V 8:30–17:00 · sáb 8:30–14:00, igual en las 4 sucursales** → ya en JSON-LD (`openingHoursSpecification`), contacto, FAQ y chatbot. Falta: página FB (revisar que coincida) y Google Maps (dice "cierra 5:30 a.m.")
+- [ ] Denominación/razón social y dirección de Tuxtla (ver "Para preguntar a Eduardo")
 
 ## Messenger / Instagram — automatizaciones (27-oct)
 
@@ -31,7 +31,7 @@
 
 ## Bloqueado — esperando externos
 
-- [ ] **Eduardo: subir fotos reales a `Productos/`** — 28-oct: YA hay reales en **CUARCITAS (16 productos, 38 fotos; falta foto de MARE BIANCO)** y **SINTERIZADOS (22, 45 fotos)**, publicadas por el sync de las 8:56 am. Siguen vacías (con muestras de relleno): CUARZOS, DEKTON, GRANITOS, MÁRMOLES, SELLADORES (carpetas PRODUCTO 01/02/03); ECLOS, TARJAS y TRAVERTINO también con relleno. La estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro
+- [ ] **Eduardo: subir fotos reales a `Productos/`** — 29-oct: sync manual tras "ya actualizaron Dropbox" → el link compartido SIGUE con solo Cuarcitas + Sinterizados reales (107 fotos); apareció rubro nuevo vacío `PRODUCTOS PROFESIONALES` (oculto en catálogo). Confirmar con Portofino que suban a la MISMA carpeta del link (`DROPBOX_URL`). 28-oct: YA hay reales en **CUARCITAS (16 productos, 38 fotos; falta foto de MARE BIANCO)** y **SINTERIZADOS (22, 45 fotos)**, publicadas por el sync de las 8:56 am. Siguen vacías (con muestras de relleno): CUARZOS, DEKTON, GRANITOS, MÁRMOLES, SELLADORES (carpetas PRODUCTO 01/02/03); ECLOS, TARJAS y TRAVERTINO también con relleno. La estructura ya está armada (10 rubros × PRODUCTO 01/02/03). El sync nocturno (`.github/workflows/sync-productos.yml` con secret `DROPBOX_URL`) procesa solo: baja el zip, genera WebP y desplaza muestras orgánicamente por rubro
 - [ ] **Fusión de páginas FB** — página principal = `facebook.com/portofinogranitosymarmoles` (28-oct: ya en CTA contacto + sameAs; tarjeta Veracruz sigue a portofinoveracruz hasta fusionar). falta control total en ambas (hoy solo admin). Conservar `Portofino Granitos y Mármoles`, absorber `portofinoveracruz`. Al tener el handle final: actualizar link en CTA contacto + tarjeta Veracruz + `sameAs` del JSON-LD
 - [ ] **Google Business Profile** — ya existe ficha "PORTOFINO - Mármoles y Granitos" (matriz, 5.0★). **Sí tiene dueño: `vi...@gmail.com`** (27-oct, Eduardo preguntando a Gladys quién es). Si alguien de Portofino la controla → que agregue la cuenta corporativa como propietario y a nosotros como admin. Si no → "Solicitar acceso" desde cuenta corporativa (el dueño tiene unos días para responder; si no contesta, Google suele habilitar reclamarla). NO con cuenta personal. Horario en ficha dice "cierra 5:30 a.m." — corregir. Luego: subir fotos nuevas (las actuales dicen "Stonia"), agregar sitio web, y crear fichas de Sabina, Veracruz y Tuxtla
 - [ ] **Alertas al recibir cotización** — hoy el lead solo llega al panel admin; falta aviso a la oficina. Opciones: Cloud Function (requiere plan Blaze/tarjeta), extensión "Trigger Email" de Firebase, o webhook Make/Zapier gratis → correo a `ventas@portofino.com.mx`. Decidir ruta con Eduardo
@@ -41,12 +41,12 @@
 ## Para preguntar a Eduardo
 
 - [ ] **Denominación/razón social** para el aviso de privacidad (solo el nombre legal — la LFPDPPP pide identidad del responsable, no el RFC; el RFC se omite por decisión de Portofino)
-- [ ] ¿Precio por m² público en el catálogo o siempre "a cotización"? (hoy: sin precio público)
+- [x] Precios: **siempre a cotización**, a conveniencia de Portofino (29-oct) — no se publican precios
 - [ ] Dirección física de Tuxtla Gutiérrez (hoy solo ciudad + tel 961 217 5504)
 
 ## Por hacer (técnico, sin bloqueo)
 
-- [ ] **pubfb: nuevo estilo de imágenes (EN LOCAL, sin subir)** — pedido del cliente: texto mínimo (nombre/rubro chicos arriba-izq.) y logo completo blanco abajo-centrado (ref. granito con logo blanco); modo producto con logo tinta abajo-centrado. Revisar vista previa y subir
+- [x] **pubfb nuevo estilo** (texto mínimo arriba-izq., logo completo blanco abajo-centrado; producto con logo tinta abajo-centrado) — aprobado y en uso: 29-oct ya se publicaron y programaron posts con caption
 - [ ] **Logo del menú se empalma con títulos en móvil** (nav fija sin fondo) → dar fondo al nav al aparecer el logo o esconderlo en móvil. Decidir con Alberto
 - [ ] **Medición/instalación**: plantilla promo dice "incluidas", chatbot dice "por cuenta del contratista" → confirmar con Portofino y unificar
 - [ ] Perfil de apoyo FB tiene `ventas@stonia.mx` como correo → si Stonia ya no tiene relación, quitarlo (puede recuperar la cuenta). Verificar que el perfil "Ventas Portofino" conserve método de recuperación tras mover el 993 302 3903
