@@ -1,6 +1,6 @@
 # Pendientes PORTOFINO
 
-## Reunión con Gladys — miércoles 28-oct, 4 pm (presencial)
+## Reunión con Gladys — 28-oct (WhatsApp hecho; lo demás sigue pendiente)
 
 - [x] **WhatsApp 993 302 3903 VINCULADO a la bandeja de Business Suite (28-oct, con Gladys)** — sincronizando contactos e historial. Pendiente: revisar si WhatsApp aparece como canal en Automatizaciones; configurar en la app bienvenida/ausencia/respuestas rápidas/catálogo. Historial (referencia): 27-oct falló el intento remoto: se le mandó captura del QR, aceptó "Compartir todos los chats" pero "No se pudo escanear el código" (el QR caduca en minutos, es de un solo uso y lo leyó desde foto/galería). Mañana en persona:
   1. Gladys actualiza WhatsApp Business en App Store **antes** de empezar
@@ -46,6 +46,11 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
+- [ ] **pubfb: nuevo estilo de imágenes (EN LOCAL, sin subir)** — pedido del cliente: texto mínimo (nombre/rubro chicos arriba-izq.) y logo completo blanco abajo-centrado (ref. granito con logo blanco); modo producto con logo tinta abajo-centrado. Revisar vista previa y subir
+- [ ] **Logo del menú se empalma con títulos en móvil** (nav fija sin fondo) → dar fondo al nav al aparecer el logo o esconderlo en móvil. Decidir con Alberto
+- [ ] **Medición/instalación**: plantilla promo dice "incluidas", chatbot dice "por cuenta del contratista" → confirmar con Portofino y unificar
+- [ ] Perfil de apoyo FB tiene `ventas@stonia.mx` como correo → si Stonia ya no tiene relación, quitarlo (puede recuperar la cuenta). Verificar que el perfil "Ventas Portofino" conserve método de recuperación tras mover el 993 302 3903
+
 - [ ] **Google Search Console**: el DNS ya tiene un TXT `google-site-verification=KfpF8…` → alguien ya verificó el dominio; averiguar con qué cuenta (probable Workspace de Portofino) y pedir acceso en vez de re-verificar. Luego: enviar `sitemap.xml`, revisar cobertura de indexación
 - [ ] Revisión responsive final (carousel materiales, catálogo, panel de cotización en móvil)
 - [ ] Pixel: re-verificar eventos en Events Manager tras el dominio nuevo (dominio ya verificado en Meta → desbloqueado; configurar eventos agregados si lo pide)
@@ -63,7 +68,10 @@
 - [x] Automatizaciones Meta Business Suite (FB + IG): respuesta instantánea, mensaje de ausencia, 4 FAQs, comentario→DM, palabras clave ×3 — todo embala a cotizador/WhatsApp
 - [x] Cotizador → Firestore + admin autenticado (filtros por estado, eliminar, badge instalación, XSS tapado)
 - [x] Gemini híbrido en el chat (key `portoai` en `fb.js`, modelo 3-flash + respaldo lite; intents curados primero)
-- [x] `pubfb.html`: 3 modos de publicación (día / producto con variantes / promoción) + Ollama local
+- [x] `pubfb.html`: 3 modos de publicación (día / producto con variantes / promoción). 28-oct: texto con **Gemini** (Ollama solo respaldo), cierre fijo con catálogo + WhatsApp 993 302 3903, nombres con mayúsculas/acentos correctos
+- [x] **Catálogo con variantes + vista completa** (28-oct): miniaturas de todas las fotos de cada producto; clic en la foto → lightbox (flechas, teclado, swipe, cotizar desde ahí); evento Pixel `ViewContent`
+- [x] Promociones en móvil: hueco entre texto y foto corregido (flex-basis 640px actuaba como alto en columna)
+- [x] CTA Facebook + `sameAs` → `facebook.com/portofinogranitosymarmoles`
 - [x] SEO estructural: `robots.txt`, `sitemap.xml`, canonical y JSON-LD LocalBusiness con las 4 sucursales
 - [x] Imágenes optimizadas: muestras WebP, hero responsive con `fetchpriority`, logo reducido, builder genera WebP
 - [x] Sync nocturno: solo commitea cuando el catálogo cambia de verdad
