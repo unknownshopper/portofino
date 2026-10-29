@@ -240,28 +240,52 @@ const PORTOFINO_DATA = [
   "slug": "granitos",
   "proyectos": [
    {
-    "nombre": "BLANCO CRISTAL",
+    "nombre": "ALPINUS",
     "fotos": [
-     "img/thumbs/muestra-granitos-0.webp"
+     "img/thumbs/granitos-0.webp",
+     "img/thumbs/granitos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-0.webp",
-    "muestra": true
+    "thumb": "img/thumbs/granitos-0.webp"
    },
    {
-    "nombre": "GRIS PERLA",
+    "nombre": "AMARILLO SANTA CECILIA",
     "fotos": [
-     "img/thumbs/muestra-granitos-1.webp"
+     "img/thumbs/granitos-2.webp",
+     "img/thumbs/granitos-3.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-1.webp",
-    "muestra": true
+    "thumb": "img/thumbs/granitos-2.webp"
    },
    {
-    "nombre": "ROCKVILLE WHITE",
+    "nombre": "ANTARTIC WHITE",
     "fotos": [
-     "img/thumbs/muestra-granitos-2.webp"
+     "img/thumbs/granitos-4.webp",
+     "img/thumbs/granitos-5.webp",
+     "img/thumbs/granitos-6.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-2.webp",
-    "muestra": true
+    "thumb": "img/thumbs/granitos-4.webp"
+   },
+   {
+    "nombre": "BLACK COSMIC",
+    "fotos": [
+     "img/thumbs/granitos-7.webp",
+     "img/thumbs/granitos-8.webp"
+    ],
+    "thumb": "img/thumbs/granitos-7.webp"
+   },
+   {
+    "nombre": "BLACK GALAXY",
+    "fotos": [
+     "img/thumbs/granitos-9.webp",
+     "img/thumbs/granitos-10.webp"
+    ],
+    "thumb": "img/thumbs/granitos-9.webp"
+   },
+   {
+    "nombre": "BLACK ICE",
+    "fotos": [
+     "img/thumbs/granitos-11.webp"
+    ],
+    "thumb": "img/thumbs/granitos-11.webp"
    }
   ],
   "varios": []
