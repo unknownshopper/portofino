@@ -62,10 +62,10 @@
       <input type="date" id="dia">
       <button class="ghost" id="otra">↺ Otra selección</button>
       <label style="font-size:.75rem;color:var(--accent);">Logo
-        <select id="logoSel"><option value="auto">blanco</option><option value="ink">tinta</option></select>
+        <select id="logoSel"><option value="auto">auto</option><option value="w"></option>blanco</option><option value="ink">tinta</option></select>
       </label>
       <label style="font-size:.75rem;color:var(--accent);">
-        <input type="checkbox" id="ovl" checked> overlay nombre
+        <input type="checkbox" id="ovl"> overlay nombre
       </label>
     </div>
   </div>
@@ -171,18 +171,14 @@ async function renderPost(e){
 
   // logo completo (placa + PORTOFINO) abajo y centrado, como en la marca; blanco por defecto
   const mode = document.getElementById('logoSel').value;
-  const claro = lum(img, Math.floor(img.width*.3), Math.floor(img.height*.7), Math.floor(img.width*.4), Math.floor(img.height*.3)) > 150;
-  const lg = mode==='ink' ? logoImg.ink : logoImg.w;
-  if (mode!=='ink'){
-    const g=x.createLinearGradient(0,620,0,1080);
-    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,`rgba(0,0,0,${claro?.42:.28})`);
-    x.fillStyle=g;x.fillRect(0,620,1080,460);
-  }
+  const lg = mode==='ink' ? logoImg.ink
+    : mode==='w' ? logoImg.w
+    : (lum(img, Math.floor(img.width*.32), Math.floor(img.height*.72), Math.floor(img.width*.36), Math.floor(img.height*.26)) < 128 ? logoImg.w : logoImg.ink);
   if (lg.complete && lg.naturalWidth){
     const lw=380, lh=lw*lg.naturalHeight/lg.naturalWidth;
-    if (mode!=='ink'){ x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=18; }
+    x.globalAlpha = .55; // marca de agua tenue: la piedra manda, el logo acompaña
     x.drawImage(lg, (1080-lw)/2, 1080-56-lh, lw, lh);
-    x.shadowBlur=0; x.shadowColor='transparent';
+    x.globalAlpha = 1;
   }
 
   // texto mínimo: producto / rubro arriba a la izquierda

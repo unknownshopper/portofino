@@ -1,5 +1,13 @@
 # Pendientes PORTOFINO
 
+## Reunión con Gladys — 30-oct
+- [ ] **Confirmar estética de los posts** — logo = sello de agua tenue (~55%), sin texto por defecto (opcional arriba-izq.), logo auto blanco/tinta según fondo. Eduardo dio voBo al estilo Marmolexa/Grupo Tenerife; Gladys valida en pubfb.html
+- [ ] **Popular WhatsApp Business en el celular de Gladys** — perfil (descripción, "Portofino Granitos y Mármoles", web, ventas@, horario), mensaje bienvenida, mensaje ausencia, respuestas rápidas (/precios, /sucursales, /cotizar, /envios), catálogo con fotos reales + link al catálogo web
+- [ ] **2FA del portfolio** → subir a "Solicitar a administradores" (pendiente de 28-oct)
+- [ ] **Perfil personal "Portofino Vhsa"** — confirmar de quién es y si es admin (respaldo)
+- [ ] **Instagram "Confirmar acceso"** en Business Suite
+- [ ] **visto bueno de posts**: acordar que Gladys/Eduardo aprueban cada imagen antes de publicar
+
 ## Reunión con Gladys — 28-oct (WhatsApp hecho; lo demás sigue pendiente)
 
 - [x] **WhatsApp 993 302 3903 VINCULADO a la bandeja de Business Suite (28-oct, con Gladys)** — sincronizando contactos e historial. Pendiente: revisar si WhatsApp aparece como canal en Automatizaciones; configurar en la app bienvenida/ausencia/respuestas rápidas/catálogo. Historial (referencia): 27-oct falló el intento remoto: se le mandó captura del QR, aceptó "Compartir todos los chats" pero "No se pudo escanear el código" (el QR caduca en minutos, es de un solo uso y lo leyó desde foto/galería). Mañana en persona:
@@ -46,6 +54,7 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
+- [ ] **pubfb: ajustes de Eduardo (29-oct)** — (a) todo post requiere visto bueno de Gladys o Eduardo antes de publicar/programar; (b) logo = sello de agua MÁS tenue (~55%, probando); (c) quiere elegir qué fotos salen (no solo aleatorio) → pendiente selector manual. Ya en código: texto mínimo arriba-izq., logo blanco abajo-centrado. Referencias: Marmolexa México y catalogo grupotenerife.com.mx/subcategoria/marmoles
 - [x] **pubfb nuevo estilo** (texto mínimo arriba-izq., logo completo blanco abajo-centrado; producto con logo tinta abajo-centrado) — aprobado y en uso: 29-oct ya se publicaron y programaron posts con caption
 - [ ] **Logo del menú se empalma con títulos en móvil** (nav fija sin fondo) → dar fondo al nav al aparecer el logo o esconderlo en móvil. Decidir con Alberto
 - [ ] **Medición/instalación**: plantilla promo dice "incluidas", chatbot dice "por cuenta del contratista" → confirmar con Portofino y unificar
