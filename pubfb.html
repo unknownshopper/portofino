@@ -55,6 +55,16 @@
 </style>
 </head>
 <body>
+<div id="gate" style="position:fixed;inset:0;z-index:99;background:#f5f4f1;display:flex;align-items:center;justify-content:center;">
+  <div style="width:min(340px,90vw);background:#fff;border:1px solid rgba(22,24,26,.1);border-radius:12px;padding:30px 26px;">
+    <div style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8378;">Acceso</div>
+    <div style="font-size:1.05rem;font-weight:600;margin:4px 0 16px;">Publicaciones — uso interno</div>
+    <input id="g-mail" type="email" placeholder="Correo" autocomplete="username" style="width:100%;font:inherit;font-size:.85rem;padding:11px 12px;border:1px solid rgba(22,24,26,.2);border-radius:8px;margin-bottom:10px;">
+    <input id="g-pass" type="password" placeholder="Contraseña" autocomplete="current-password" style="width:100%;font:inherit;font-size:.85rem;padding:11px 12px;border:1px solid rgba(22,24,26,.2);border-radius:8px;margin-bottom:10px;">
+    <button id="g-entrar" class="pri" style="width:100%;">Entrar</button>
+    <div id="g-err" style="color:#a33;font-size:.75rem;margin-top:8px;min-height:1em;"></div>
+  </div>
+</div>
 <header class="wrap" style="padding-left:0;padding-right:0;max-width:none;border-bottom:none;">
   <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;border-bottom:1px solid rgba(22,24,26,.12);padding-bottom:18px;">
     <div class="brand">PORTOFINO <span>· pubfb</span></div>
@@ -62,7 +72,7 @@
       <input type="date" id="dia">
       <button class="ghost" id="otra">↺ Otra selección</button>
       <label style="font-size:.75rem;color:var(--accent);">Logo
-        <select id="logoSel"><option value="auto">auto</option><option value="w"></option>blanco</option><option value="ink">tinta</option></select>
+        <select id="logoSel"><option value="auto">auto</option><option value="w">blanco</option><option value="ink">tinta</option></select>
       </label>
       <label style="font-size:.75rem;color:var(--accent);">
         <input type="checkbox" id="ovl"> overlay nombre
@@ -128,6 +138,24 @@
 
 <script src="imagenes.js"></script>
 <script src="fb.js"></script>
+<script>
+// Acceso: mismo login Firebase del panel admin — sin sesión no se ve la herramienta
+(function(){
+  const gate=document.getElementById('gate'), err=document.getElementById('g-err');
+  __fbLoad().then(fb=>{
+    if(!fb){ err.textContent='Firebase sin configurar en fb.js'; return; }
+    fb.auth().onAuthStateChanged(u=>{ if(u) gate.style.display='none'; });
+    document.getElementById('g-entrar').onclick=async()=>{
+      err.textContent='';
+      try{ await fb.auth().signInWithEmailAndPassword(
+        document.getElementById('g-mail').value.trim(),
+        document.getElementById('g-pass').value); }
+      catch(e){ err.textContent='Correo o contraseña incorrectos'; }
+    };
+    document.getElementById('g-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('g-entrar').click(); });
+  }).catch(()=>{ err.textContent='Sin conexión a Firebase'; });
+})();
+</script>
 <script>
 const OLLAMA = 'http://localhost:11434';
 let picks = [], salt = 0, model = null;
