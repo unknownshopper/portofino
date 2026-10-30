@@ -54,7 +54,8 @@
 
 ## Por hacer (técnico, sin bloqueo)
 
-- [ ] **pubfb: ajustes de Eduardo (29-oct)** — (a) todo post requiere visto bueno de Gladys o Eduardo antes de publicar/programar; (b) logo = sello de agua MÁS tenue (~55%, probando); (c) quiere elegir qué fotos salen (no solo aleatorio) → pendiente selector manual. Ya en código: texto mínimo arriba-izq., logo blanco abajo-centrado. Referencias: Marmolexa México y catalogo grupotenerife.com.mx/subcategoria/marmoles
+- [ ] **pubfb: pendiente** — selector manual de las 4 fotos (hoy solo "↺ Otra selección"). Hecho 30-oct: acceso con login Firebase (igual que admin), logo sello de agua ~55% auto blanco/tinta, sin texto por defecto, voBo de Gladys/Eduardo antes de publicar
+- [x] ~~pubfb: ajustes de Eduardo (29-oct)~~ — (a) todo post requiere visto bueno de Gladys o Eduardo antes de publicar/programar; (b) logo = sello de agua MÁS tenue (~55%, probando); (c) quiere elegir qué fotos salen (no solo aleatorio) → pendiente selector manual. Ya en código: texto mínimo arriba-izq., logo blanco abajo-centrado. Referencias: Marmolexa México y catalogo grupotenerife.com.mx/subcategoria/marmoles
 - [x] **pubfb nuevo estilo** (texto mínimo arriba-izq., logo completo blanco abajo-centrado; producto con logo tinta abajo-centrado) — aprobado y en uso: 29-oct ya se publicaron y programaron posts con caption
 - [ ] **Logo del menú se empalma con títulos en móvil** (nav fija sin fondo) → dar fondo al nav al aparecer el logo o esconderlo en móvil. Decidir con Alberto
 - [ ] **Medición/instalación**: plantilla promo dice "incluidas", chatbot dice "por cuenta del contratista" → confirmar con Portofino y unificar
@@ -66,6 +67,9 @@
 - [ ] **Fase 2: bot IA (Gemini) en WhatsApp** — requiere Cloud API; evaluar tras vincular la app (coexistencia), no antes
 
 ## Ya resuelto
+
+- [x] **Presentación del sitio en Portofino (30-oct) — éxito.** Ajustes pedidos aplicados: logo del navbar más grande (56px), sin botones en el hero (solo flecha de scroll que salta cada ~4.5s), íconos IG/FB/WhatsApp/correo arriba de las sucursales, fila de botones sociales de abajo eliminada, ícono de FB de Veracruz fuera (se fusionará con la página principal), titulares ~20% más chicos, año del © automático
+- [x] **30-oct sync:** Granitos 12 productos / 26 fotos, Productos profesionales ya visible (14 productos / 27 fotos). Total catálogo: 85 productos / 157 fotos
 
 - [x] **Centro de seguridad Meta (27-oct)**: dominio de confianza agregado + passkey en Ventas Portofino (guardada en Administrador de contraseñas de Google/Chrome; la contraseña normal sigue vigente para Gladys). **NO eliminar "UnclaimedBusinessUser FromPool"** (@portofino.granitosymarmoles): es el usuario-placeholder del login de Instagram y el admin alternativo; si la alerta de passkey persiste por él, ignorarla. 2FA → pendiente en reunión con Gladys
 - [x] **Dominio `portofino.com.mx` verificado en Meta** (27-oct) — la falla era una `q` de más en el código de la metaetiqueta. Hoy quedan 2 métodos activos: metaetiqueta en `index.html` + archivo `63tzrb6sfo543gfu4h28mqgfa42u4n.html` en raíz. **NO borrar ninguno** (Meta re-verifica periódicamente). Ya no se necesita el TXT en GoDaddy
