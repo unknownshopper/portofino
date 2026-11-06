@@ -147,92 +147,42 @@ const PORTOFINO_DATA = [
   "slug": "cuarzos",
   "proyectos": [
    {
-    "nombre": "BLANCO ZEUS",
+    "nombre": "CALACATA BCS6232",
     "fotos": [
-     "img/thumbs/muestra-silestone-0.webp"
+     "img/thumbs/cuarzos-0.webp",
+     "img/thumbs/cuarzos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-0.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-0.webp"
    },
    {
-    "nombre": "ETERNAL SERENA",
+    "nombre": "CALACATA BSC2002",
     "fotos": [
-     "img/thumbs/muestra-silestone-1.webp"
+     "img/thumbs/cuarzos-2.webp",
+     "img/thumbs/cuarzos-3.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-1.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-2.webp"
    },
    {
-    "nombre": "CALACATTA GOLD",
+    "nombre": "CALACATA GOLD BCS7714",
     "fotos": [
-     "img/thumbs/muestra-silestone-2.webp"
+     "img/thumbs/cuarzos-4.webp",
+     "img/thumbs/cuarzos-5.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-2.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-4.webp"
    }
   ],
   "varios": []
  },
  {
-  "rubro": "DEKTON",
-  "slug": "dekton",
-  "proyectos": [
-   {
-    "nombre": "CUBIERTA BLANCA",
-    "fotos": [
-     "img/thumbs/muestra-dekton-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "LAURENT",
-    "fotos": [
-     "img/thumbs/muestra-dekton-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "OPERA",
-    "fotos": [
-     "img/thumbs/muestra-dekton-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-2.webp",
-    "muestra": true
-   }
-  ],
+  "rubro": "DEKTON BY COSENTINO",
+  "slug": "dekton-by-cosentino",
+  "proyectos": [],
   "varios": []
  },
  {
-  "rubro": "ECLOS",
-  "slug": "eclos",
-  "proyectos": [
-   {
-    "nombre": "ÉCLOS MATE 01",
-    "fotos": [
-     "img/thumbs/muestra-dekton-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ÉCLOS MATE 02",
-    "fotos": [
-     "img/thumbs/muestra-dekton-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-2.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ÉCLOS MATE 03",
-    "fotos": [
-     "img/thumbs/muestra-dekton-3.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-3.webp",
-    "muestra": true
-   }
-  ],
+  "rubro": "ECLOS BY COSENTINO",
+  "slug": "eclos-by-cosentino",
+  "proyectos": [],
   "varios": []
  },
  {
@@ -709,27 +659,89 @@ const PORTOFINO_DATA = [
   "slug": "travertinos",
   "proyectos": [
    {
-    "nombre": "TRAVERTINO ROMANO",
+    "nombre": "PEACH A LA VETA",
     "fotos": [
-     "img/thumbs/muestra-banos-0.webp"
+     "img/thumbs/travertinos-0.webp",
+     "img/thumbs/travertinos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-banos-0.webp",
+    "thumb": "img/thumbs/travertinos-0.webp"
+   },
+   {
+    "nombre": "PUEBLA A LA VETA",
+    "fotos": [
+     "img/thumbs/travertinos-2.webp",
+     "img/thumbs/travertinos-3.webp"
+    ],
+    "thumb": "img/thumbs/travertinos-2.webp"
+   },
+   {
+    "nombre": "PUEBLA FIORITO",
+    "fotos": [
+     "img/thumbs/travertinos-4.webp",
+     "img/thumbs/travertinos-5.webp"
+    ],
+    "thumb": "img/thumbs/travertinos-4.webp"
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "DEKTON",
+  "slug": "dekton",
+  "proyectos": [
+   {
+    "nombre": "CUBIERTA BLANCA",
+    "fotos": [
+     "img/thumbs/muestra-dekton-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-0.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO BEIGE",
+    "nombre": "LAURENT",
     "fotos": [
-     "img/thumbs/muestra-marmoles-0.webp"
+     "img/thumbs/muestra-dekton-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-marmoles-0.webp",
+    "thumb": "img/thumbs/muestra-dekton-1.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO NOCE",
+    "nombre": "OPERA",
     "fotos": [
-     "img/thumbs/muestra-granitos-3.webp"
+     "img/thumbs/muestra-dekton-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-3.webp",
+    "thumb": "img/thumbs/muestra-dekton-2.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "ECLOS",
+  "slug": "eclos",
+  "proyectos": [
+   {
+    "nombre": "ÉCLOS MATE 01",
+    "fotos": [
+     "img/thumbs/muestra-dekton-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "ÉCLOS MATE 02",
+    "fotos": [
+     "img/thumbs/muestra-dekton-2.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-2.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "ÉCLOS MATE 03",
+    "fotos": [
+     "img/thumbs/muestra-dekton-3.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-3.webp",
     "muestra": true
    }
   ],
