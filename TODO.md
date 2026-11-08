@@ -1,12 +1,43 @@
 # Pendientes PORTOFINO
 
+## Bot WhatsApp Cloud API — estado al 8-nov
+- [x] **App Meta creada (portofinoapp)** con número de prueba +1 555 145 2429; Phone ID 1434575116411638, WABA 2991264301248057
+- [x] **Webhook desplegado**: `us-central1-portofino-1.cloudfunctions.net/waWebhook` (Firebase Functions `functions/index.js`, Node 22, 4 secrets configurados, token permanente puesto como v2)
+- [x] **Bot responde con Gemini** (mismo contexto del sitio: sucursales, horario, catálogo, "nunca inventes precios") — verificado en logs `waSend ok`
+- [~] **Mensajes reales aún no llegan al webhook** — `messages` suscrito y URL verificada, pero la app está sin publicar → solo llegan webhooks de prueba. Requiere registrar el 993 real
+- [ ] **Registrar el 993 302 3903** — el error "no cumple requisitos para migrar" es porque YA es cuenta WABA en el portfolio. Opción correcta: pestaña "Linked WhatsApp accounts" en Configuración → Cuentas de WhatsApp, o migración/coexistencia desde la app de Gladys (2 min con ella)
+- [x] **Meta Business Agent EXISTE** — aparece en la app de Gladys (Herramientas → Meta Business Agent) aunque no en Business Suite. Gladys lo abrió, pendiente crear/configurar el agente. **Puede ser la solución sin Cloud API — decidir ruta tras evaluarlo**
+
+## pubfb — ajustes presentación (8-nov)
+- [x] Marialuisa reducida (48→24px), logo agrandado (220→330px)
+- [x] Orden de fotos por convención Eduardo: P/Z (proyecto) arriba, S (lámina) en tira — implementado en build_manifest.py
+- [x] Sync corrió con regla: 86 productos, 166 fotos; .avif/.webp ya ignorados (solo jpg/jpeg/png)
+- [ ] Preguntar a Eduardo qué significa el sufijo "C" (Black Ice C, Black Galaxy C) — hoy ordena como proyecto; si es lámina/detalle hay que reordenar
+- [ ] Borrar los .avif/.webp originales en Dropbox (autorización Eduardo) — PNG de respaldo en ~/Desktop/convertir-png/
+
+## Sitio — tema oscuro (8-nov)
+- [x] Toggle oscuro/claro en nav (texto plano, persiste en localStorage) en index/catalogo/aviso
+- [x] Nav: píldora oscura translúcida solo al hacer scroll; títulos promo/materiales centrados
+- [ ] Revisar estética del nav en producción (usuario iteró varias versiones — confirmar resultado final)
+
+
+## WhatsApp Business — estado al 5-nov (noche)
+- [x] **Saludo automático funciona en WhatsApp** — "Respuesta automática" de Business Suite con los 3 canales (FB/IG/WA), texto con link wa.me/529933023903 + catálogo. Probado en vivo: responde al primer mensaje ("Hola Candelario...")
+- [x] **FAQs con WhatsApp habilitado** — materiales/envíos/costo/ubicación + "preguntas similares" activo
+- [ ] **Probar FAQs en horario** — a las 9pm "qué precios manejan?" y "hacen envíos?" no contestaron; puede ser el modo ausente o que el match de intenciones no dispare en WA. Reprobar en horario hábil
+- [ ] **Palabras clave NO disponibles para WhatsApp** (limitación de Meta: solo FB/IG en "Palabras clave personalizadas"). Cubre: FAQs + Business Agent (evaluar) o Cloud API a futuro
+- [ ] **App del celular:** apagar "Mensaje de bienvenida" (ya lo cubre Meta — evita doble saludo, Meta lo advierte); verificar "Mensaje de ausencia" siga activo y con horario — a las 9pm no saltó
+- [ ] **Catálogo de WhatsApp** en la app — pendiente cargar productos
+- [ ] **Promociones** — pendiente respuesta/FAQ de promo vigente
+
 ## Reunión con Gladys — 30-oct
 - [ ] **Confirmar estética de los posts** — logo = sello de agua tenue (~55%), sin texto por defecto (opcional arriba-izq.), logo auto blanco/tinta según fondo. Eduardo dio voBo al estilo Marmolexa/Grupo Tenerife; Gladys valida en pubfb.html
-- [ ] **Popular WhatsApp Business en el celular de Gladys** — perfil (descripción, "Portofino Granitos y Mármoles", web, ventas@, horario), mensaje bienvenida, mensaje ausencia, respuestas rápidas (/precios, /sucursales, /cotizar, /envios), catálogo con fotos reales + link al catálogo web
+- [~] **Popular WhatsApp Business en el celular de Gladys** — HECHO: perfil (descripción, web, ventas@, horario) y respuestas rápidas (/precios, /sucursales, /envios, /catalogo + variantes). PENDIENTE: catálogo de productos, apagar bienvenida de la app (la cubre Meta), verificar mensaje de ausencia
 - [ ] **2FA del portfolio** → subir a "Solicitar a administradores" (pendiente de 28-oct)
 - [ ] **Perfil personal "Portofino Vhsa"** — confirmar de quién es y si es admin (respaldo)
 - [ ] **Instagram "Confirmar acceso"** en Business Suite
 - [ ] **visto bueno de posts**: acordar que Gladys/Eduardo aprueban cada imagen antes de publicar
+- [ ] **Bandeja multiusuario por sucursal** — agregar a alguien de Veracruz y de Chiapas al portfolio con acceso a la bandeja de Business Suite (responden WhatsApp desde su compu sin tocar el celular de Gladys); opcional: dispositivo vinculado en su teléfono. Gladys sigue como teléfono principal
 
 ## Reunión con Gladys — 28-oct (WhatsApp hecho; lo demás sigue pendiente)
 

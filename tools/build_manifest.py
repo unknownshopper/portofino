@@ -42,7 +42,7 @@ TYPO = {
     'tarja': 'tarjas',
     'sellador': 'selladores',
 }
-IMG_EXT = {'.jpg', '.jpeg', '.png', '.heic', '.webp', '.tif', '.tiff', '.bmp'}
+IMG_EXT = {'.jpg', '.jpeg', '.png'}
 FOTO_DIRS = ('fotografías', 'fotografias', 'fotos', 'photos', 'imagenes', 'imágenes')
 
 
@@ -51,6 +51,13 @@ def slug(s: str) -> str:
     s = re.sub(r'[^a-zA-Z0-9]+', '-', s).strip('-').lower()
     return TYPO.get(s, s) or 'item'
 
+
+def foto_key(p: Path):
+    # proyecto (P/Z) primero, lámina (S) al final; dentro de cada grupo, orden natural
+    toks = p.name.replace('.', ' ').split()
+    marks = [t.upper() for t in toks if len(t) == 1 and t.upper() in 'PSZ']
+    es_slab = bool(marks) and marks[-1] == 'S'
+    return (1 if es_slab else 0, natural_key(p))
 
 def natural_key(p: Path):
     return [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)', p.name)]
@@ -110,9 +117,9 @@ def product_photos(prod_dir: Path):
     for f in prod_dir.iterdir():
         if f.is_dir() and f.name.lower() in FOTO_DIRS:
             return sorted((p for p in f.iterdir() if p.is_file() and p.suffix.lower() in IMG_EXT),
-                          key=natural_key)
+                          key=foto_key)
     return sorted((p for p in prod_dir.iterdir() if p.is_file() and p.suffix.lower() in IMG_EXT),
-                  key=natural_key)
+                  key=foto_key)
 
 
 def load_muestras():

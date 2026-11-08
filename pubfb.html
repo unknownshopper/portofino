@@ -257,30 +257,30 @@ async function renderCard(p){
   // encabezado mínimo: nombre + rubro
   x.fillStyle = '#16181b'; x.textBaseline = 'alphabetic'; x.letterSpacing = '3px';
   x.font = '600 22px Inter, sans-serif';
-  x.fillText(p.nombre.toUpperCase(), 48, 74, 984);
+  x.fillText(p.nombre.toUpperCase(), 24, 70, 1032);
   x.font = '500 14px Inter, sans-serif'; x.fillStyle = '#67757d';
-  x.fillText(p.rubro.toUpperCase(), 48, 100, 984);
+  x.fillText(p.rubro.toUpperCase(), 24, 96, 1032);
   x.letterSpacing = '0px';
 
-  // foto principal (más alta si no hay variantes)
+  // foto principal = primera del producto (ambiente); las láminas van a la tira
   const vars = p.fotos.slice(1, 5);
   const main = await loadImg(p.fotos[0]);
-  cover(x, main, 48, 128, 984, vars.length ? 610 : 780, 18);
+  cover(x, main, 24, 116, 1032, vars.length ? 640 : 800, 18);
 
   // tira de variantes (hasta 4; si hay menos, reparte el ancho)
   if (vars.length){
-    const n = vars.length, gap = 20, tw = (984-(n-1)*gap)/n, th = 150, ty = 758;
+    const n = vars.length, gap = 16, tw = (1032-(n-1)*gap)/n, th = 152, ty = 772;
     for (let i=0;i<n;i++){
       const im = await loadImg(vars[i]);
-      cover(x, im, 48+i*(tw+gap), ty, tw, th, 14);
+      cover(x, im, 24+i*(tw+gap), ty, tw, th, 14);
     }
   }
 
   // logo completo abajo y centrado
   const lg = logoImg.ink;
   if (lg.complete && lg.naturalWidth){
-    const lw = 220, lh = lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, (1080-lw)/2, 1080-44-lh, lw, lh);
+    const lw = 330, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, (1080-lw)/2, 1080-28-lh, lw, lh);
   }
   return c;
 }
@@ -301,29 +301,41 @@ async function renderPromo(p, titular, detalle, vigencia){
   const x = c.getContext('2d');
   x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
 
-  // foto a la derecha, como el slider
+  // foto a la derecha — más espacio que al texto
   const img = await loadImg(p.fotos[0]);
-  cover(x, img, 588, 160, 444, 760, 18);
+  cover(x, img, 480, 96, 552, 888, 18);
 
-  // kicker
-  x.fillStyle = '#67757d'; x.font = '500 24px Inter, sans-serif'; x.textBaseline = 'alphabetic';
-  x.fillText('P R O M O C I Ó N   ·   P O R T O F I N O', 64, 120);
+  // etiqueta "PRODUCTO NUEVO" esquina superior
+  x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
+  const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 56, eh = 54;
+  x.fillStyle = '#16181b';
+  x.beginPath();
+  if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
+  x.fill();
+  x.fillStyle = '#f3f4f4';
+  x.fillText(etq, 64 + 28, 96 + 36);
 
-  // titular: nombre — oferta
-  x.fillStyle = '#16181b'; x.font = '700 58px Inter, sans-serif';
-  let y = 220;
-  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 480)){ x.fillText(ln, 64, y); y += 66; }
+  // titular + detalle centrados verticalmente junto a la foto
+  const tLns = (()=>{ x.font='700 44px Inter, sans-serif'; return wrapTxt(x, `${p.nombre} — ${titular}`, 376); })();
+  x.font='400 28px Inter, sans-serif'; const dLns = wrapTxt(x, detalle, 376);
+  x.font='italic 400 26px Inter, sans-serif'; const vLns = wrapTxt(x, vigencia, 376);
+  const totalH = tLns.length*52 + 30 + dLns.length*40 + vLns.length*38;
+  let y = 96 + (888 - totalH)/2 + 34;
 
-  // detalle + vigencia
-  y += 26;
+  x.fillStyle = '#16181b'; x.font = '700 44px Inter, sans-serif';
+  for (const ln of tLns){ x.fillText(ln, 64, y); y += 52; }
+  y += 30;
   x.fillStyle = '#67757d'; x.font = '400 28px Inter, sans-serif';
-  for (const ln of wrapTxt(x, detalle, 480)){ x.fillText(ln, 64, y); y += 40; }
+  for (const ln of dLns){ x.fillText(ln, 64, y); y += 40; }
   x.font = 'italic 400 26px Inter, sans-serif';
-  for (const ln of wrapTxt(x, vigencia, 480)){ x.fillText(ln, 64, y); y += 38; }
+  for (const ln of vLns){ x.fillText(ln, 64, y); y += 38; }
 
-  // CTA
-  x.fillStyle = '#16181b'; x.font = '600 28px Inter, sans-serif';
-  x.fillText('C O T I Z A   P O R   W H A T S A P P  →', 64, 986);
+  // logo tinta al pie de la columna de texto
+  const lg = logoImg.ink;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 300, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, 64, 1080-96-lh, lw, lh);
+  }
 
   return c;
 }
@@ -336,7 +348,7 @@ const tit = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + 
 const RUBRO_1 = { CUARCITAS:'Cuarcita', CUARZOS:'Cuarzo', GRANITOS:'Granito', MARMOLES:'Mármol', SINTERIZADOS:'Sinterizado', TRAVERTINO:'Travertino', DEKTON:'Dekton', ECLOS:'Éclos', TARJAS:'Tarja', SELLADORES:'Sellador' };
 const rubro1 = r => RUBRO_1[r] || tit(r);
 const CIERRE = `Envíos a todo México.
-🧾 Cotiza en 2 minutos: ${CAT}
+🧾 Solicita tu cotización: ${CAT}
 💬 WhatsApp: ${WA}`;
 
 const tpl = p =>

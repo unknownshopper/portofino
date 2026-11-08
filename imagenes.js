@@ -16,128 +16,129 @@ const PORTOFINO_DATA = [
    {
     "nombre": "ALPHINE WHITE",
     "fotos": [
-     "img/thumbs/cuarcitas-2.webp"
+     "img/thumbs/cuarcitas-2.webp",
+     "img/thumbs/cuarcitas-3.webp"
     ],
     "thumb": "img/thumbs/cuarcitas-2.webp"
    },
    {
     "nombre": "BLUE ROMA",
     "fotos": [
-     "img/thumbs/cuarcitas-3.webp",
-     "img/thumbs/cuarcitas-4.webp"
+     "img/thumbs/cuarcitas-4.webp",
+     "img/thumbs/cuarcitas-5.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-3.webp"
+    "thumb": "img/thumbs/cuarcitas-4.webp"
    },
    {
     "nombre": "CRISTALLO",
     "fotos": [
-     "img/thumbs/cuarcitas-5.webp",
      "img/thumbs/cuarcitas-6.webp",
-     "img/thumbs/cuarcitas-7.webp"
+     "img/thumbs/cuarcitas-7.webp",
+     "img/thumbs/cuarcitas-8.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-5.webp"
+    "thumb": "img/thumbs/cuarcitas-6.webp"
    },
    {
     "nombre": "CRISTALLO DE MARE",
     "fotos": [
-     "img/thumbs/cuarcitas-8.webp",
-     "img/thumbs/cuarcitas-9.webp"
+     "img/thumbs/cuarcitas-9.webp",
+     "img/thumbs/cuarcitas-10.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-8.webp"
+    "thumb": "img/thumbs/cuarcitas-9.webp"
    },
    {
     "nombre": "FUSION RED",
     "fotos": [
-     "img/thumbs/cuarcitas-10.webp",
-     "img/thumbs/cuarcitas-11.webp"
+     "img/thumbs/cuarcitas-11.webp",
+     "img/thumbs/cuarcitas-12.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-10.webp"
+    "thumb": "img/thumbs/cuarcitas-11.webp"
    },
    {
     "nombre": "GALAPAGOS",
     "fotos": [
-     "img/thumbs/cuarcitas-12.webp",
-     "img/thumbs/cuarcitas-13.webp"
+     "img/thumbs/cuarcitas-13.webp",
+     "img/thumbs/cuarcitas-14.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-12.webp"
+    "thumb": "img/thumbs/cuarcitas-13.webp"
    },
    {
     "nombre": "KALAHARI",
     "fotos": [
-     "img/thumbs/cuarcitas-14.webp",
-     "img/thumbs/cuarcitas-15.webp"
+     "img/thumbs/cuarcitas-15.webp",
+     "img/thumbs/cuarcitas-16.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-14.webp"
+    "thumb": "img/thumbs/cuarcitas-15.webp"
    },
    {
     "nombre": "LAVEZZI",
     "fotos": [
-     "img/thumbs/cuarcitas-16.webp",
-     "img/thumbs/cuarcitas-17.webp"
+     "img/thumbs/cuarcitas-17.webp",
+     "img/thumbs/cuarcitas-18.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-16.webp"
+    "thumb": "img/thumbs/cuarcitas-17.webp"
    },
    {
     "nombre": "LEBLON",
     "fotos": [
-     "img/thumbs/cuarcitas-18.webp",
-     "img/thumbs/cuarcitas-19.webp"
+     "img/thumbs/cuarcitas-19.webp",
+     "img/thumbs/cuarcitas-20.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-18.webp"
+    "thumb": "img/thumbs/cuarcitas-19.webp"
    },
    {
     "nombre": "MIDNIGTH",
     "fotos": [
-     "img/thumbs/cuarcitas-20.webp",
-     "img/thumbs/cuarcitas-21.webp"
+     "img/thumbs/cuarcitas-21.webp",
+     "img/thumbs/cuarcitas-22.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-20.webp"
+    "thumb": "img/thumbs/cuarcitas-21.webp"
    },
    {
     "nombre": "PARADISE CRYSTAL",
     "fotos": [
-     "img/thumbs/cuarcitas-22.webp",
-     "img/thumbs/cuarcitas-23.webp"
+     "img/thumbs/cuarcitas-23.webp",
+     "img/thumbs/cuarcitas-24.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-22.webp"
+    "thumb": "img/thumbs/cuarcitas-23.webp"
    },
    {
     "nombre": "POLARIS",
     "fotos": [
-     "img/thumbs/cuarcitas-24.webp",
      "img/thumbs/cuarcitas-25.webp",
-     "img/thumbs/cuarcitas-26.webp"
+     "img/thumbs/cuarcitas-26.webp",
+     "img/thumbs/cuarcitas-27.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-24.webp"
+    "thumb": "img/thumbs/cuarcitas-25.webp"
    },
    {
     "nombre": "POLARIS GOLD",
     "fotos": [
-     "img/thumbs/cuarcitas-27.webp",
      "img/thumbs/cuarcitas-28.webp",
-     "img/thumbs/cuarcitas-29.webp"
+     "img/thumbs/cuarcitas-29.webp",
+     "img/thumbs/cuarcitas-30.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-27.webp"
+    "thumb": "img/thumbs/cuarcitas-28.webp"
    },
    {
     "nombre": "SANTORINI",
     "fotos": [
-     "img/thumbs/cuarcitas-30.webp",
      "img/thumbs/cuarcitas-31.webp",
-     "img/thumbs/cuarcitas-32.webp"
+     "img/thumbs/cuarcitas-32.webp",
+     "img/thumbs/cuarcitas-33.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-30.webp"
+    "thumb": "img/thumbs/cuarcitas-31.webp"
    },
    {
     "nombre": "TAJ MAHAL",
     "fotos": [
-     "img/thumbs/cuarcitas-33.webp",
      "img/thumbs/cuarcitas-34.webp",
      "img/thumbs/cuarcitas-35.webp",
      "img/thumbs/cuarcitas-36.webp",
-     "img/thumbs/cuarcitas-37.webp"
+     "img/thumbs/cuarcitas-37.webp",
+     "img/thumbs/cuarcitas-38.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-33.webp"
+    "thumb": "img/thumbs/cuarcitas-34.webp"
    }
   ],
   "varios": []
@@ -147,92 +148,42 @@ const PORTOFINO_DATA = [
   "slug": "cuarzos",
   "proyectos": [
    {
-    "nombre": "BLANCO ZEUS",
+    "nombre": "CALACATA BCS6232",
     "fotos": [
-     "img/thumbs/muestra-silestone-0.webp"
+     "img/thumbs/cuarzos-0.webp",
+     "img/thumbs/cuarzos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-0.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-0.webp"
    },
    {
-    "nombre": "ETERNAL SERENA",
+    "nombre": "CALACATA BSC2002",
     "fotos": [
-     "img/thumbs/muestra-silestone-1.webp"
+     "img/thumbs/cuarzos-2.webp",
+     "img/thumbs/cuarzos-3.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-1.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-2.webp"
    },
    {
-    "nombre": "CALACATTA GOLD",
+    "nombre": "CALACATA GOLD BCS7714",
     "fotos": [
-     "img/thumbs/muestra-silestone-2.webp"
+     "img/thumbs/cuarzos-4.webp",
+     "img/thumbs/cuarzos-5.webp"
     ],
-    "thumb": "img/thumbs/muestra-silestone-2.webp",
-    "muestra": true
+    "thumb": "img/thumbs/cuarzos-4.webp"
    }
   ],
   "varios": []
  },
  {
-  "rubro": "DEKTON",
-  "slug": "dekton",
-  "proyectos": [
-   {
-    "nombre": "CUBIERTA BLANCA",
-    "fotos": [
-     "img/thumbs/muestra-dekton-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "LAURENT",
-    "fotos": [
-     "img/thumbs/muestra-dekton-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "OPERA",
-    "fotos": [
-     "img/thumbs/muestra-dekton-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-2.webp",
-    "muestra": true
-   }
-  ],
+  "rubro": "DEKTON BY COSENTINO",
+  "slug": "dekton-by-cosentino",
+  "proyectos": [],
   "varios": []
  },
  {
-  "rubro": "ECLOS",
-  "slug": "eclos",
-  "proyectos": [
-   {
-    "nombre": "ÉCLOS MATE 01",
-    "fotos": [
-     "img/thumbs/muestra-dekton-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ÉCLOS MATE 02",
-    "fotos": [
-     "img/thumbs/muestra-dekton-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-2.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "ÉCLOS MATE 03",
-    "fotos": [
-     "img/thumbs/muestra-dekton-3.webp"
-    ],
-    "thumb": "img/thumbs/muestra-dekton-3.webp",
-    "muestra": true
-   }
-  ],
+  "rubro": "ECLOS BY COSENTINO",
+  "slug": "eclos-by-cosentino",
+  "proyectos": [],
   "varios": []
  },
  {
@@ -281,7 +232,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-9.webp"
    },
    {
-    "nombre": "BLACK MARQUINA GRANITO",
+    "nombre": "BLACK ICE",
     "fotos": [
      "img/thumbs/granitos-11.webp",
      "img/thumbs/granitos-12.webp"
@@ -289,24 +240,24 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-11.webp"
    },
    {
-    "nombre": "BLACK PYTHON",
+    "nombre": "BLACK MARQUINA GRANITO",
     "fotos": [
      "img/thumbs/granitos-13.webp",
-     "img/thumbs/granitos-14.webp",
-     "img/thumbs/granitos-15.webp"
+     "img/thumbs/granitos-14.webp"
     ],
     "thumb": "img/thumbs/granitos-13.webp"
    },
    {
-    "nombre": "BLANCO DALLAS",
+    "nombre": "BLACK PYTHON",
     "fotos": [
+     "img/thumbs/granitos-15.webp",
      "img/thumbs/granitos-16.webp",
      "img/thumbs/granitos-17.webp"
     ],
-    "thumb": "img/thumbs/granitos-16.webp"
+    "thumb": "img/thumbs/granitos-15.webp"
    },
    {
-    "nombre": "BLANCO ITAUNAS",
+    "nombre": "BLANCO DALLAS",
     "fotos": [
      "img/thumbs/granitos-18.webp",
      "img/thumbs/granitos-19.webp"
@@ -314,7 +265,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-18.webp"
    },
    {
-    "nombre": "BLANCO PITAYA",
+    "nombre": "BLANCO ITAUNAS",
     "fotos": [
      "img/thumbs/granitos-20.webp",
      "img/thumbs/granitos-21.webp"
@@ -322,7 +273,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-20.webp"
    },
    {
-    "nombre": "BLANCO POLAR",
+    "nombre": "BLANCO PITAYA",
     "fotos": [
      "img/thumbs/granitos-22.webp",
      "img/thumbs/granitos-23.webp"
@@ -330,12 +281,20 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-22.webp"
    },
    {
-    "nombre": "BLANCO ROMANO",
+    "nombre": "BLANCO POLAR",
     "fotos": [
      "img/thumbs/granitos-24.webp",
      "img/thumbs/granitos-25.webp"
     ],
     "thumb": "img/thumbs/granitos-24.webp"
+   },
+   {
+    "nombre": "BLANCO ROMANO",
+    "fotos": [
+     "img/thumbs/granitos-26.webp",
+     "img/thumbs/granitos-27.webp"
+    ],
+    "thumb": "img/thumbs/granitos-26.webp"
    }
   ],
   "varios": []
@@ -709,27 +668,89 @@ const PORTOFINO_DATA = [
   "slug": "travertinos",
   "proyectos": [
    {
-    "nombre": "TRAVERTINO ROMANO",
+    "nombre": "PEACH A LA VETA",
     "fotos": [
-     "img/thumbs/muestra-banos-0.webp"
+     "img/thumbs/travertinos-0.webp",
+     "img/thumbs/travertinos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-banos-0.webp",
+    "thumb": "img/thumbs/travertinos-0.webp"
+   },
+   {
+    "nombre": "PUEBLA A LA VETA",
+    "fotos": [
+     "img/thumbs/travertinos-2.webp",
+     "img/thumbs/travertinos-3.webp"
+    ],
+    "thumb": "img/thumbs/travertinos-2.webp"
+   },
+   {
+    "nombre": "PUEBLA FIORITO",
+    "fotos": [
+     "img/thumbs/travertinos-4.webp",
+     "img/thumbs/travertinos-5.webp"
+    ],
+    "thumb": "img/thumbs/travertinos-4.webp"
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "DEKTON",
+  "slug": "dekton",
+  "proyectos": [
+   {
+    "nombre": "CUBIERTA BLANCA",
+    "fotos": [
+     "img/thumbs/muestra-dekton-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-0.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO BEIGE",
+    "nombre": "LAURENT",
     "fotos": [
-     "img/thumbs/muestra-marmoles-0.webp"
+     "img/thumbs/muestra-dekton-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-marmoles-0.webp",
+    "thumb": "img/thumbs/muestra-dekton-1.webp",
     "muestra": true
    },
    {
-    "nombre": "TRAVERTINO NOCE",
+    "nombre": "OPERA",
     "fotos": [
-     "img/thumbs/muestra-granitos-3.webp"
+     "img/thumbs/muestra-dekton-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-granitos-3.webp",
+    "thumb": "img/thumbs/muestra-dekton-2.webp",
+    "muestra": true
+   }
+  ],
+  "varios": []
+ },
+ {
+  "rubro": "ECLOS",
+  "slug": "eclos",
+  "proyectos": [
+   {
+    "nombre": "ÉCLOS MATE 01",
+    "fotos": [
+     "img/thumbs/muestra-dekton-0.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-0.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "ÉCLOS MATE 02",
+    "fotos": [
+     "img/thumbs/muestra-dekton-2.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-2.webp",
+    "muestra": true
+   },
+   {
+    "nombre": "ÉCLOS MATE 03",
+    "fotos": [
+     "img/thumbs/muestra-dekton-3.webp"
+    ],
+    "thumb": "img/thumbs/muestra-dekton-3.webp",
     "muestra": true
    }
   ],

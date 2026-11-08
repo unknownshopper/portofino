@@ -200,6 +200,12 @@
   }
   .nav-logo { opacity: 0; pointer-events: none; transition: opacity .45s ease; }
   body.scrolled .nav-logo { opacity: 1; pointer-events: auto; }
+  nav a, #temaBtn { color: var(--light); }
+  body.scrolled nav .links {
+    background: rgba(14,16,18,.55);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-radius: 999px; padding: .65rem 1.3rem;
+  }
 
   /* ── loader ── */
   #loader {
@@ -370,7 +376,7 @@
     padding: 4rem 2rem;
     display: flex; align-items: center; justify-content: center; gap: 4rem;
   }
-  .promo-txt { flex: 0 1 640px; }
+  .promo-txt { flex: 0 1 640px; text-align: center; }
   .promo .k {
     font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
     color: var(--accent); display: block; margin-bottom: 1.3rem;
@@ -385,6 +391,7 @@
     max-width: 48ch; margin-bottom: 2rem;
   }
   .promo-cta {
+    display: inline-block;
     font-size: .66rem; letter-spacing: .26em; text-transform: uppercase;
     color: var(--ink); text-decoration: none;
     border-bottom: 1px solid var(--ink); padding-bottom: .35rem;
@@ -404,11 +411,12 @@
   /* ── materiales: carousel de productos ── */
   .materiales { background: var(--paper); color: var(--ink); padding: 0 0 7rem; }
   .materiales-head {
-    display: flex; justify-content: space-between; align-items: flex-end;
+    position: relative; text-align: center;
     border-top: 1px solid rgba(22,24,26,.15);
     padding: 2.5rem 2rem 0;
     max-width: 1200px; margin: 0 auto 3rem;
   }
+  .materiales-head .carr-nav { position: absolute; right: 2rem; bottom: .35rem; }
   .materiales-head .k {
     font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
     color: var(--accent); display: block; margin-bottom: 1rem;
@@ -697,11 +705,12 @@
 
 <nav>
   <a class="nav-logo" href="index.html" aria-label="PORTOFINO">
-    <img src="img/logo-ink.png" alt="PORTOFINO — Granitos y Mármoles">
+    <img src="img/logo-w.png" alt="PORTOFINO — Granitos y Mármoles">
   </a>
   <div class="links">
     <a href="catalogo.html">Catálogo</a>
     <a href="#contacto">Contacto</a>
+    <button id="temaBtn" aria-label="Cambiar tema" style="-webkit-appearance:none;appearance:none;background:none;border:none;font:inherit;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;cursor:pointer;padding:0;">oscuro</button>
   </div>
 </nav>
 
@@ -911,6 +920,24 @@
   .cmod-send { width:100%; background:var(--ink); color:var(--paper); border:0; border-radius:8px;
     padding:12px; font:inherit; font-size:.85rem; cursor:pointer; letter-spacing:.04em; }
   .cmod-aviso { font-size:.68rem; color:var(--accent); margin-top:10px; text-align:center; }
+
+  /* ── tema oscuro ── */
+  html.oscuro { --ink:#edf0f0; --paper:#14171a; --accent:#93a8b2; --hairline: rgba(255,255,255,.16); }
+  html.oscuro .promo { border-bottom-color: rgba(255,255,255,.12); }
+  html.oscuro .promo-dots button { background: rgba(255,255,255,.3); }
+  html.oscuro .promo-dots button.on { background: var(--light); }
+  html.oscuro .materiales-head { border-top-color: rgba(255,255,255,.14); }
+  html.oscuro .carr-btn { border-color: rgba(255,255,255,.28); }
+  html.oscuro .prod-fig, html.oscuro .vars button { background: #242b30; }
+  html.oscuro .prod-fig .mini { background: rgba(20,23,26,.88); color: var(--ink); }
+  html.oscuro .prod-fig .mini:hover { background: #2c343a; }
+  html.oscuro .vars button { border-color: rgba(255,255,255,.16); }
+  html.oscuro .marcas { border-top-color: rgba(255,255,255,.12); }
+  html.oscuro .msg.bot { background: #1e2428; border-color: rgba(255,255,255,.1); }
+  html.oscuro .chat-form { border-top-color: rgba(255,255,255,.12); }
+  html.oscuro .chat-form input { background: #1e2428; border-color: rgba(255,255,255,.18); color: var(--ink); }
+  html.oscuro .cmod { background: #1e2428; }
+  html.oscuro .cmod input, html.oscuro .cmod textarea { background: #262c31; border-color: rgba(255,255,255,.2); color: var(--ink); }
 </style>
 <div class="cmod-bg" id="cmodBg"></div>
 <div class="cmod" id="cmod" role="dialog" aria-label="Contacto Portofino">
@@ -947,7 +974,7 @@
   </form>
 </div>
 
-<script src="imagenes.js?v=20"></script>
+<script src="imagenes.js?v=21"></script>
 <script src="fb.js"></script>
 <script>
 // loader — sale cuando carga la primera foto del hero (o 4.5s máx)
@@ -1284,5 +1311,11 @@ ${datos.mensaje || '—'}`;
 };
 </script>
 
+<script>
+(function(){var h=document.documentElement,b=document.getElementById('temaBtn'),li=document.querySelector('.nav-logo img');
+function p(){var o=h.classList.contains('oscuro');b.textContent=o?'claro':'oscuro';if(li)li.src=o?'img/logo-w.png':'img/logo-ink.png'}
+if(localStorage.getItem('tema')==='oscuro')h.classList.add('oscuro');
+b.onclick=function(){h.classList.toggle('oscuro');localStorage.setItem('tema',h.classList.contains('oscuro')?'oscuro':'claro');p()};p()})();
+</script>
 </body>
 </html>

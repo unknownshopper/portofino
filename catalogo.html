@@ -52,8 +52,8 @@
   .head {
     padding: 8.5rem 2rem 2.5rem;
     max-width: 1280px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: flex-end;
-    gap: 2rem; flex-wrap: wrap;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 1.2rem; flex-wrap: wrap;
   }
   .head .k {
     font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
@@ -65,7 +65,7 @@
   }
   .head .nota {
     font-size: .8rem; font-weight: 400; opacity: .65;
-    max-width: 320px; line-height: 1.6; padding-bottom: .4rem;
+    max-width: 46ch; line-height: 1.6;
   }
 
   /* ── buscador ── */
@@ -369,6 +369,12 @@
   }
   @keyframes marcas { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) { .marcas-track { animation: none; } }
+
+  /* ── tema oscuro ── */
+  html.oscuro { --ink:#edf0f0; --paper:#14171a; --accent:#93a8b2; --hairline: rgba(255,255,255,.16); }
+  html.oscuro .item-fig, html.oscuro .vars button { background: #242b30; }
+  html.oscuro input, html.oscuro select, html.oscuro textarea { background: #1e2428 !important; color: var(--ink); border-color: rgba(255,255,255,.18) !important; }
+  html.oscuro .vista-nav:hover, html.oscuro .vista-x:hover, html.oscuro .add:hover { background: #2c343a; }
 </style>
 <script src="meta-pixel.js"></script>
 </head>
@@ -379,6 +385,7 @@
   <div class="links">
     <a href="index.html">Inicio</a>
     <a href="index.html#contacto">Contacto</a>
+    <button id="temaBtn" aria-label="Cambiar tema" style="-webkit-appearance:none;appearance:none;background:none;border:none;color:var(--ink);font:inherit;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;cursor:pointer;padding:0;">oscuro</button>
   </div>
 </nav>
 
@@ -479,7 +486,7 @@
   <span>Envíos a todo México</span>
 </footer>
 
-<script src="imagenes.js?v=20"></script>
+<script src="imagenes.js?v=21"></script>
 <script src="fb.js"></script>
 <script>
 // las solicitudes llegan al panel admin (Firestore); mail/WhatsApp quedan como alerta interna
@@ -799,6 +806,12 @@ if (!PORTOFINO_DATA.some(r => r.slug === activo)) activo = 'todos';
 renderCats();
 renderGrid();
 renderFab();
+</script>
+<script>
+(function(){var h=document.documentElement,b=document.getElementById('temaBtn'),li=document.querySelector('.brand img');
+function p(){var o=h.classList.contains('oscuro');b.textContent=o?'claro':'oscuro';if(li)li.src=o?'img/logo-w.png':'img/logo-ink.png'}
+if(localStorage.getItem('tema')==='oscuro')h.classList.add('oscuro');
+b.onclick=function(){h.classList.toggle('oscuro');localStorage.setItem('tema',h.classList.contains('oscuro')?'oscuro':'claro');p()};p()})();
 </script>
 </body>
 </html>
