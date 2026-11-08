@@ -16,37 +16,31 @@ const PORTOFINO_DATA = [
    {
     "nombre": "ALPHINE WHITE",
     "fotos": [
-     "img/thumbs/cuarcitas-2.webp"
+     "img/thumbs/cuarcitas-2.webp",
+     "img/thumbs/cuarcitas-3.webp"
     ],
     "thumb": "img/thumbs/cuarcitas-2.webp"
    },
    {
     "nombre": "BLUE ROMA",
     "fotos": [
-     "img/thumbs/cuarcitas-3.webp",
-     "img/thumbs/cuarcitas-4.webp"
+     "img/thumbs/cuarcitas-4.webp",
+     "img/thumbs/cuarcitas-5.webp",
+     "img/thumbs/cuarcitas-6.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-3.webp"
+    "thumb": "img/thumbs/cuarcitas-4.webp"
    },
    {
     "nombre": "CRISTALLO",
     "fotos": [
-     "img/thumbs/cuarcitas-5.webp",
-     "img/thumbs/cuarcitas-6.webp",
-     "img/thumbs/cuarcitas-7.webp"
-    ],
-    "thumb": "img/thumbs/cuarcitas-5.webp"
-   },
-   {
-    "nombre": "CRISTALLO DE MARE",
-    "fotos": [
+     "img/thumbs/cuarcitas-7.webp",
      "img/thumbs/cuarcitas-8.webp",
      "img/thumbs/cuarcitas-9.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-8.webp"
+    "thumb": "img/thumbs/cuarcitas-7.webp"
    },
    {
-    "nombre": "FUSION RED",
+    "nombre": "CRISTALLO DE MARE",
     "fotos": [
      "img/thumbs/cuarcitas-10.webp",
      "img/thumbs/cuarcitas-11.webp"
@@ -54,7 +48,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-10.webp"
    },
    {
-    "nombre": "GALAPAGOS",
+    "nombre": "FUSION RED",
     "fotos": [
      "img/thumbs/cuarcitas-12.webp",
      "img/thumbs/cuarcitas-13.webp"
@@ -62,7 +56,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-12.webp"
    },
    {
-    "nombre": "KALAHARI",
+    "nombre": "GALAPAGOS",
     "fotos": [
      "img/thumbs/cuarcitas-14.webp",
      "img/thumbs/cuarcitas-15.webp"
@@ -70,7 +64,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-14.webp"
    },
    {
-    "nombre": "LAVEZZI",
+    "nombre": "KALAHARI",
     "fotos": [
      "img/thumbs/cuarcitas-16.webp",
      "img/thumbs/cuarcitas-17.webp"
@@ -78,7 +72,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-16.webp"
    },
    {
-    "nombre": "LEBLON",
+    "nombre": "LAVEZZI",
     "fotos": [
      "img/thumbs/cuarcitas-18.webp",
      "img/thumbs/cuarcitas-19.webp"
@@ -86,7 +80,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-18.webp"
    },
    {
-    "nombre": "MIDNIGTH",
+    "nombre": "LEBLON",
     "fotos": [
      "img/thumbs/cuarcitas-20.webp",
      "img/thumbs/cuarcitas-21.webp"
@@ -94,7 +88,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-20.webp"
    },
    {
-    "nombre": "PARADISE CRYSTAL",
+    "nombre": "MIDNIGTH",
     "fotos": [
      "img/thumbs/cuarcitas-22.webp",
      "img/thumbs/cuarcitas-23.webp"
@@ -102,42 +96,51 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/cuarcitas-22.webp"
    },
    {
-    "nombre": "POLARIS",
+    "nombre": "PARADISE CRYSTAL",
     "fotos": [
      "img/thumbs/cuarcitas-24.webp",
-     "img/thumbs/cuarcitas-25.webp",
-     "img/thumbs/cuarcitas-26.webp"
+     "img/thumbs/cuarcitas-25.webp"
     ],
     "thumb": "img/thumbs/cuarcitas-24.webp"
    },
    {
+    "nombre": "POLARIS",
+    "fotos": [
+     "img/thumbs/cuarcitas-26.webp",
+     "img/thumbs/cuarcitas-27.webp",
+     "img/thumbs/cuarcitas-28.webp"
+    ],
+    "thumb": "img/thumbs/cuarcitas-26.webp"
+   },
+   {
     "nombre": "POLARIS GOLD",
     "fotos": [
-     "img/thumbs/cuarcitas-27.webp",
-     "img/thumbs/cuarcitas-28.webp",
-     "img/thumbs/cuarcitas-29.webp"
+     "img/thumbs/cuarcitas-29.webp",
+     "img/thumbs/cuarcitas-30.webp",
+     "img/thumbs/cuarcitas-31.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-27.webp"
+    "thumb": "img/thumbs/cuarcitas-29.webp"
    },
    {
     "nombre": "SANTORINI",
     "fotos": [
-     "img/thumbs/cuarcitas-30.webp",
-     "img/thumbs/cuarcitas-31.webp",
-     "img/thumbs/cuarcitas-32.webp"
+     "img/thumbs/cuarcitas-32.webp",
+     "img/thumbs/cuarcitas-33.webp",
+     "img/thumbs/cuarcitas-34.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-30.webp"
+    "thumb": "img/thumbs/cuarcitas-32.webp"
    },
    {
     "nombre": "TAJ MAHAL",
     "fotos": [
-     "img/thumbs/cuarcitas-33.webp",
-     "img/thumbs/cuarcitas-34.webp",
      "img/thumbs/cuarcitas-35.webp",
      "img/thumbs/cuarcitas-36.webp",
-     "img/thumbs/cuarcitas-37.webp"
+     "img/thumbs/cuarcitas-37.webp",
+     "img/thumbs/cuarcitas-38.webp",
+     "img/thumbs/cuarcitas-39.webp",
+     "img/thumbs/cuarcitas-40.webp"
     ],
-    "thumb": "img/thumbs/cuarcitas-33.webp"
+    "thumb": "img/thumbs/cuarcitas-35.webp"
    }
   ],
   "varios": []
@@ -231,7 +234,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-9.webp"
    },
    {
-    "nombre": "BLACK MARQUINA GRANITO",
+    "nombre": "BLACK ICE",
     "fotos": [
      "img/thumbs/granitos-11.webp",
      "img/thumbs/granitos-12.webp"
@@ -239,24 +242,24 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-11.webp"
    },
    {
-    "nombre": "BLACK PYTHON",
+    "nombre": "BLACK MARQUINA GRANITO",
     "fotos": [
      "img/thumbs/granitos-13.webp",
-     "img/thumbs/granitos-14.webp",
-     "img/thumbs/granitos-15.webp"
+     "img/thumbs/granitos-14.webp"
     ],
     "thumb": "img/thumbs/granitos-13.webp"
    },
    {
-    "nombre": "BLANCO DALLAS",
+    "nombre": "BLACK PYTHON",
     "fotos": [
+     "img/thumbs/granitos-15.webp",
      "img/thumbs/granitos-16.webp",
      "img/thumbs/granitos-17.webp"
     ],
-    "thumb": "img/thumbs/granitos-16.webp"
+    "thumb": "img/thumbs/granitos-15.webp"
    },
    {
-    "nombre": "BLANCO ITAUNAS",
+    "nombre": "BLANCO DALLAS",
     "fotos": [
      "img/thumbs/granitos-18.webp",
      "img/thumbs/granitos-19.webp"
@@ -264,7 +267,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-18.webp"
    },
    {
-    "nombre": "BLANCO PITAYA",
+    "nombre": "BLANCO ITAUNAS",
     "fotos": [
      "img/thumbs/granitos-20.webp",
      "img/thumbs/granitos-21.webp"
@@ -272,7 +275,7 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-20.webp"
    },
    {
-    "nombre": "BLANCO POLAR",
+    "nombre": "BLANCO PITAYA",
     "fotos": [
      "img/thumbs/granitos-22.webp",
      "img/thumbs/granitos-23.webp"
@@ -280,12 +283,20 @@ const PORTOFINO_DATA = [
     "thumb": "img/thumbs/granitos-22.webp"
    },
    {
-    "nombre": "BLANCO ROMANO",
+    "nombre": "BLANCO POLAR",
     "fotos": [
      "img/thumbs/granitos-24.webp",
      "img/thumbs/granitos-25.webp"
     ],
     "thumb": "img/thumbs/granitos-24.webp"
+   },
+   {
+    "nombre": "BLANCO ROMANO",
+    "fotos": [
+     "img/thumbs/granitos-26.webp",
+     "img/thumbs/granitos-27.webp"
+    ],
+    "thumb": "img/thumbs/granitos-26.webp"
    }
   ],
   "varios": []
