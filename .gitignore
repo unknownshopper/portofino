@@ -5,3 +5,4 @@ prods/
 # PDFs exportados (instrucciones, etc.)
 *.pdf
 dropbox-link.txt
+node_modules/
