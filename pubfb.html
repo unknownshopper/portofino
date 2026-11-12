@@ -98,9 +98,9 @@
     <div class="row" style="align-items:center">
       <select id="promoSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
       <select id="prTpl" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
-        <option value="3">Template 3 — barra de slab</option>
         <option value="1">Template 1 — foto + texto</option>
         <option value="2">Template 2 — slab de fondo</option>
+        <option value="3" selected>Template 3 — barra de slab</option>
       </select>
       <button class="pri" id="dlPromo">Descargar post 1080</button>
       <button class="pri" id="dlStory">Descargar historia 1080×1920</button>
@@ -326,19 +326,21 @@ async function renderPromo(p, titular, detalle, vigencia, tpl){
   x.fillStyle = '#f3f4f4';
   x.fillText(etq, 64 + 28, 96 + 36);
 
+  // rubro bajo la etiqueta
+  x.fillStyle = '#67757d'; x.font = '600 20px Inter, sans-serif';
+  x.fillText(rubro1(p.rubro).toUpperCase(), 64, 96 + eh + 44);
+
   // titular + detalle arriba, bajo la etiqueta
   const tLns = (()=>{ x.font='700 44px Inter, sans-serif'; return wrapTxt(x, `${p.nombre} — ${titular}`, 376); })();
   x.font='400 28px Inter, sans-serif'; const dLns = wrapTxt(x, detalle, 376);
-  x.font='italic 400 26px Inter, sans-serif'; const vLns = wrapTxt(x, vigencia, 376);
-  let y = 96 + eh + 78;
+  if (dLns.length > 4){ dLns.length = 4; dLns[3] = dLns[3].replace(/\s*\S+$/, '…'); }
+  let y = 96 + eh + 92;
 
   x.fillStyle = '#16181b'; x.font = '700 44px Inter, sans-serif';
   for (const ln of tLns){ x.fillText(ln, 64, y); y += 52; }
   y += 30;
   x.fillStyle = '#67757d'; x.font = '400 28px Inter, sans-serif';
   for (const ln of dLns){ x.fillText(ln, 64, y); y += 40; }
-  x.font = 'italic 400 26px Inter, sans-serif';
-  for (const ln of vLns){ x.fillText(ln, 64, y); y += 38; }
 
   // logo + lámina (última foto = S) al pie de la columna de texto
   const slabSrc = p.fotos.length > 1 ? p.fotos[p.fotos.length-1] : null;
@@ -352,6 +354,12 @@ async function renderPromo(p, titular, detalle, vigencia, tpl){
     const im = await loadImg(slabSrc);
     cover(x, im, 64, slabY, 376, slabH, 16);
   }
+
+  // vigencia como pie de página centrado
+  x.textAlign = 'center';
+  x.fillStyle = '#67757d'; x.font = 'italic 400 24px Inter, sans-serif';
+  x.fillText(vigencia, 540, 1080-34);
+  x.textAlign = 'left';
 
   return c;
 }
@@ -390,14 +398,21 @@ async function renderPromo3(p, titular, detalle, vigencia){
   x.fillStyle = '#f3f4f4';
   x.fillText(etq, 64 + 28, 96 + 36);
 
-  let y = 96 + eh + 78;
+  x.fillStyle = '#67757d'; x.font = '600 20px Inter, sans-serif';
+  x.fillText(rubro1(p.rubro).toUpperCase(), 64, 96 + eh + 44);
+
+  let y = 96 + eh + 92;
   x.fillStyle = '#16181b'; x.font = '700 44px Inter, sans-serif';
   for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 520)){ x.fillText(ln, 64, y); y += 52; }
   y += 30;
   x.fillStyle = '#67757d'; x.font = '400 28px Inter, sans-serif';
   for (const ln of wrapTxt(x, detalle, 520)){ x.fillText(ln, 64, y); y += 40; }
-  x.font = 'italic 400 26px Inter, sans-serif';
-  for (const ln of wrapTxt(x, vigencia, 520)){ x.fillText(ln, 64, y); y += 38; }
+
+  // vigencia como pie de página centrado, sobre la barra
+  x.textAlign = 'center';
+  x.fillStyle = '#67757d'; x.font = 'italic 400 24px Inter, sans-serif';
+  x.fillText(vigencia, 540, barY - 28);
+  x.textAlign = 'left';
 
   return c;
 }
@@ -411,8 +426,7 @@ async function renderPromo2(p, titular, detalle, vigencia){
   const bg = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
   cover(x, bg, 0, 0, 1080, 1080, 0);
 
-  // scrim: oscuro a la izquierda + caída suave abajo
-  // (sin degradado — texto directo sobre la lámina)
+  // texto directo sobre la lámina — la piedra manda
   // etiqueta invertida (clara sobre oscuro)
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
   const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 56, eh = 54;
@@ -434,17 +448,20 @@ async function renderPromo2(p, titular, detalle, vigencia){
     cover(x, proj, px, py, pw, ph, 16);
   }
 
-  // textos en blanco con sombra — contraste sin matar el fondo
-  x.shadowColor = 'rgba(0,0,0,.55)'; x.shadowBlur = 14; x.shadowOffsetY = 2;
-  let y = 96 + eh + 84;
+  // textos en blanco — borde fino oscuro + sombra para aislar sin velo
+  const line = (ln, y, lw) => {
+    x.lineWidth = lw; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round';
+    x.strokeText(ln, 64, y); x.fillText(ln, 64, y);
+  };
+  x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 14; x.shadowOffsetY = 2;
+  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = '600 22px Inter, sans-serif';
+  line(rubro1(p.rubro).toUpperCase(), 96 + eh + 50, 2);
+  let y = 96 + eh + 98;
   x.fillStyle = '#fff'; x.font = '700 48px Inter, sans-serif';
-  const tLns = wrapTxt(x, `${p.nombre} — ${titular}`, 460);
-  for (const ln of tLns){ x.fillText(ln, 64, y); y += 60; }
+  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 460)){ line(ln, y, 3.5); y += 60; }
   y += 34;
-  x.fillStyle = 'rgba(255,255,255,.92)'; x.font = '400 30px Inter, sans-serif';
-  for (const ln of wrapTxt(x, detalle, 460)){ x.fillText(ln, 64, y); y += 44; }
-  x.fillStyle = 'rgba(255,255,255,.78)'; x.font = 'italic 400 27px Inter, sans-serif';
-  for (const ln of wrapTxt(x, vigencia, 460)){ x.fillText(ln, 64, y); y += 40; }
+  x.fillStyle = 'rgba(255,255,255,.96)'; x.font = '400 30px Inter, sans-serif';
+  for (const ln of wrapTxt(x, detalle, 460)){ line(ln, y, 3); y += 44; }
   x.shadowBlur = 0; x.shadowOffsetY = 0;
 
   // logo blanco al pie
@@ -453,6 +470,13 @@ async function renderPromo2(p, titular, detalle, vigencia){
     const lw = 340, lh = lw*lg.naturalHeight/lg.naturalWidth;
     x.drawImage(lg, 64, 1080-84-lh, lw, lh);
   }
+
+  // vigencia como pie de página centrado
+  x.textAlign = 'center';
+  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = 'italic 400 26px Inter, sans-serif';
+  x.lineWidth = 2.2; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round';
+  x.strokeText(vigencia, 540, 1080-34); x.fillText(vigencia, 540, 1080-34);
+  x.textAlign = 'left';
 
   return c;
 }
@@ -480,16 +504,20 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   x.fillStyle = t2 ? '#16181b' : '#f3f4f4';
   x.fillText(etq, 64 + 32, topSafe + 40);
 
-  // textos — con sombra solo cuando van sobre la foto (T2)
-  if (t2){ x.shadowColor = 'rgba(0,0,0,.55)'; x.shadowBlur = 14; x.shadowOffsetY = 2; }
-  let y = topSafe + eh + 84;
+  // textos — borde fino + sombra solo cuando van sobre la foto (T2)
+  if (t2){ x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 14; x.shadowOffsetY = 2; }
+  const line = (ln, y, lw) => {
+    if (t2){ x.lineWidth = lw; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round'; x.strokeText(ln, 64, y); }
+    x.fillText(ln, 64, y);
+  };
+  x.fillStyle = t2 ? 'rgba(255,255,255,.85)' : '#67757d'; x.font = '600 26px Inter, sans-serif';
+  line(rubro1(p.rubro).toUpperCase(), topSafe + eh + 52, 2.2);
+  let y = topSafe + eh + 108;
   x.fillStyle = ink; x.font = '700 62px Inter, sans-serif';
-  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 952)){ x.fillText(ln, 64, y); y += 72; }
+  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 952)){ line(ln, y, 4); y += 72; }
   y += 44;
   x.fillStyle = sub; x.font = '400 36px Inter, sans-serif';
-  for (const ln of wrapTxt(x, detalle, 920)){ x.fillText(ln, 64, y); y += 52; }
-  x.fillStyle = vig; x.font = 'italic 400 33px Inter, sans-serif';
-  for (const ln of wrapTxt(x, vigencia, 920)){ x.fillText(ln, 64, y); y += 48; }
+  for (const ln of wrapTxt(x, detalle, 920)){ line(ln, y, 3.4); y += 52; }
   x.shadowBlur = 0; x.shadowOffsetY = 0;
 
   // proyecto grande bajo el texto — termina antes del pie
@@ -509,8 +537,13 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   }
 
   if (t3){
-    // barra de slab full-width al pie, logo blanco centrado encima
+    // vigencia como pie centrado, sobre la barra
     const barH = 210, barY = 1920 - barH;
+    x.textAlign = 'center';
+    x.fillStyle = '#67757d'; x.font = 'italic 400 30px Inter, sans-serif';
+    x.fillText(vigencia, 540, barY - 44);
+    x.textAlign = 'left';
+    // barra de slab full-width al pie, logo blanco centrado encima
     const slab = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
     cover(x, slab, 0, barY, 1080, barH, 0);
     x.fillStyle = 'rgba(12,14,16,.28)'; x.fillRect(0, barY, 1080, barH);
@@ -523,15 +556,25 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   }
 
   // logo centrado — T2 más grande y más abajo; T1 igual
+  let logoBot = logoY + (t2 ? 30 : 0);
   const lg = t2 ? logoImg.w : logoImg.ink;
   if (lg.complete && lg.naturalWidth){
     const lw = t2 ? 460 : 400, lh = lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, (1080-lw)/2, t2 ? logoY + 30 : logoY, lw, lh);
+    x.drawImage(lg, (1080-lw)/2, logoBot, lw, lh);
+    logoBot += lh;
   }
   if (!t2 && p.fotos.length > 1){
     const slab = await loadImg(p.fotos[p.fotos.length-1]);
     cover(x, slab, 1016-260, logoY+16, 260, 116, 14);
   }
+
+  // vigencia como pie de página centrado, bajo el logo
+  x.textAlign = 'center';
+  x.font = 'italic 400 30px Inter, sans-serif';
+  if (t2){ x.fillStyle = 'rgba(255,255,255,.85)'; x.lineWidth = 2.2; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round'; x.strokeText(vigencia, 540, logoBot + 48); }
+  else x.fillStyle = '#67757d';
+  x.fillText(vigencia, 540, logoBot + 48);
+  x.textAlign = 'left';
 
   return c;
 }
@@ -697,16 +740,16 @@ PRODS.forEach((p,i)=>{
 });
 // características por rubro — precargan el detalle del post (editables)
 const RUBRO_DET = {
-  CUARCITAS:   'Vetas de mármol con dureza de granito — lámina 2cm.',
-  GRANITOS:    'Una de las piedras más duras — uso rudo en cocina y exterior.',
-  MARMOLES:    'Veteado único e irrepetible — elegancia natural clásica.',
-  CUARZOS:     'Color uniforme, cero porosidad — mínimo mantenimiento.',
-  SINTERIZADOS:'Ultracompacta — resiste calor, rayones, UV y manchas.',
-  DEKTON:      'Sinterizado premium — máxima resistencia, casi indestructible.',
-  ECLOS:       'Sinterizado de alta gama — gran formato, mínimas juntas.',
-  TRAVERTINO:  'Tonos tierra cálidos — terrazas, pisos y exteriores.',
-  TARJAS:      'Tarja en piedra natural — pieza única para tu proyecto.',
-  SELLADORES:  'Protección profesional — alarga la vida de tu piedra.',
+  CUARCITAS:   'Piedra natural de vetas espectaculares — la elegancia del mármol con dureza cercana al granito. Resiste calor y uso rudo en cocina. Lámina completa de 2 cm; cada pieza es irrepetible.',
+  GRANITOS:    'Una de las piedras más duras de la naturaleza — resiste calor, rayones y el uso diario más intenso. La favorita para cubiertas de cocina, pisos y exteriores. Lámina de 2 cm.',
+  MARMOLES:    'Piedra metamórfica de veteado único — ninguna lámina se repite jamás. Elegancia clásica para cubiertas, muros y pisos de interiores. Lámina de 2 cm.',
+  CUARZOS:     'Superficie diseñada de cuarzo compactado — color uniforme, cero porosidad, no requiere sellado. Ideal en cubiertas y muros de interiores. Lámina de 2 cm.',
+  SINTERIZADOS:'Losa cerámica ultracompacta — soporta calor directo, rayos UV, manchas y rayones. Para cubiertas, fachadas y pisos de gran formato.',
+  DEKTON:      'Sinterizado ultracompacto de Cosentino — máxima resistencia a calor, rayones, UV y manchas. Prácticamente indestructible en cubiertas y exteriores.',
+  ECLOS:       'Sinterizado de alta gama en gran formato — superficie casi sin juntas, resistente y de mantenimiento mínimo.',
+  TRAVERTINO:  'Piedra natural porosa de tonos tierra cálidos — la favorita para terrazas, albercas, patios y pisos exteriores. Textura cálida que no desliza.',
+  TARJAS:      'Tarja labrada en piedra natural — cada pieza es única y convierte la cocina o el baño en protagonista del espacio.',
+  SELLADORES:  'Protección profesional para piedra natural — sella, limpia y prolonga la vida y la apariencia de tu material.',
 };
 const rubroDet = r => RUBRO_DET[r] || 'Lámina completa de 2 cm — proyecto ilustrativo.';
 document.getElementById('prTit').value = 'precio especial en slab completo';
