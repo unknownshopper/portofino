@@ -8,6 +8,11 @@
 - [ ] **Registrar el 993 302 3903** — el error "no cumple requisitos para migrar" es porque YA es cuenta WABA en el portfolio. Opción correcta: pestaña "Linked WhatsApp accounts" en Configuración → Cuentas de WhatsApp, o migración/coexistencia desde la app de Gladys (2 min con ella)
 - [x] **Meta Business Agent EXISTE** — aparece en la app de Gladys (Herramientas → Meta Business Agent) aunque no en Business Suite. Gladys lo abrió, pendiente crear/configurar el agente. **Puede ser la solución sin Cloud API — decidir ruta tras evaluarlo**
 
+## Cotizador y chatbot — pendiente confirmación Eduardo (10-nov)
+- [ ] **Confirmar espesores disponibles:** ¿slabs de 2cm, 3cm o ambos? (Eduardo)
+- [ ] **Alimentar chatbot y bot WhatsApp** con terminología de slabs: espesor, medidas típicas de lámina, peso aproximado por composición (granito más denso que mármol, etc.)
+- [ ] **Cotizador: por slab, no por m²** — ajustar catalogo.html para que la solicitud sea por lámina completa (y espesor si aplica); el bot nunca debe cotizar por metro cuadrado
+
 ## pubfb — ajustes presentación (8-nov)
 - [x] Marialuisa reducida (48→24px), logo agrandado (220→330px)
 - [x] Orden de fotos por convención Eduardo: P/Z (proyecto) arriba, S (lámina) en tira — implementado en build_manifest.py
