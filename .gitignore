@@ -6,3 +6,4 @@ prods/
 *.pdf
 dropbox-link.txt
 node_modules/
+.portodocxs/
