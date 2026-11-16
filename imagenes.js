@@ -177,18 +177,7 @@ const PORTOFINO_DATA = [
  {
   "rubro": "DEKTON",
   "slug": "dekton-by-cosentino",
-  "proyectos": [
-   {
-    "nombre": "THE ULTRACOMPACT SURFACE",
-    "fotos": [
-     "img/thumbs/dekton-by-cosentino-0.webp",
-     "img/thumbs/dekton-by-cosentino-1.webp",
-     "img/thumbs/dekton-by-cosentino-2.webp",
-     "img/thumbs/dekton-by-cosentino-3.webp"
-    ],
-    "thumb": "img/thumbs/dekton-by-cosentino-0.webp"
-   }
-  ],
+  "proyectos": [],
   "varios": []
  },
  {
@@ -762,37 +751,6 @@ const PORTOFINO_DATA = [
      "img/thumbs/muestra-eclos-2.webp"
     ],
     "thumb": "img/thumbs/muestra-eclos-2.webp",
-    "muestra": true
-   }
-  ],
-  "varios": []
- },
- {
-  "rubro": "SELLADORES",
-  "slug": "selladores",
-  "proyectos": [
-   {
-    "nombre": "SELLADOR PARA PIEDRA",
-    "fotos": [
-     "img/thumbs/muestra-selladores-0.webp"
-    ],
-    "thumb": "img/thumbs/muestra-selladores-0.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "SELLADOR 02",
-    "fotos": [
-     "img/thumbs/muestra-selladores-1.webp"
-    ],
-    "thumb": "img/thumbs/muestra-selladores-1.webp",
-    "muestra": true
-   },
-   {
-    "nombre": "SELLADOR 03",
-    "fotos": [
-     "img/thumbs/muestra-selladores-2.webp"
-    ],
-    "thumb": "img/thumbs/muestra-selladores-2.webp",
     "muestra": true
    }
   ],

@@ -1042,7 +1042,7 @@ document.querySelectorAll('img[data-src-slug]').forEach(img => {
 const NOMBRES = {
   marmoles: 'Mármol', granitos: 'Granito', dekton: 'Dekton®', cuarzos: 'Cuarzo',
   cuarcitas: 'Cuarcita', travertinos: 'Travertino', eclos: 'Éclos',
-  sinterizados: 'Sinterizado', tarjas: 'Tarjas', selladores: 'Selladores'
+  sinterizados: 'Sinterizado', tarjas: 'Tarjas', 'productos-profesionales': 'Selladores y cuidado'
 };
 const carr = document.getElementById('carr');
 const usados = new Set();
@@ -1166,7 +1166,7 @@ const RESPUESTAS = [
   [/cuarcita|quarcita/, 'Cuarcitas naturales de vetas únicas — resistentes y exclusivas. Vea el <a href="catalogo.html#cuarcitas">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/travertino/, 'Travertinos nacionales e importados, clásicos para exteriores y muros. Vea el <a href="catalogo.html#travertinos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/fregadero|tarja|sink|lavabo|lavamanos/, 'Tarjas y fregaderos en varios modelos — busque por código en el <a href="catalogo.html#tarjas">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/suministro|sellador|pegamento|epoxi|accesorio|herramienta/, 'Manejamos selladores y suministros para instalación y mantenimiento de piedra. Vea el <a href="catalogo.html#selladores">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/suministro|sellador|pegamento|epoxi|accesorio|herramienta/, 'Manejamos selladores y suministros para instalación y mantenimiento de piedra. Vea el <a href="catalogo.html#productos-profesionales">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/playa|mar|salitre|costa|h[uú]med/, 'En costa el salitre y la humedad mandan: <b>sinterizado o Dekton</b> en cubiertas y fachadas (no se degradan), <b>granito</b> en pisos y exteriores, <b>travertino</b> en terrazas — evite mármol al exterior y acero/metálicos sin protección. Cuénteme las áreas y le afinamos la selección.', ['Ver productos','Cotizar','Contactar asesor']],
   [/brutalist|minimalist|mediterr[aá]ne|industrial|r[uú]stic|moderno|contempor[aá]ne|cl[aá]sic|estilo|look|acabado|efecto/, 'Por estilo: <b>brutalista</b> → sinterizado efecto concreto, granito flameado o travertino al natural; <b>minimalista</b> → mármol blanco de veta sutil, cuarzo liso o Dekton en sólidos; <b>mediterráneo</b> → travertino y mármoles crema; <b>industrial</b> → sinterizados óxido/cemento. Cuénteme el look y le propongo material.', ['Ver productos','Cotizar','Contactar asesor']],
   [/proyecto|constru|obra|remodel|casa nueva|arquitecto|dise[ñn]o/, 'Excelente proyecto — trabajamos con propietarios, arquitectos y contratistas: material por lámina completa con recolección en sucursal (la medición e instalación corren por cuenta de su contratista; entregas especiales se valoran por WhatsApp). Cuénteme qué áreas lleva piedra (cocina, baños, pisos, fachada) y armamos la lista en el <a href="catalogo.html">cotizador</a>.', ['Cotizar','Ver productos','Contactar asesor']],
@@ -1174,7 +1174,7 @@ const RESPUESTAS = [
   [/recomienda|diferencia|mejor|versus|vs\.?|cu[aá]l (me|le|conviene)/, 'Depende del uso — cocina de uso rudo: <b>granito</b> o <b>sinterizado</b>; lujo veteado: <b>mármol</b> o <b>cuarcita</b>; fachada o sol directo: <b>Dekton</b> o <b>sinterizado</b>; terraza/alberca: <b>travertino</b>. Cuénteme su espacio y le afino la recomendación.', ['Ver productos','Cotizar','Contactar asesor']],
   [/retazo|saldo|remanent|sobrante|pedacer|pedazos|pieza chica|barato/, 'Los <b>retazos</b> (remanentes de cortes) salen con descuento — perfectos para cubiertas chicas, repisas, mesas y detalles. La disponibilidad cambia seguido: pregunte al asesor qué retazos hay en su ciudad o envíe su solicitud en el <a href="catalogo.html">cotizador</a>.', ['Contactar asesor','Cotizar']],
   [/promoci[oó]n|oferta|descuento|rebaja|remate/, 'Las promociones vigentes están en la portada y se aplican en la cotización — arme su lista en el <a href="catalogo.html">cotizador</a> y el asesor le confirma la mejor opción.', ['Cotizar','Ver productos']],
-  [/mantenimiento|limpie|mancha|sell(o|ar|ado)|cuidado|pulir|abrillantar/, 'La piedra natural pide sellado periódico y limpieza neutra — manejamos selladores y limpiadores profesionales en el <a href="catalogo.html#selladores">catálogo</a>. El mármol es sensible a ácidos (limón, vinagre); granito y sinterizados aguantan más.', ['Ver productos','Contactar asesor']],
+  [/mantenimiento|limpie|mancha|sell(o|ar|ado)|cuidado|pulir|abrillantar/, 'La piedra natural pide sellado periódico y limpieza neutra — manejamos selladores y limpiadores profesionales en el <a href="catalogo.html#productos-profesionales">catálogo</a>. El mármol es sensible a ácidos (limón, vinagre); granito y sinterizados aguantan más.', ['Ver productos','Contactar asesor']],
   [/cocina|cubierta|barra|meseta/, 'Para cubiertas de cocina: <b>granito</b> y <b>sinterizado</b> para uso rudo (calor y rayones), <b>cuarcita</b> para vetas naturales con dureza, <b>mármol</b> si busca la pieza única. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/ba[ñn]o|revestimiento|muro/, 'Para baños y muros: mármol y travertino dan el acabado cálido, cuarzo y sinterizados piden menos mantenimiento. Vea el <a href="catalogo.html">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/losa|placa|material|producto|piedra|onix|[oó]nix|travertino/, 'Toda nuestra línea de productos está en el <a href="catalogo.html">catálogo</a> — mármol, granito, cuarzo, Dekton, Éclos, sinterizados y más.', ['Ver productos','Cotizar']],
@@ -1218,7 +1218,7 @@ const MATERIALES = `Conocimiento de materiales (úsame para recomendar con profu
 - DEKTON / ECLOS: sinterizado ultracompacto premium. Máxima resistencia a calor, rayones, UV y manchas. Cubiertas de alta exigencia, fachadas, exteriores. Prácticamente indestructible para el usuario final.
 - TRAVERTINO: piedra natural porosa de tonos tierra/beige, textura cálida. Pisos, recubrimientos, exteriores, albercas, patios. Se trabaja en versalles/romano; se sella y puede venir enchapado (relleno) o al natural.
 - TARJAS: tarjas y lavabos de piedra/insumos para la instalación.
-- SELLADORES: mantenimiento profesional — selladores, limpiadores, cuidado de piedra. Siempre recomiéndalos con piedra natural.`;
+- PRODUCTOS PROFESIONALES: mantenimiento — selladores, limpiadores, cuidado de piedra (StoneTech y similares). Siempre recomiéndalos con piedra natural.`;
 
 const AI_CTX = (() => {
   const cat = PORTOFINO_DATA.map(r =>

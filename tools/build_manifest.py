@@ -45,6 +45,10 @@ TYPO = {
 IMG_EXT = {'.jpg', '.jpeg', '.png'}
 FOTO_DIRS = ('fotografías', 'fotografias', 'fotos', 'photos', 'imagenes', 'imágenes')
 
+# productos que no deben salir en el catálogo (marketing, material interno…)
+# clave: slug del nombre de carpeta — ej. "The Ultracompact Surface" → 'the-ultracompact-surface'
+PRODUCTO_SKIP = {'the-ultracompact-surface'}
+
 
 def slug(s: str) -> str:
     s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode()
@@ -185,6 +189,9 @@ def main():
         i = 0
         for prod_dir in sorted((d for d in rubro_dir.iterdir()
                                 if d.is_dir() and not d.name.startswith(('.', '__'))), key=natural_key):
+            if slug(prod_dir.name) in PRODUCTO_SKIP:
+                report.append(f'  · {rubro}/{prod_dir.name}: excluido (PRODUCTO_SKIP)')
+                continue
             fotos_src = product_photos(prod_dir)
             if not fotos_src:
                 report.append(f'  · {rubro}/{prod_dir.name}: sin fotos (omitido)')
