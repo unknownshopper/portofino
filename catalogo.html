@@ -444,6 +444,7 @@
     <button class="panel-x" id="panelX" aria-label="Cerrar">×</button>
   </div>
   <div class="panel-body">
+    <p style="font-size:.78rem;color:#67757d;margin:0 0 10px">Vendemos por <b>lámina (slab) completa de 2 cm</b>, no por m². Indique el <b>área que necesita cubrir</b> en cada producto — el asesor calcula cuántas láminas se requieren; si sobra material, la pieza excedente es suya.</p>
     <div id="cotLista"></div>
     <form class="cot-form" id="cotForm">
       <span class="k">Sus datos</span>
@@ -667,7 +668,7 @@ function renderPanel() {
       <div>
         <div class="nom">${it.nombre}</div>
         <div class="rub">${it.rubro}</div>
-        <input class="m2" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Área en m² (aprox.)" value="${cot[id].m2 || ''}">
+        <input class="m2" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Área a cubrir en m² (aprox.)" value="${cot[id].m2 || ''}">
       </div>
       <button class="quitar" aria-label="Quitar">×</button>`;
     row.querySelector('.m2').oninput = e => { cot[id].m2 = e.target.value; guardar(); };
@@ -698,7 +699,7 @@ function resumen() {
   const lineas = Object.keys(cot).map(id => {
     const it = ITEMS.find(x => x.id === id);
     if (!it) return '';
-    return `• ${it.nombre} (${it.rubro})` + (cot[id].m2 ? ` — ${cot[id].m2} m² aprox.` : '');
+    return `• ${it.nombre} (${it.rubro})` + (cot[id].m2 ? ` — área a cubrir: ${cot[id].m2} m²` : '');
   }).filter(Boolean).join('\n');
   const f = id => document.getElementById(id).value.trim();
   const productos = Object.keys(cot).map(id => {
