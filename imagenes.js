@@ -732,25 +732,25 @@ const PORTOFINO_DATA = [
    {
     "nombre": "ÉCLOS MATE 01",
     "fotos": [
-     "img/thumbs/muestra-dekton-0.webp"
+     "img/thumbs/muestra-eclos-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-dekton-0.webp",
+    "thumb": "img/thumbs/muestra-eclos-0.webp",
     "muestra": true
    },
    {
     "nombre": "ÉCLOS MATE 02",
     "fotos": [
-     "img/thumbs/muestra-dekton-2.webp"
+     "img/thumbs/muestra-eclos-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-dekton-2.webp",
+    "thumb": "img/thumbs/muestra-eclos-1.webp",
     "muestra": true
    },
    {
     "nombre": "ÉCLOS MATE 03",
     "fotos": [
-     "img/thumbs/muestra-dekton-3.webp"
+     "img/thumbs/muestra-eclos-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-dekton-3.webp",
+    "thumb": "img/thumbs/muestra-eclos-2.webp",
     "muestra": true
    }
   ],
