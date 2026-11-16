@@ -162,26 +162,26 @@
   .vista {
     position: fixed; inset: 0; z-index: 60;
     background: rgba(14,15,16,.88); backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center; padding: 3.2rem 1.2rem 1.4rem;
+    overflow-y: auto; padding: 3.2rem 1.2rem 2.4rem;
     opacity: 0; pointer-events: none; transition: opacity .25s;
   }
   .vista.open { opacity: 1; pointer-events: auto; }
-  .vista-box { width: min(1100px, 100%); max-height: 100%; display: flex; flex-direction: column; gap: .9rem; }
-  .vista-fig { position: relative; flex: 1; min-height: 0; display: flex; justify-content: center; }
+  .vista-box { width: min(1100px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: .9rem; }
+  .vista-fig { position: relative; display: flex; justify-content: center; }
   .vista-fig img {
-    max-width: 100%; max-height: calc(100vh - 13rem); object-fit: contain;
+    max-width: 100%; max-height: 52vh; object-fit: contain;
     border-radius: 10px; background: #1c1e20; display: block;
   }
   .vista-nav, .vista-x {
-    position: absolute; border: none; cursor: pointer; font-family: inherit;
+    border: none; cursor: pointer; font-family: inherit;
     background: rgba(255,255,255,.9); color: var(--ink); border-radius: 50%;
   }
-  .vista-nav { top: 50%; transform: translateY(-50%); width: 2.6rem; height: 2.6rem; font-size: 1rem; }
+  .vista-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 2.6rem; height: 2.6rem; font-size: 1rem; }
   .vista-nav:hover, .vista-x:hover { background: #fff; }
   .vista-nav.prev { left: .7rem; }
   .vista-nav.next { right: .7rem; }
   .vista.una .vista-nav { display: none; }
-  .vista-x { top: .8rem; right: .9rem; width: 2.3rem; height: 2.3rem; font-size: 1.4rem; line-height: 1; z-index: 2; }
+  .vista-x { position: fixed; top: .8rem; right: .9rem; width: 2.3rem; height: 2.3rem; font-size: 1.4rem; line-height: 1; z-index: 2; }
   .vista-info { display: flex; align-items: center; gap: 1rem; color: var(--paper); }
   .vista-info > div { flex: 1; display: flex; flex-direction: column; gap: .35rem; }
   .vista-info h3 { font-size: 1.15rem; font-weight: 500; }
@@ -191,10 +191,23 @@
   .vista-info .add:hover { transform: translateY(-1px); }
   .vista .vars { justify-content: center; }
   .vista .vars button { width: 54px; height: 54px; border-color: rgba(255,255,255,.2); }
+  .vista-ficha {
+    color: var(--paper); display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem 2.2rem;
+    padding: 1.1rem .2rem .4rem; border-top: 1px solid rgba(255,255,255,.14);
+  }
+  .vista-ficha .sec { display: flex; flex-direction: column; gap: .35rem; }
+  .vista-ficha .sec.full { grid-column: 1 / -1; }
+  .vista-ficha h4 { font-size: .6rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0; }
+  .vista-ficha p { font-size: .88rem; line-height: 1.55; opacity: .88; margin: 0; }
+  .vista-ficha .tags { display: flex; flex-wrap: wrap; gap: .45rem; }
+  .vista-ficha .tags span { font-size: .72rem; padding: .3rem .75rem; border: 1px solid rgba(255,255,255,.25); border-radius: 20px; opacity: .9; }
+  @media (max-width: 640px) {
+    .vista-ficha { grid-template-columns: 1fr; }
+  }
   @media (max-width: 520px) {
     .vista .vars button { width: 40px; height: 40px; }
     .vista-info { flex-wrap: wrap; }
-    .vista-fig img { max-height: calc(100vh - 15rem); }
+    .vista-fig img { max-height: 40vh; }
   }
   .item .rubro {
     font-size: .58rem; letter-spacing: .26em; text-transform: uppercase;
@@ -439,6 +452,7 @@
       <span class="vista-cnt" id="vistaCnt"></span>
       <button class="add" id="vistaAdd"></button>
     </div>
+    <div class="vista-ficha" id="vistaFicha"></div>
     <div class="vars" id="vistaVars"></div>
   </div>
 </div>
@@ -481,10 +495,10 @@
 <!-- MARCAS — ajustar lista a las marcas que realmente distribuyen -->
 <div class="marcas" aria-label="Marcas que distribuimos">
   <div class="marcas-track">
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
   </div>
 </div>
 
@@ -495,6 +509,7 @@
 </footer>
 
 <script src="imagenes.js?v=22"></script>
+<script src="fichas.js"></script>
 <script src="fb.js"></script>
 <script src="vidplayer.js"></script>
 <script>
@@ -517,7 +532,7 @@ const catsEl = document.getElementById('cats');
 const grid = document.getElementById('grid');
 const totalEl = document.getElementById('total');
 const buscarEl = document.getElementById('buscar');
-let activo = location.hash.slice(1) || 'todos';
+let activo = location.hash.slice(1).split('/')[0] || 'todos';
 let q = '';
 
 // ── carrito de cotización (localStorage) ──
@@ -561,7 +576,7 @@ const vista = document.getElementById('vista');
 const vImg = document.getElementById('vistaImg');
 let vIt = null;
 function pintarVista() {
-  const vi = varSel[vIt.id] || 0, n = vIt.fotos.length, enCot = !!cot[vIt.id];
+  const vi = varSel[vIt.id] ?? (vIt.fotos.length - 1), n = vIt.fotos.length, enCot = !!cot[vIt.id];
   vImg.src = vIt.fotos[vi];
   vImg.alt = vIt.nombre;
   document.getElementById('vistaNom').textContent = vIt.nombre;
@@ -577,18 +592,39 @@ function pintarVista() {
 }
 function moverVista(i, abs) {
   const n = vIt.fotos.length;
-  varSel[vIt.id] = ((abs ? i : (varSel[vIt.id] || 0) + i) + n) % n;
+  varSel[vIt.id] = ((abs ? i : (varSel[vIt.id] ?? (vIt.fotos.length - 1)) + i) + n) % n;
   pintarVista();
 }
-function abrirVista(it) {
+// ficha descriptiva — nivel rubro (fichas.js) + override por producto
+const SIN_LAMINA = ['tarjas', 'selladores', 'productos-profesionales'];
+function pintarFicha(it) {
+  const base = (typeof FICHA_RUBRO !== 'undefined' && (FICHA_RUBRO[it.slug] || FICHA_RUBRO[it.slug.replace(/-by-cosentino$/, '')])) || {};
+  const esp = (typeof FICHA_PRODUCTO !== 'undefined' && FICHA_PRODUCTO[it.id]) || {};
+  const sec = (t, c, full) => c ? `<div class="sec${full ? ' full' : ''}"><h4>${t}</h4><p>${c}</p></div>` : '';
+  const cual = esp.cualidades || base.cualidades;
+  document.getElementById('vistaFicha').innerHTML =
+    sec('El producto', esp.desc || (base.material ? `${base.material} — ${it.nombre}` : it.nombre), true)
+    + sec('Origen', esp.origen || base.origen)
+    + sec('Composición', esp.composicion || base.composicion)
+    + (cual ? `<div class="sec full"><h4>Cualidades</h4><div class="tags">${cual.map(c => `<span>${c}</span>`).join('')}</div></div>` : '')
+    + sec('Usos recomendados', esp.usos || base.usos, true)
+    + (!SIN_LAMINA.includes(it.slug)
+      ? sec('Formato de venta', 'Lámina completa de 2 cm — usted indica el área a cubrir y el asesor calcula las láminas necesarias; si sobra material, la pieza excedente es suya.', true)
+      : '');
+}
+function abrirVista(it, desdeHash) {
   vIt = it;
   pintarVista();
+  pintarFicha(it);
+  if (!desdeHash) history.replaceState(null, '', `#${it.slug}/${encodeURIComponent(it.nombre)}`);
   vista.classList.add('open');
+  vista.scrollTop = 0;
   document.body.style.overflow = 'hidden';
   px('ViewContent', { content_name: it.nombre, content_category: it.rubro });
 }
-function cerrarVista() {
+function cerrarVista(desdeHash) {
   if (!vIt) return;
+  if (!desdeHash) history.replaceState(null, '', '#' + vIt.slug);
   vista.classList.remove('open');
   document.body.style.overflow = '';
   vIt = null;
@@ -601,6 +637,7 @@ document.getElementById('vistaNext').onclick = () => moverVista(1);
 document.getElementById('vistaAdd').onclick = () => { toggleCot(vIt); pintarVista(); };
 document.addEventListener('keydown', e => {
   if (!vIt) return;
+  if (e.key === 'Escape') cerrarVista();
   if (e.key === 'ArrowLeft') moverVista(-1);
   if (e.key === 'ArrowRight') moverVista(1);
 });
@@ -623,7 +660,7 @@ function renderGrid() {
         <span class="plybig" aria-hidden="true">▶</span>
       </div>
       <h3>Dekton® Pietra Edition</h3>
-      <span class="rubro">Video · Cosentino</span>`;
+      <span class="rubro">Video</span>`;
     dv.querySelector('.item-fig').onclick = () => PortofinoVideo.open('video/dekton-pietra-edition.mp4', 'video/dekton-pietra-poster.webp');
     grid.appendChild(dv);
   }
@@ -631,7 +668,7 @@ function renderGrid() {
   ITEMS.filter(pasaFiltro).forEach(it => {
     n++;
     const enCot = !!cot[it.id];
-    const vi = varSel[it.id] || 0;
+    const vi = varSel[it.id] ?? (it.fotos.length - 1);
     const d = document.createElement('article');
     d.className = 'item';
     d.innerHTML = `
@@ -819,16 +856,24 @@ document.getElementById('fGeo').onclick = () => {
 
 // ── búsqueda + routing ──
 buscarEl.addEventListener('input', () => { q = buscarEl.value.trim().toLowerCase(); renderGrid(); });
-window.addEventListener('hashchange', () => {
-  const h = location.hash.slice(1);
-  activo = PORTOFINO_DATA.some(r => r.slug === h) ? h : 'todos';
+// routing: #rubro → categoría · #rubro/PRODUCTO → ficha del producto (single page)
+function leerHash() {
+  const partes = location.hash.slice(1).split('/');
+  const slug = partes[0], prod = partes[1] && decodeURIComponent(partes[1]);
+  activo = PORTOFINO_DATA.some(r => r.slug === slug) ? slug : 'todos';
   renderCats(); renderGrid();
-});
+  if (prod) {
+    const it = ITEMS.find(x => x.slug === activo && x.nombre === prod);
+    if (it && vIt !== it) abrirVista(it, true);
+  } else if (vIt) cerrarVista(true);
+}
+window.addEventListener('hashchange', leerHash);
 
 if (!PORTOFINO_DATA.some(r => r.slug === activo)) activo = 'todos';
 renderCats();
 renderGrid();
 renderFab();
+leerHash();
 </script>
 <script>
 (function(){var h=document.documentElement,b=document.getElementById('temaBtn'),li=document.querySelector('.brand img');

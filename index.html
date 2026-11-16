@@ -154,7 +154,7 @@
         {
           "@type": "Question",
           "name": "¿Qué es Dekton y qué diferencia tiene con el granito?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Dekton es una superficie ultracompacta sinterizada de Cosentino que resiste calor, rayones, UV y manchas casi por completo — ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural única y muy resistente." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Dekton es una superficie ultracompacta sinterizada que resiste calor, rayones, UV y manchas casi por completo — ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural única y muy resistente." }
         },
         {
           "@type": "Question",
@@ -484,6 +484,14 @@
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     background: rgba(10,10,10,.4); color: #fff; font-size: .9rem; text-shadow: 0 1px 6px rgba(0,0,0,.7);
   }
+  .ver-catalogo {
+    display: block; margin: 1.4rem auto 0; width: fit-content;
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none; padding: .7rem 1.6rem;
+    border: 1px solid rgba(22,24,26,.18); border-radius: 999px;
+    transition: border-color .2s, background .2s;
+  }
+  .ver-catalogo:hover { border-color: var(--accent); background: rgba(255,255,255,.6); }
   .ver {
     margin-top: .2rem; align-self: flex-start;
     font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
@@ -800,15 +808,16 @@
     </div>
   </div>
   <div class="carr" id="carr"></div>
+  <a class="ver-catalogo" href="catalogo.html">Ver catálogo completo →</a>
 </section>
 
 <!-- MARCAS — ajustar lista a las marcas que realmente distribuyen -->
 <div class="marcas" aria-label="Marcas que distribuimos">
   <div class="marcas-track">
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
-    <span>Cosentino</span><span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
+    <span>Dekton®</span><span>Silestone®</span><span>Éclos</span><span>Sensa®</span><span>Neolith®</span>
   </div>
 </div>
 
@@ -835,7 +844,7 @@
     </details>
     <details>
       <summary>¿Qué es Dekton y qué diferencia tiene con el granito?</summary>
-      <p><b>Dekton®</b> es una superficie ultracompacta sinterizada de Cosentino — resiste calor, rayones, UV y manchas casi por completo, ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural: cada pieza es única y también muy resistente. En costa o exterior con sol directo, Dekton y sinterizados son la elección segura.</p>
+      <p><b>Dekton®</b> es una superficie ultracompacta sinterizada — resiste calor, rayones, UV y manchas casi por completo, ideal para cubiertas de alta exigencia y fachadas al sol. El granito es piedra natural: cada pieza es única y también muy resistente. En costa o exterior con sol directo, Dekton y sinterizados son la elección segura.</p>
     </details>
     <details>
       <summary>¿Dónde están sus sucursales?</summary>
@@ -1043,9 +1052,11 @@ const usados = new Set();
   const { slug } = rubro;
   const nombre = NOMBRES[slug] || rubro.rubro;
   // variantes únicas — nunca repetir una foto ya usada por otra tarjeta del carrusel
-  const libres = rubro.proyectos.filter(p => !usados.has(p.thumb || p.fotos[0]));
+  // preferencia: foto de lámina (marcada 'S' — va última en el array) sobre foto de proyecto
+  const fotoClave = p => p.fotos[p.fotos.length - 1] || p.thumb;
+  const libres = rubro.proyectos.filter(p => !usados.has(fotoClave(p)));
   const pool = libres.length ? libres : rubro.proyectos;
-  const vars = pool.slice(0, slug === 'dekton' ? 3 : 4).map(p => p.thumb || p.fotos[0]);
+  const vars = pool.slice(0, slug === 'dekton' ? 3 : 4).map(fotoClave);
   vars.forEach(v => usados.add(v));
 
   const card = document.createElement('article');
@@ -1060,9 +1071,16 @@ const usados = new Set();
     <div class="vars">${slug === 'dekton' ? `<button class="vidvar" aria-label="Ver video Dekton Pietra Edition"><img src="video/dekton-pietra-poster.webp" alt="Video Dekton Pietra Edition" loading="lazy"><span class="ply">▶</span></button>` : ''}${vars.map((v, i) =>
       `<button data-i="${i}" class="${i === 0 ? 'on' : ''}" aria-label="Variante ${i + 1}"><img src="${v}" alt="" loading="lazy" onerror="this.parentElement.style.visibility='hidden'"></button>`
     ).join('')}</div>
-    <a class="ver" href="catalogo.html#${slug}">Ver catálogo</a>`;
+    `;
 
   const fig = card.querySelector('.prod-fig img');
+  // tarjeta → página dinámica del rubro en el catálogo
+  fig.style.cursor = 'pointer';
+  fig.title = `Ver ${nombre} en el catálogo`;
+  fig.onclick = () => { location.href = `catalogo.html#${slug}`; };
+  const h3 = card.querySelector('h3');
+  h3.style.cursor = 'pointer';
+  h3.onclick = fig.onclick;
   let vi = 0;
   const show = i => {
     vi = (i + vars.length) % vars.length;
@@ -1142,7 +1160,7 @@ const RESPUESTAS = [
   [/m[aá]rmol|marmol/, 'Manejamos mármoles nacionales e importados, veta por veta. Vea las losas en el <a href="catalogo.html#marmoles">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/granito/, 'Granitos nacionales y exóticos de alta resistencia — ideales para cocina y exterior. Vea opciones en el <a href="catalogo.html#granitos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/dekton|ultracompacto/, 'Somos distribuidores de Dekton® — superficie ultracompacta para cocinas, fachadas y exterior. Vea el <a href="catalogo.html#dekton">catálogo</a>.', ['Cotizar','Contactar asesor']],
-  [/eclos|[eé]clos/, 'Éclos es la línea ultracompacta de Cosentino con tratamiento de superficie mate. Vea opciones en el <a href="catalogo.html#eclos">catálogo</a>.', ['Cotizar','Contactar asesor']],
+  [/eclos|[eé]clos/, 'Éclos es una línea ultracompacta con tratamiento de superficie mate. Vea opciones en el <a href="catalogo.html#eclos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/sinterizado|neolith|porcel[aá]nico/, 'Superficies sinterizadas de gran formato para cubiertas y fachadas. Vea el <a href="catalogo.html#sinterizados">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/cuarzo|quartz|silestone/, 'Cuarzo engineered de alta resistencia — ideal para cubiertas de cocina. Vea el <a href="catalogo.html#cuarzos">catálogo</a>.', ['Cotizar','Contactar asesor']],
   [/cuarcita|quarcita/, 'Cuarcitas naturales de vetas únicas — resistentes y exclusivas. Vea el <a href="catalogo.html#cuarcitas">catálogo</a>.', ['Cotizar','Contactar asesor']],
@@ -1197,7 +1215,7 @@ const MATERIALES = `Conocimiento de materiales (úsame para recomendar con profu
 - CUARCITA: natural metamórfica con vetas de mármol y dureza cercana al granito/cuarzo. El punto medio premium: elegancia vetada + resistencia real a cocina de uso rudo. Sellado recomendado.
 - CUARZO (diseñado): lámina de cuarzo compactado con resina; colores uniformes, cero porosidad, no requiere sellado. Cubiertas de cocina/baño y muros interiores. NO para sol directo — la resina puede amarillear con UV.
 - SINTERIZADOS: losas cerámicas ultracompactas; gran formato, ultra delgadas, resistentes a calor/UV/manchas. Fachadas, cubiertas, mobiliario, pisos de gran formato. Casi cero mantenimiento.
-- DEKTON / ECLOS (Cosentino): sinterizado ultracompacto premium. Máxima resistencia a calor, rayones, UV y manchas. Cubiertas de alta exigencia, fachadas, exteriores. Prácticamente indestructible para el usuario final.
+- DEKTON / ECLOS: sinterizado ultracompacto premium. Máxima resistencia a calor, rayones, UV y manchas. Cubiertas de alta exigencia, fachadas, exteriores. Prácticamente indestructible para el usuario final.
 - TRAVERTINO: piedra natural porosa de tonos tierra/beige, textura cálida. Pisos, recubrimientos, exteriores, albercas, patios. Se trabaja en versalles/romano; se sella y puede venir enchapado (relleno) o al natural.
 - TARJAS: tarjas y lavabos de piedra/insumos para la instalación.
 - SELLADORES: mantenimiento profesional — selladores, limpiadores, cuidado de piedra. Siempre recomiéndalos con piedra natural.`;

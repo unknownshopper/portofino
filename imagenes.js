@@ -175,7 +175,7 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "DEKTON BY COSENTINO",
+  "rubro": "DEKTON",
   "slug": "dekton-by-cosentino",
   "proyectos": [
    {
@@ -192,7 +192,7 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "ECLOS BY COSENTINO",
+  "rubro": "ECLOS",
   "slug": "eclos-by-cosentino",
   "proyectos": [],
   "varios": []
@@ -650,25 +650,25 @@ const PORTOFINO_DATA = [
    {
     "nombre": "TARJA DOBLE ACERO",
     "fotos": [
-     "img/thumbs/muestra-fregaderos-1.webp"
+     "img/thumbs/muestra-tarjas-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-fregaderos-1.webp",
+    "thumb": "img/thumbs/muestra-tarjas-0.webp",
     "muestra": true
    },
    {
     "nombre": "TARJA SENCILLA ACERO",
     "fotos": [
-     "img/thumbs/muestra-fregaderos-1.webp"
+     "img/thumbs/muestra-tarjas-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-fregaderos-1.webp",
+    "thumb": "img/thumbs/muestra-tarjas-1.webp",
     "muestra": true
    },
    {
     "nombre": "TARJA 03",
     "fotos": [
-     "img/thumbs/muestra-fregaderos-1.webp"
+     "img/thumbs/muestra-tarjas-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-fregaderos-1.webp",
+    "thumb": "img/thumbs/muestra-tarjas-2.webp",
     "muestra": true
    }
   ],
@@ -774,25 +774,25 @@ const PORTOFINO_DATA = [
    {
     "nombre": "SELLADOR PARA PIEDRA",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-selladores-0.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-selladores-0.webp",
     "muestra": true
    },
    {
     "nombre": "SELLADOR 02",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-selladores-1.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-selladores-1.webp",
     "muestra": true
    },
    {
     "nombre": "SELLADOR 03",
     "fotos": [
-     "img/thumbs/muestra-cocinas-0.webp"
+     "img/thumbs/muestra-selladores-2.webp"
     ],
-    "thumb": "img/thumbs/muestra-cocinas-0.webp",
+    "thumb": "img/thumbs/muestra-selladores-2.webp",
     "muestra": true
    }
   ],
