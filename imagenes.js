@@ -177,7 +177,18 @@ const PORTOFINO_DATA = [
  {
   "rubro": "DEKTON BY COSENTINO",
   "slug": "dekton-by-cosentino",
-  "proyectos": [],
+  "proyectos": [
+   {
+    "nombre": "THE ULTRACOMPACT SURFACE",
+    "fotos": [
+     "img/thumbs/dekton-by-cosentino-0.webp",
+     "img/thumbs/dekton-by-cosentino-1.webp",
+     "img/thumbs/dekton-by-cosentino-2.webp",
+     "img/thumbs/dekton-by-cosentino-3.webp"
+    ],
+    "thumb": "img/thumbs/dekton-by-cosentino-0.webp"
+   }
+  ],
   "varios": []
  },
  {
