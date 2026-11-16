@@ -479,6 +479,11 @@
   }
   .vars button.on { border-color: var(--accent); box-shadow: 0 0 0 1.5px var(--accent); }
   .vars img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vars button.vidvar { position: relative; }
+  .vars button.vidvar .ply {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(10,10,10,.4); color: #fff; font-size: .9rem; text-shadow: 0 1px 6px rgba(0,0,0,.7);
+  }
   .ver {
     margin-top: .2rem; align-self: flex-start;
     font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
@@ -976,6 +981,7 @@
 
 <script src="imagenes.js?v=21"></script>
 <script src="fb.js"></script>
+<script src="vidplayer.js"></script>
 <script>
 // loader — sale cuando carga la primera foto del hero (o 4.5s máx)
 const loader = document.getElementById('loader');
@@ -1030,13 +1036,17 @@ const NOMBRES = {
   sinterizados: 'Sinterizado', tarjas: 'Tarjas', selladores: 'Selladores'
 };
 const carr = document.getElementById('carr');
+const usados = new Set();
 
 (typeof PORTOFINO_DATA !== 'undefined' ? PORTOFINO_DATA : []).forEach(rubro => {
   if (!rubro.proyectos.length) return;
   const { slug } = rubro;
   const nombre = NOMBRES[slug] || rubro.rubro;
-  // variantes: un thumb por proyecto del rubro (hasta 4)
-  const vars = rubro.proyectos.slice(0, 4).map(p => p.thumb || p.fotos[0]);
+  // variantes únicas — nunca repetir una foto ya usada por otra tarjeta del carrusel
+  const libres = rubro.proyectos.filter(p => !usados.has(p.thumb || p.fotos[0]));
+  const pool = libres.length ? libres : rubro.proyectos;
+  const vars = pool.slice(0, slug === 'dekton' ? 3 : 4).map(p => p.thumb || p.fotos[0]);
+  vars.forEach(v => usados.add(v));
 
   const card = document.createElement('article');
   card.className = 'prod';
@@ -1047,7 +1057,7 @@ const carr = document.getElementById('carr');
       <button class="mini next" aria-label="Variante siguiente">→</button>
     </div>
     <h3>${nombre}</h3>
-    <div class="vars">${vars.map((v, i) =>
+    <div class="vars">${slug === 'dekton' ? `<button class="vidvar" aria-label="Ver video Dekton Pietra Edition"><img src="video/dekton-pietra-poster.webp" alt="Video Dekton Pietra Edition" loading="lazy"><span class="ply">▶</span></button>` : ''}${vars.map((v, i) =>
       `<button data-i="${i}" class="${i === 0 ? 'on' : ''}" aria-label="Variante ${i + 1}"><img src="${v}" alt="" loading="lazy" onerror="this.parentElement.style.visibility='hidden'"></button>`
     ).join('')}</div>
     <a class="ver" href="catalogo.html#${slug}">Ver catálogo</a>`;
@@ -1059,11 +1069,13 @@ const carr = document.getElementById('carr');
     fig.style.opacity = 0;
     fig.onload = () => { fig.style.opacity = 1; };
     fig.src = vars[vi];
-    card.querySelectorAll('.vars button').forEach((b, j) => b.classList.toggle('on', j === vi));
+    card.querySelectorAll('.vars button:not(.vidvar)').forEach((b, j) => b.classList.toggle('on', j === vi));
   };
   card.querySelector('.prev').onclick = () => show(vi - 1);
   card.querySelector('.next').onclick = () => show(vi + 1);
-  card.querySelectorAll('.vars button').forEach(b => { b.onclick = () => show(+b.dataset.i); });
+  card.querySelectorAll('.vars button:not(.vidvar)').forEach(b => { b.onclick = () => show(+b.dataset.i); });
+  const vidBtn = card.querySelector('.vidvar');
+  if (vidBtn) vidBtn.onclick = () => PortofinoVideo.open('video/dekton-pietra-edition.mp4', 'video/dekton-pietra-poster.webp');
   carr.appendChild(card);
 });
 

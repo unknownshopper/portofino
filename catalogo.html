@@ -139,6 +139,13 @@
     transition: transform 1s cubic-bezier(.2,.6,.2,1);
   }
   .item:hover .item-fig img { transform: scale(1.04); }
+  .vidfig { cursor: pointer; }
+  .vidfig .plybig {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: #fff; background: rgba(10,10,10,.28);
+    text-shadow: 0 2px 14px rgba(0,0,0,.65); transition: background .25s;
+  }
+  .vidfig:hover .plybig { background: rgba(10,10,10,.45); }
   .vars { display: flex; flex-wrap: wrap; gap: .45rem; }
   .vars button {
     width: 40px; height: 40px; border-radius: 9px; overflow: hidden;
@@ -489,6 +496,7 @@
 
 <script src="imagenes.js?v=21"></script>
 <script src="fb.js"></script>
+<script src="vidplayer.js"></script>
 <script>
 // las solicitudes llegan al panel admin (Firestore); mail/WhatsApp quedan como alerta interna
 
@@ -605,6 +613,20 @@ vImg.addEventListener('touchend', e => {
 
 function renderGrid() {
   grid.innerHTML = '';
+  // tarjeta de video Dekton — solo en la categoría dekton, sin filtrar por búsqueda
+  if (activo === 'dekton' && !q) {
+    const dv = document.createElement('article');
+    dv.className = 'item vidcard';
+    dv.innerHTML = `
+      <div class="item-fig vidfig">
+        <img src="video/dekton-pietra-poster.webp" alt="Video Dekton Pietra Edition" loading="lazy">
+        <span class="plybig" aria-hidden="true">▶</span>
+      </div>
+      <h3>Dekton® Pietra Edition</h3>
+      <span class="rubro">Video · Cosentino</span>`;
+    dv.querySelector('.item-fig').onclick = () => PortofinoVideo.open('video/dekton-pietra-edition.mp4', 'video/dekton-pietra-poster.webp');
+    grid.appendChild(dv);
+  }
   let n = 0;
   ITEMS.filter(pasaFiltro).forEach(it => {
     n++;
