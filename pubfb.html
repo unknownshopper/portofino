@@ -106,9 +106,19 @@
       <button class="pri" id="dlStory">Descargar historia 1080×1920</button>
       <button id="viewPromo">Vista previa grande</button>
       <button id="capPromo">Usar caption de promo</button>
+      <button id="capIAPromo">✦ Caption IA</button>
     </div>
     <div class="row" style="margin-top:12px">
-      <input id="prTit" type="text" placeholder="Oferta — ej. precio especial en slab completo" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <input id="prTag" type="text" list="tagList" placeholder="Etiqueta — ej. producto nuevo" style="flex:1;min-width:160px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <datalist id="tagList">
+        <option value="Producto nuevo">
+        <option value="Promoción">
+        <option value="Remate">
+        <option value="Destacados">
+        <option value="Oferta">
+        <option value="Nuevo ingreso">
+      </datalist>
+      <input id="prTit" type="text" placeholder="Oferta — ej. precio especial" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
       <input id="prDet" type="text" placeholder="Detalle — ej. lámina completa 2cm, proyecto ilustrativo" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
       <input id="prVig" type="text" placeholder="Vigencia — ej. hasta agotar existencias" style="flex:1;min-width:180px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
     </div>
@@ -124,7 +134,7 @@
       <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
       <button class="pri" id="dlCard">Descargar post 1080</button>
       <button id="viewCard">Vista previa grande</button>
-      <label style="font-size:.75rem;color:var(--accent)"><input type="checkbox" id="capSingle"> caption solo de este producto</label>
+      <button id="capIAProd">✦ Caption IA</button>
     </div>
     <img id="cardPrev" alt="" style="display:none;width:300px;margin-top:16px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
   </div>
@@ -318,7 +328,7 @@ async function renderPromo(p, titular, detalle, vigencia, tpl){
 
   // etiqueta "PRODUCTO NUEVO" esquina superior
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 56, eh = 54;
+  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
   x.fillStyle = '#16181b';
   x.beginPath();
   if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
@@ -390,7 +400,7 @@ async function renderPromo3(p, titular, detalle, vigencia){
 
   // etiqueta + textos arriba a la izquierda
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 56, eh = 54;
+  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
   x.fillStyle = '#16181b';
   x.beginPath();
   if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
@@ -429,7 +439,7 @@ async function renderPromo2(p, titular, detalle, vigencia){
   // texto directo sobre la lámina — la piedra manda
   // etiqueta invertida (clara sobre oscuro)
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 56, eh = 54;
+  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
   x.fillStyle = '#f3f4f4';
   x.beginPath();
   if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
@@ -496,7 +506,7 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   // etiqueta — bajo la zona del nombre de cuenta de la plataforma (~270px)
   const topSafe = 270, botSafe = 1620;
   x.textBaseline = 'alphabetic'; x.font = '700 30px Inter, sans-serif';
-  const etq = 'PRODUCTO NUEVO', ew = x.measureText(etq).width + 64, eh = 62;
+  const etq = promoTag(), ew = x.measureText(etq).width + 64, eh = 62;
   x.fillStyle = t2 ? '#f3f4f4' : '#16181b';
   x.beginPath();
   if (x.roundRect) x.roundRect(64, topSafe, ew, eh, eh/2); else x.rect(64, topSafe, ew, eh);
@@ -613,17 +623,8 @@ ${CIERRE}
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
 // Gemini primero (fb.js); Ollama local solo como respaldo si está corriendo
-async function genOllama(){
+async function genCapIA(prompt){
   const tag = document.getElementById('ollamaTag');
-  const single = document.getElementById('capSingle').checked ? PRODS[+prodSel.value] : null;
-  const nombres = single ? `${tit(single.nombre)} (${rubro1(single.rubro)})` : picks.map(e=>`${tit(e.nombre)} (${rubro1(e.rubro)})`).join(', ');
-  const prompt =
-`Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, por lámina completa, con sucursales en Villahermosa y Veracruz. No anuncies envíos, instalación ni medición — las fotos de proyectos son solo ejemplos de aplicación.
-La publicación muestra: ${nombres}.
-Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
-Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → este cierre EXACTO, sin cambiarlo:
-${CIERRE}
-→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas, sin markdown ni explicaciones.`;
   tag.textContent = 'IA: generando…';
   let txt = await gemini(prompt), via = 'Gemini';
   if (!txt && model){
@@ -635,6 +636,18 @@ ${CIERRE}
   }
   if (txt){ setCap(txt.replace(/\*\*/g,'')); tag.className='ollama on'; tag.textContent='IA: '+via; }
   else { tag.className='ollama off'; tag.textContent='IA: sin respuesta — usa Plantilla'; }
+}
+
+const PROMPT_BASE = `Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, por lámina completa, con sucursales en Villahermosa y Veracruz. No anuncies envíos, instalación ni medición — las fotos de proyectos son solo ejemplos de aplicación.`;
+
+async function genOllama(){
+  const nombres = picks.map(e=>`${tit(e.nombre)} (${rubro1(e.rubro)})`).join(', ');
+  genCapIA(`${PROMPT_BASE}
+La publicación muestra: ${nombres}.
+Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
+Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → este cierre EXACTO, sin cambiarlo:
+${CIERRE}
+→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas, sin markdown ni explicaciones.`);
 }
 
 async function detectOllama(){
@@ -707,14 +720,8 @@ async function previewCard(){
   prodCanvas = await renderCard(p);
   cardPrev.src = prodCanvas.toDataURL('image/png');
   cardPrev.style.display = 'block';
-  if (document.getElementById('capSingle').checked) setCap(tplSingle(p));
 }
 prodSel.onchange = previewCard;
-document.getElementById('capSingle').onchange = () => {
-  const p = PRODS[+prodSel.value];
-  if (document.getElementById('capSingle').checked && p) setCap(tplSingle(p));
-  else setCap(tpl(picks));
-};
 document.getElementById('dlCard').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
   const c = prodCanvas || await renderCard(p);
@@ -740,25 +747,27 @@ PRODS.forEach((p,i)=>{
 });
 // características por rubro — precargan el detalle del post (editables)
 const RUBRO_DET = {
-  CUARCITAS:   'Piedra natural de vetas espectaculares — la elegancia del mármol con dureza cercana al granito. Resiste calor y uso rudo en cocina. Lámina completa de 2 cm; cada pieza es irrepetible.',
-  GRANITOS:    'Una de las piedras más duras de la naturaleza — resiste calor, rayones y el uso diario más intenso. La favorita para cubiertas de cocina, pisos y exteriores. Lámina de 2 cm.',
-  MARMOLES:    'Piedra metamórfica de veteado único — ninguna lámina se repite jamás. Elegancia clásica para cubiertas, muros y pisos de interiores. Lámina de 2 cm.',
-  CUARZOS:     'Superficie diseñada de cuarzo compactado — color uniforme, cero porosidad, no requiere sellado. Ideal en cubiertas y muros de interiores. Lámina de 2 cm.',
-  SINTERIZADOS:'Losa cerámica ultracompacta — soporta calor directo, rayos UV, manchas y rayones. Para cubiertas, fachadas y pisos de gran formato.',
-  DEKTON:      'Sinterizado ultracompacto de Cosentino — máxima resistencia a calor, rayones, UV y manchas. Prácticamente indestructible en cubiertas y exteriores.',
-  ECLOS:       'Sinterizado de alta gama en gran formato — superficie casi sin juntas, resistente y de mantenimiento mínimo.',
-  TRAVERTINO:  'Piedra natural porosa de tonos tierra cálidos — la favorita para terrazas, albercas, patios y pisos exteriores. Textura cálida que no desliza.',
-  TARJAS:      'Tarja labrada en piedra natural — cada pieza es única y convierte la cocina o el baño en protagonista del espacio.',
-  SELLADORES:  'Protección profesional para piedra natural — sella, limpia y prolonga la vida y la apariencia de tu material.',
+  CUARCITAS:   'Cuarcita natural — vetas de mármol con dureza cercana al granito. Usos: cubiertas de cocina y baño, pisos, muros y fachadas. Lámina de 2 cm.',
+  GRANITOS:    'Granito natural — una de las piedras más duras que existen. Usos: cubiertas de cocina, pisos de alto tráfico, exteriores y fachadas. Lámina de 2 cm.',
+  MARMOLES:    'Mármol natural de veteado único e irrepetible. Usos: cubiertas, muros decorativos, pisos interiores y chimeneas. Lámina de 2 cm.',
+  CUARZOS:     'Cuarzo diseñado — color uniforme y cero porosidad. Usos: cubiertas de cocina y baño, muros interiores (no para sol directo). Lámina de 2 cm.',
+  SINTERIZADOS:'Piedra sinterizada ultracompacta. Usos: cubiertas, pisos, recubrimiento de muros exterior e interior y otras aplicaciones.',
+  DEKTON:      'Sinterizado ultracompacto premium. Usos: cubiertas de alta exigencia, fachadas, pisos y exteriores — máxima resistencia a calor, UV y rayones.',
+  ECLOS:       'Sinterizado de gran formato. Usos: cubiertas, muros y mobiliario — superficie casi sin juntas.',
+  TRAVERTINO:  'Travertino natural de tonos tierra cálidos. Usos: terrazas, albercas, patios, pisos y recubrimientos exteriores.',
+  TARJAS:      'Tarja labrada en piedra natural — pieza única para cocina o baño.',
+  SELLADORES:  'Selladores y limpiadores profesionales — protección y mantenimiento de piedra natural.',
 };
 const rubroDet = r => RUBRO_DET[r] || 'Lámina completa de 2 cm — proyecto ilustrativo.';
-document.getElementById('prTit').value = 'precio especial en slab completo';
+document.getElementById('prTag').value = 'Producto nuevo';
+document.getElementById('prTit').value = 'precio especial de introducción';
 document.getElementById('prDet').value = rubroDet(PRODS[+promoSel.value].rubro);
 document.getElementById('prVig').value = 'Vigencia al 30 de noviembre o hasta agotar existencias.';
 
+const promoTag = () => (document.getElementById('prTag').value.trim() || 'PRODUCTO NUEVO').toUpperCase();
 const promoVals = () => ({
   p: PRODS[+promoSel.value],
-  tit: document.getElementById('prTit').value.trim() || 'precio especial',
+  tit: document.getElementById('prTit').value.trim() || 'precio especial de introducción',
   det: document.getElementById('prDet').value.trim(),
   vig: document.getElementById('prVig').value.trim(),
   tpl: document.getElementById('prTpl').value,
@@ -776,7 +785,7 @@ async function previewPromo(){
   sp.style.display = 'block';
 }
 promoSel.onchange = ()=>{ document.getElementById('prDet').value = rubroDet(PRODS[+promoSel.value].rubro); previewPromo(); };
-['prTit','prDet','prVig','prTpl'].forEach(id => document.getElementById(id).oninput = previewPromo);
+['prTag','prTit','prDet','prVig','prTpl'].forEach(id => document.getElementById(id).oninput = previewPromo);
 document.getElementById('dlPromo').onclick = async()=>{
   const v = promoVals();
   const c = promoCanvas || await renderPromo(v.p, v.tit, v.det, v.vig, v.tpl);
@@ -797,7 +806,7 @@ document.getElementById('viewPromo').onclick = async()=>{
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
 const tplPromo = (p,oferta) =>
-`PRODUCTO NUEVO — ${tit(p.nombre)}
+`${promoTag()} — ${tit(p.nombre)}
 
 ${oferta.charAt(0).toUpperCase()+oferta.slice(1)}. ${document.getElementById('prDet').value.trim()}
 
@@ -805,8 +814,30 @@ ${document.getElementById('prVig').value.trim()}
 
 ${CIERRE}
 
-#Portofino #ProductoNuevo #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #Villahermosa #Veracruz`;
+#Portofino #${promoTag().replace(/\s+/g,'')} #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #Villahermosa #Veracruz`;
 document.getElementById('capPromo').onclick = ()=>setCap(tplPromo(PRODS[+promoSel.value], promoVals().tit));
+
+// caption IA del modo producto — solo el material seleccionado
+document.getElementById('capIAProd').onclick = ()=>{
+  const p = PRODS[+prodSel.value];
+  genCapIA(`${PROMPT_BASE}
+La publicación muestra UN SOLO material: ${tit(p.nombre)} (${rubro1(p.rubro)}).
+Tono: humano y evocativo — la piedra como protagonista que define un espacio por generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, nada de precio/descuento.
+Estructura: 1-2 líneas evocativas → mención del material → este cierre EXACTO, sin cambiarlo:
+${CIERRE}
+→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+};
+
+// caption IA del modo promoción — producto nuevo con oferta
+document.getElementById('capIAPromo').onclick = ()=>{
+  const v = promoVals();
+  genCapIA(`${PROMPT_BASE}
+La publicación anuncia: ${promoTag()} — ${tit(v.p.nombre)} (${rubro1(v.p.rubro)}) — ${v.tit}.${v.det ? ' Detalle: '+v.det+'.' : ''}
+Tono: humano y evocativo, con emoción de novedad — la piedra como pieza que define un espacio. No inventes precios ni porcentajes de descuento.
+Estructura: 1-2 líneas de apertura → mención del material y la oferta → este cierre EXACTO, sin cambiarlo:
+${CIERRE}
+→ 4-6 hashtags. Máximo 70 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+};
 previewPromo();
 
 detectOllama();
