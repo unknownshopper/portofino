@@ -68,7 +68,7 @@ def natural_key(p: Path):
 
 
 def resize(src: Path, dst: Path):
-    """Procesa a WebP max 1600px q70. cwebp → ImageMagick → sips (jpg de respaldo)."""
+    """Procesa a WebP max 1920px q85. cwebp → ImageMagick → sips (jpg de respaldo)."""
     dst.parent.mkdir(parents=True, exist_ok=True)
     tmp = src
     if src.suffix.lower() == '.heic':
@@ -81,18 +81,19 @@ def resize(src: Path, dst: Path):
                            check=True, capture_output=True)
     try:
         if shutil.which('cwebp'):
-            subprocess.run(['cwebp', '-q', '70', '-resize', '1600', '0',
+            subprocess.run(['cwebp', '-q', '85', '-resize', '1920', '0',
                             str(tmp), '-o', str(dst)], check=True, capture_output=True)
             return
         tool = 'magick' if shutil.which('magick') else 'convert'
         if shutil.which(tool):
-            subprocess.run([tool, str(tmp), '-auto-orient', '-resize', '1600x1600>',
-                            '-quality', '70', str(dst)], check=True, capture_output=True)
+            subprocess.run([tool, str(tmp), '-auto-orient', '-resize', '1920x1920>',
+                            '-unsharp', '0x0.5+0.5+0.008', '-quality', '85', str(dst)],
+                           check=True, capture_output=True)
             return
         if shutil.which('sips'):  # sin webp → jpg de respaldo con el mismo nombre base
             dst_jpg = dst.with_suffix('.jpg')
-            subprocess.run(['sips', '-Z', '1600', '-s', 'format', 'jpeg',
-                            '-s', 'formatOptions', '75', str(tmp), '--out', str(dst_jpg)],
+            subprocess.run(['sips', '-Z', '1920', '-s', 'format', 'jpeg',
+                            '-s', 'formatOptions', '85', str(tmp), '--out', str(dst_jpg)],
                            check=True, capture_output=True)
             dst_jpg.rename(dst)
             return

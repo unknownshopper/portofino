@@ -4,8 +4,8 @@
 - [x] **App Meta creada (portofinoapp)** con número de prueba +1 555 145 2429; Phone ID 1434575116411638, WABA 2991264301248057
 - [x] **Webhook desplegado**: `us-central1-portofino-1.cloudfunctions.net/waWebhook` (Firebase Functions `functions/index.js`, Node 22, 4 secrets configurados, token permanente puesto como v2)
 - [x] **Bot responde con Gemini** (mismo contexto del sitio: sucursales, horario, catálogo, "nunca inventes precios") — verificado en logs `waSend ok`
-- [~] **Mensajes reales aún no llegan al webhook** — `messages` suscrito y URL verificada, pero la app está sin publicar → solo llegan webhooks de prueba. Requiere registrar el 993 real
-- [ ] **Registrar el 993 302 3903** — el error "no cumple requisitos para migrar" es porque YA es cuenta WABA en el portfolio. Opción correcta: pestaña "Linked WhatsApp accounts" en Configuración → Cuentas de WhatsApp, o migración/coexistencia desde la app de Gladys (2 min con ella)
+- [~] **Mensajes reales aún no llegan al webhook** — CONFIRMADO 16-nov: cero eventos reales desde el 8-nov (logs solo muestran la prueba sintética). El 3903 vive en la app de Gladys (espejada en Business Suite); la Cloud API solo oye el número de prueba. Requiere registrar el 993 real
+- [ ] **Registrar el 993 302 3903** — el error "no cumple requisitos para migrar" es porque YA es cuenta WABA en el portfolio. Opción correcta: pestaña "Linked WhatsApp accounts" en Configuración → Cuentas de WhatsApp, o migración/coexistencia desde la app de Gladys (2 min con ella). **Diferido — se retoma la próxima semana**
 - [x] **Meta Business Agent EXISTE** — aparece en la app de Gladys (Herramientas → Meta Business Agent) aunque no en Business Suite. Gladys lo abrió, pendiente crear/configurar el agente. **Puede ser la solución sin Cloud API — decidir ruta tras evaluarlo**
 
 ## Cotizador y chatbot — pendiente confirmación Eduardo (10-nov)
