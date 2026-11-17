@@ -175,13 +175,13 @@ const PORTOFINO_DATA = [
   "varios": []
  },
  {
-  "rubro": "DEKTON",
+  "rubro": "DEKTON BY COSENTINO",
   "slug": "dekton-by-cosentino",
   "proyectos": [],
   "varios": []
  },
  {
-  "rubro": "ECLOS",
+  "rubro": "ECLOS BY COSENTINO",
   "slug": "eclos-by-cosentino",
   "proyectos": [],
   "varios": []
