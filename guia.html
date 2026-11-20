@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guion de grabación — PORTOFINO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="imagenes.js"></script>
+<script src="fichas.js"></script>
+<style>
+  :root { --paper:#f4f4f2; --ink:#181a1c; --sub:#6b7680; --accent:#8a6d4b; --card:#fff; }
+  * { margin:0; box-sizing:border-box; }
+  body { font-family:Inter,system-ui,sans-serif; background:var(--paper); color:var(--ink); padding:1.4rem 1rem 4rem; }
+  .wrap { max-width:640px; margin:0 auto; }
+  header { display:flex; align-items:center; gap:.8rem; margin-bottom:1.4rem; }
+  header img { height:34px; }
+  header .tag { font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--sub); }
+  h1 { font-size:1.35rem; font-weight:600; margin-bottom:.3rem; }
+  .lead { color:var(--sub); font-size:.9rem; margin-bottom:1.5rem; }
+  /* selector */
+  .pick { background:var(--card); border-radius:12px; padding:1rem; margin-bottom:1.4rem; }
+  .pick label { font-size:.62rem; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.5rem; }
+  .pick select { width:100%; font:inherit; font-size:1rem; padding:.7rem .8rem; border:1px solid rgba(24,26,28,.18); border-radius:8px; background:#fff; }
+  /* momentos */
+  .mom { background:var(--card); border-radius:14px; padding:1.3rem 1.2rem; margin-bottom:1rem; }
+  .mom .num { width:1.9rem; height:1.9rem; border-radius:50%; background:var(--accent); color:#fff;
+    display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:.9rem; margin-bottom:.6rem; }
+  .mom h2 { font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:.7rem; }
+  .guion { font-size:1.32rem; line-height:1.55; font-weight:500; }
+  .guion em { color:var(--accent); font-style:normal; }
+  .guion .hueco { border-bottom:2px dashed var(--accent); }
+  .nota { margin-top:.9rem; padding-top:.7rem; border-top:1px dashed rgba(24,26,28,.18); font-size:.8rem; color:var(--sub); }
+  ul.li { margin:.2rem 0 0; padding-left:1.1rem; font-size:1.05rem; line-height:1.7; }
+  footer { text-align:center; font-size:.72rem; color:var(--sub); margin-top:2rem; }
+  .btn { display:block; width:100%; margin-top:1rem; padding:.9rem; border:none; border-radius:10px;
+    background:var(--ink); color:#fff; font:inherit; font-weight:600; font-size:.95rem; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="img/logo-ink.png" alt="PORTOFINO"><span class="tag">Guion de grabación</span></header>
+  <h1>Tu toma, en 3 momentos</h1>
+  <p class="lead">Entrada fija → material del día → cierre memorizado. Lee cada bloque, grábalo por separado si hace falta — en edición se une.</p>
+
+  <div class="pick">
+    <label for="prod">¿Qué material presentas hoy?</label>
+    <select id="prod"></select>
+  </div>
+
+  <div class="mom">
+    <div class="num">1</div>
+    <h2>La entrada</h2>
+    <p class="guion" id="gEntrada" contenteditable="true">Hola, soy <span class="hueco">Eduardo</span> de <em>Portofino Granitos y Mármoles</em>. Mira lo que acaba de llegar…</p>
+    <p class="nota">Tip: mira a la cámara, sonríe, y di la entrada caminando hacia la lámina.</p>
+  </div>
+
+  <div class="mom">
+    <div class="num">2</div>
+    <h2>El material</h2>
+    <p class="guion" id="gMaterial"></p>
+    <ul class="li" id="gCual"></ul>
+    <p class="guion" id="gUsos" style="margin-top:.6rem;font-size:1.05rem;font-weight:400;"></p>
+    <p class="nota">Tip: pasa la mano por la veta mientras hablas — el gesto vende solo.</p>
+  </div>
+
+  <div class="mom">
+    <div class="num">3</div>
+    <h2>El cierre</h2>
+    <p class="guion" id="gCierre" contenteditable="true">Ven y conócela en Portofino — <em>la mayor variedad de piedras exóticas en el sureste de México.</em></p>
+    <p class="nota">La frase de oro, de corrido: «la mayor variedad de piedras exóticas en el sureste de México». Repítela 3 veces antes de grabar.</p>
+  </div>
+
+  <button class="btn" id="solo">Ver solo el guion completo</button>
+  <footer>El guion del material se llena solo desde el catálogo (fichas.js). Edita los textos punteados si quieres otra redacción.</footer>
+</div>
+
+<script>
+const sel = document.getElementById('prod');
+const items = [];
+PORTOFINO_DATA.forEach(r => r.proyectos.forEach(p => {
+  const base = (typeof FICHA_RUBRO !== 'undefined' && (FICHA_RUBRO[r.slug] || FICHA_RUBRO[r.slug.replace(/-by-cosentino$/, '')])) || {};
+  if (!p.muestra && base.material) items.push({ nombre: p.nombre, slug: r.slug, rubro: r.rubro, base });
+}));
+sel.innerHTML = items.map((it,i)=>`<option value="${i}">${it.nombre} — ${it.rubro.toLowerCase()}</option>`).join('');
+
+function pintar(){
+  const it = items[+sel.value];
+  if (!it) return;
+  const esp = (typeof FICHA_PRODUCTO !== 'undefined' && FICHA_PRODUCTO[it.slug + '/' + it.nombre]) || {};
+  document.getElementById('gMaterial').innerHTML =
+    (esp.desc ? `<em>${it.nombre}</em> — ${esp.desc}` : `Esta es <em>${it.nombre}</em>, ${it.base.material.toLowerCase()}${it.base.origen ? ` ${it.base.origen.toLowerCase()}` : ''}`);
+  document.getElementById('gCual').innerHTML = (esp.cualidades || it.base.cualidades || [])
+    .slice(0,3).map(c => `<li>${c}</li>`).join('');
+  document.getElementById('gUsos').textContent = it.base.usos ? `Usos: ${it.base.usos.toLowerCase()}` : '';
+}
+sel.onchange = pintar;
+sel.value = items.findIndex(i => /POLARIS GOLD/i.test(i.nombre));
+pintar();
+
+// modo solo-guion: esconde notas y el selector para leer de corrido
+let limpio = false;
+document.getElementById('solo').onclick = () => {
+  limpio = !limpio;
+  document.body.classList.toggle('limpio', limpio);
+  document.querySelectorAll('.nota, .pick, .lead, h1, .num, footer').forEach(el => el.style.display = limpio ? 'none' : '');
+  document.getElementById('solo').textContent = limpio ? 'Salir del modo guion' : 'Ver solo el guion completo';
+  document.querySelectorAll('.guion').forEach(g => g.style.fontSize = limpio ? '1.8rem' : '');
+};
+</script>
+</body>
+</html>
