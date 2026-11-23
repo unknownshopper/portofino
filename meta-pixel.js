@@ -1,6 +1,7 @@
 // Meta Pixel — PORTOFINO
-// Pixel ID de Administrador de eventos (Events Manager → Conjuntos de datos → portofino).
-const META_PIXEL_ID = '1124678623449829';
+// Dataset "portofino-web" — creado en el negocio Portofino y ligado a la cuenta publicitaria.
+// (1124678623449829 vivía en otra cuenta; 2341118113407438 es dataset de app, no de web)
+const META_PIXEL_ID = '1894573585321138';
 
 if (META_PIXEL_ID) {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?

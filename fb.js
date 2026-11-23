@@ -74,12 +74,38 @@ function __fs(v) {
   return { stringValue: String(v) };
 }
 
+// atribución de origen — primer toque de la sesión (utm/fbclid/gclid o referrer externo)
+(function(){
+  try{
+    if (sessionStorage.getItem('__porto_origen')) return;
+    const p = new URL(location.href).searchParams;
+    const ref = document.referrer
+      ? new URL(document.referrer).hostname.replace(/^(www|l|lm|m)\./,'') : '';
+    let o = null;
+    const us = (p.get('utm_source')||'').toLowerCase();
+    const um = (p.get('utm_medium')||'').toLowerCase();
+    if (us) o = us + (um ? '/' + um : '');
+    else if (p.has('fbclid')) o = 'fb/ig';
+    else if (p.has('gclid')) o = 'google ads';
+    else if (ref && !ref.endsWith('portofino.com.mx')){
+      if (/facebook|fb\.me/.test(ref)) o = 'facebook';
+      else if (/instagram/.test(ref)) o = 'instagram';
+      else if (/google\.|bing\./.test(ref)) o = 'google';
+      else if (/whatsapp|wa\.me/.test(ref)) o = 'whatsapp';
+      else if (/t\.co|twitter|x\.com/.test(ref)) o = 'x/twitter';
+      else o = ref;
+    }
+    if (o) sessionStorage.setItem('__porto_origen', o);
+  }catch(e){}
+})();
+
 // guarda la solicitud vía REST (un fetch común — el SDK lo bloquean varios ad-blockers)
 // fire-and-forget: no bloquea el mailto/WhatsApp
 async function guardarCotizacion(datos) {
   if (!FB_ON) return;
   const fields = {};
-  const doc = { ...datos, estado: 'pendiente', creado: new Date().toISOString() };
+  const doc = { ...datos, estado: 'pendiente', creado: new Date().toISOString(),
+    origen: sessionStorage.getItem('__porto_origen') || 'directo' };
   for (const k in doc) fields[k] = __fs(doc[k]);
   try {
     await fetch(`${FS_URL}/cotizaciones?key=${FIREBASE_CONFIG.apiKey}`, {

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Portofino · evidencia — corrección del ecosistema Meta</title>
+<link rel="icon" href="../img/ico.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#16181b; --paper:#f3f4f4; --accent:#67757d; --warn:#8a5a1e; --ok:#2e6b3e; }
+  * { margin:0; box-sizing:border-box; }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--paper); color:var(--ink); font-weight:300; }
+  .wrap { max-width:920px; margin:0 auto; padding:0 24px; }
+  header { border-bottom:1px solid rgba(22,24,26,.12); }
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:22px 0; flex-wrap:wrap; }
+  .brand { font-weight:700; letter-spacing:.35em; font-size:.9rem; }
+  .brand span { font-weight:300; color:var(--accent); }
+  .fecha { color:var(--accent); font-size:.72rem; letter-spacing:.14em; }
+  .kick { color:var(--accent); letter-spacing:.32em; font-size:.7rem; font-weight:500; text-transform:uppercase; }
+  h1 { font-size:1.5rem; font-weight:600; letter-spacing:-.01em; margin:6px 0 4px; }
+  h2 { font-size:1.02rem; font-weight:600; margin:0 0 4px; }
+  .sub { color:var(--accent); font-size:.85rem; max-width:60ch; }
+  main { padding:26px 0 70px; }
+
+  .ev { background:#fff; border:1px solid rgba(22,24,26,.12); border-radius:12px; padding:24px 26px; margin:18px 0; }
+  .ev p { font-size:.87rem; line-height:1.65; margin:8px 0; color:#2b2f33; }
+  .ev ul { margin:8px 0 8px 18px; font-size:.87rem; line-height:1.7; }
+  .ev code { font-size:.78rem; background:rgba(22,24,26,.06); padding:1px 6px; border-radius:4px; }
+  .tag { display:inline-block; font-size:.6rem; letter-spacing:.16em; padding:3px 10px; border-radius:20px; text-transform:uppercase; font-weight:600; vertical-align:2px; margin-left:8px; }
+  .tag.hall { background:#f6e8d7; color:var(--warn); }
+  .tag.ok { background:#e2efe3; color:var(--ok); }
+  .tag.pend { background:#e0e9f0; color:#2e5b7a; }
+
+  figure { margin:14px 0 4px; }
+  figure a { display:block; }
+  figure img { width:100%; border:1px solid rgba(22,24,26,.14); border-radius:8px; display:block; }
+  figcaption { font-size:.72rem; color:var(--accent); margin-top:7px; letter-spacing:.04em; }
+  .hueco { border:1.5px dashed rgba(22,24,26,.25); border-radius:8px; padding:26px; text-align:center; color:var(--accent); font-size:.78rem; margin:14px 0 4px; }
+
+  .pasos { counter-reset:p; }
+  .paso { position:relative; padding:10px 0 10px 38px; font-size:.86rem; line-height:1.6; border-bottom:1px dashed rgba(22,24,26,.08); }
+  .paso:last-child { border-bottom:0; }
+  .paso::before { counter-increment:p; content:counter(p); position:absolute; left:0; top:10px; width:24px; height:24px; border:1px solid var(--ink); border-radius:50%; font-size:.7rem; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .paso b { font-weight:600; }
+
+  table.res { width:100%; border-collapse:collapse; margin:10px 0 4px; }
+  .res th { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); text-align:left; padding:6px 10px 6px 0; border-bottom:1px solid rgba(22,24,26,.15); font-weight:600; }
+  .res td { font-size:.82rem; padding:7px 10px 7px 0; border-bottom:1px dashed rgba(22,24,26,.08); vertical-align:top; }
+  .res td:first-child { white-space:nowrap; font-weight:500; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="brand">PORTOFINO <span>· evidencia</span></div>
+    <div class="fecha">23 NOV 2026</div>
+  </div>
+</header>
+<main class="wrap">
+
+  <div class="kick">Reporte técnico</div>
+  <h1>Corrección del ecosistema Meta — pixel, cuenta publicitaria y medición</h1>
+  <p class="sub">Documento de respaldo de los hallazgos y acciones realizados para dejar la medición de Meta (Events Manager, pixel, cuenta publicitaria) en estado operativo antes de activar campañas.</p>
+
+  <div class="ev">
+    <h2>Objetivo del ejercicio</h2>
+    <p>Que cada solicitud de cotización pueda atribuirse a su origen real (Facebook, Instagram, Google, directo) y que los eventos del sitio (PageView, ViewContent, Contact, Lead) alimenten una cuenta publicitaria administrable desde el negocio Portofino — condición necesaria para campañas optimizadas por conversión.</p>
+  </div>
+
+  <div class="ev">
+    <h2>Hallazgo 1 — La cuenta publicitaria vivía fuera del negocio <span class="tag hall">problema</span></h2>
+    <p>El Administrador de anuncios mostraba <i>“No hay cuentas publicitarias para mostrar”</i> aunque ya existían campañas previas (posts promocionados). La cuenta <code>1380752262185261</code> existía como activo suelto, creada al promocionar desde el perfil personal, sin vincular al portafolio comercial Portofino.</p>
+    <ul>
+      <li>Consecuencia: sin acceso a Facturación y pagos, sin administración centralizada, sin poder compartir activos (pixel, públicos) con la cuenta.</li>
+      <li>Acción: identificar el ID en el selector de cuentas → agregarla al negocio vía <b>Configuración → Cuentas → Cuentas publicitarias → Agregar existente</b> → asignar personas con control total.</li>
+    </ul>
+  </div>
+
+  <div class="ev">
+    <h2>Hallazgo 2 — El conjunto de datos visible no era el del sitio <span class="tag hall">problema</span></h2>
+    <p>El sitio (<code>meta-pixel.js</code>) enviaba eventos al pixel <code>1124678623449829</code> (“portofino”), registrado en otra cuenta — no administrable desde este negocio ni visible en el Events Manager. En el Events Manager solo existía <code>portofinoapp</code> (ID <code>2341118113407438</code>), creado como <b>identificador de app</b>, en estado <i>Inactivo — nunca se recibieron eventos</i>.</p>
+    <ul>
+      <li>Síntoma: “No se recibió actividad durante el período seleccionado” aun con el sitio en producción.</li>
+      <li>Corrección aplicada: <code>meta-pixel.js</code> reapuntado al ID administrable <code>2341118113407438</code>. Si el dataset de tipo app no acepta eventos web limpiamente, el paso siguiente es crear un <b>conjunto de datos web</b> (Conectar datos → Web → Píxel de Meta) y actualizar el ID.</li>
+    </ul>
+  </div>
+
+  <div class="ev">
+    <h2>Hallazgo 3 — Medición incompleta <span class="tag hall">problema</span></h2>
+    <p>Sin conversiones personalizadas, sin dominio verificado y sin parámetros de URL en los anuncios — el resultado era tráfico sin atribución.</p>
+    <ul>
+      <li><b>Atribución de origen resuelta del lado del sitio</b> (<code>fb.js</code>): en el primer toque de la sesión se captura <code>utm_source/medium</code>, <code>fbclid</code> (Meta), <code>gclid</code> (Google Ads) o el referrer externo, y se guarda como campo <code>origen</code> en cada solicitud de cotización.</li>
+      <li><b>Panel admin</b> (<code>admin.html</code>): los registros ahora se muestran en tabla con filtros por estado, canal, texto libre y orden por fecha/cliente; la columna Canal muestra “vía web · de fb/ig”.</li>
+      <li><b>Parámetros de URL para anuncios</b> (se pega al crear cada anuncio):<br>
+        <code>utm_source={{site_source_name}}&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_content={{ad.name}}</code><br>
+        <code>{{site_source_name}}</code> se resuelve solo a fb / ig / an / msg — distingue Facebook de Instagram.</li>
+    </ul>
+  </div>
+
+  <div class="ev">
+    <h2>Pendientes para cerrar <span class="tag pend">por hacer</span></h2>
+    <div class="pasos">
+      <div class="paso"><b>Conjunto de datos web</b> — Conectar datos → Web → Píxel de Meta → tomar el nuevo ID y actualizar <code>meta-pixel.js</code> (o vincular <code>portofinoapp</code> al conjunto desde su Configuración).</div>
+      <div class="paso"><b>Asignar el dataset a la cuenta publicitaria</b> — portofinoapp → Configuración → compartir con <code>1380752262185261</code>. Requisito para optimizar por conversiones.</div>
+      <div class="paso"><b>Cuenta publicitaria dentro del negocio</b> — Configuración → Cuentas → Cuentas publicitarias → Agregar existente → asignar Jorge con control total (habilita Facturación y pagos).</div>
+      <div class="paso"><b>Verificar dominio</b> — Configuración del negocio → Seguridad de la marca → Dominios → <code>portofino.com.mx</code> por meta-tag (se agrega al sitio).</div>
+      <div class="paso"><b>Probar eventos</b> — portofinoapp → Probar eventos → navegar portofino.com.mx y confirmar PageView / ViewContent / Contact / Lead.</div>
+      <div class="paso"><b>Campaña</b> — al crear cada anuncio con destino web, pegar los parámetros de URL del bloque anterior.</div>
+    </div>
+  </div>
+
+  <div class="ev">
+    <h2>Evidencia <span class="tag ok">capturas</span></h2>
+    <p>Clic en cada imagen para verla en tamaño completo.</p>
+
+    <figure>
+      <a href="01.png" target="_blank"><img src="01.png" alt="Events Manager — resumen, selector de conjuntos de datos"></a>
+      <figcaption>01 — Events Manager → Resumen: el selector “Conecta tus datos” solo ofrece <b>portofinoapp</b> (ID 2341118113407438). El pixel del sitio no aparece.</figcaption>
+    </figure>
+
+    <figure>
+      <a href="02.png" target="_blank"><img src="02.png" alt="Events Manager — resumen general sin actividad"></a>
+      <figcaption>02 — Events Manager completo bajo la cuenta publicitaria <code>act=1380752262185261</code>: socios GTM/Shopify/WooCommerce como opciones de conexión; sin datos conectados.</figcaption>
+    </figure>
+
+    <figure>
+      <a href="03.png" target="_blank"><img src="03.png" alt="Conjuntos de datos — portofinoapp inactivo"></a>
+      <figcaption>03 — Conjuntos de datos → <b>portofinoapp</b>: “Inactivo — nunca se recibieron eventos”. Nota: el panel lo registra como <b>Identificador de la app</b>, no como dataset web — confirma el diagnóstico.</figcaption>
+    </figure>
+
+    <figure>
+      <a href="04.png" target="_blank"><img src="04.png" alt="Conversiones personalizadas — estado inicial"></a>
+      <figcaption>04 — Conversiones personalizadas: estado inicial, sin ninguna configurada. Pendiente crear la conversión “Cotización” sobre el evento Lead una vez que el dataset reciba actividad.</figcaption>
+    </figure>
+
+    <div class="hueco">05 — reservado · soltar captura como <code>evidencia/05.png</code> y duplicar un bloque figure</div>
+    <div class="hueco">06 — reservado · soltar captura como <code>evidencia/06.png</code></div>
+    <div class="hueco">07 — reservado · soltar captura como <code>evidencia/07.png</code></div>
+    <div class="hueco">08 — reservado · soltar captura como <code>evidencia/08.png</code></div>
+  </div>
+
+  <div class="ev">
+    <h2>Resumen de cambios en el sitio <span class="tag ok">hecho</span></h2>
+    <table class="res">
+      <thead><tr><th>Archivo</th><th>Cambio</th></tr></thead>
+      <tbody>
+        <tr><td><code>fb.js</code></td><td>Captura de atribución de origen en primer toque (UTM, fbclid, gclid, referrer) → campo <code>origen</code> en cada solicitud.</td></tr>
+        <tr><td><code>admin.html</code></td><td>Registros en tabla con filtros (estado / canal / búsqueda), orden por fecha y cliente, ficha expandible por fila, columna de origen.</td></tr>
+        <tr><td><code>meta-pixel.js</code></td><td>Pixel reapuntado al dataset administrable <code>2341118113407438</code> (antes <code>1124678623449829</code>, fuera del negocio).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+</body>
+</html>

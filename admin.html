@@ -91,6 +91,23 @@
   .pdf-doc .pd-tots .row.gt span { color: var(--ink); }
   .pdf-doc .pd-nota { margin-top: 34px; font-size: 9.5px; line-height: 1.7; color: var(--accent); }
   .pdf-doc .pd-foot { margin-top: 30px; padding-top: 18px; border-top: 1px solid rgba(22,24,26,.16); display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+
+  /* tabla de registros */
+  .tblwrap { overflow-x:auto; background:#fff; border:1px solid rgba(22,24,26,.12); border-radius:10px; }
+  .rtbl { width:100%; border-collapse:collapse; min-width:820px; }
+  .rtbl th { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid rgba(22,24,26,.15); white-space:nowrap; }
+  .rtbl th[data-s] { cursor:pointer; user-select:none; }
+  .rtbl td { font-size:.82rem; padding:10px 12px; border-bottom:1px solid rgba(22,24,26,.07); vertical-align:middle; }
+  .rtbl td.num, .rtbl th.num { text-align:right; }
+  .rtbl td a { color:var(--ink); }
+  tr.rrow { cursor:pointer; }
+  tr.rrow:hover td, tr.rrow.open td { background:rgba(22,24,26,.03); }
+  tr.rrow td .sub { font-size:.7rem; color:var(--accent); }
+  td.sub { color:var(--accent); font-size:.74rem; }
+  tr.drow td { padding:0 14px 14px; border-bottom:1px solid rgba(22,24,26,.15); background:#fbfbfa; }
+  tr.drow .q { margin:14px 0 0; box-shadow:0 2px 12px rgba(22,24,26,.07); }
+  .busca { font:inherit; font-size:.78rem; padding:7px 14px; border:1px solid rgba(22,24,26,.2); border-radius:20px; min-width:200px; background:#fff; }
+  .fcanal { font:inherit; font-size:.72rem; letter-spacing:.06em; padding:7px 12px; border:1px solid rgba(22,24,26,.2); border-radius:20px; background:#fff; }
 </style>
 </head>
 <body>
@@ -118,8 +135,18 @@
     <button data-f="pendiente">Pendientes</button>
     <button data-f="en-proceso">En proceso</button>
     <button data-f="cerrada">Cerradas</button>
+    <input id="busca" class="busca" type="search" placeholder="Buscar nombre, teléfono, ciudad…">
+    <select id="fcanal" class="fcanal"><option value="todos">Todos los canales</option></select>
   </div>
-  <div id="lista" style="display:none"></div>
+  <div id="lista" style="display:none">
+    <div class="tblwrap"><table class="rtbl">
+      <thead><tr>
+        <th data-s="creado">Fecha</th><th data-s="nombre">Cliente</th><th>Contacto</th>
+        <th>Ciudad</th><th>Canal</th><th class="num">Prod.</th><th class="num">Total</th><th>Estado</th>
+      </tr></thead>
+      <tbody id="regBody"></tbody>
+    </table></div>
+  </div>
 </main>
 
 <script src="fb.js"></script>
@@ -154,19 +181,98 @@ function fmt(ts){
   return d.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
 }
 
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => n.toLocaleString('es-MX',{style:'currency',currency:'MXN'});
+const norm = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const tsDe = q => q.creado && q.creado.toDate ? q.creado.toDate().getTime() : (q.creado ? new Date(q.creado).getTime() : 0);
+const estDe = q => q.estado || 'pendiente';
+function totalDe(q){
+  let t = 0, ok = false;
+  (q.productos||[]).forEach((p,i)=>{
+    const v = parseFloat((q.precios||[])[i]);
+    if (v){ t += (parseFloat(p.m2)||1)*v; ok = true; }
+  });
+  const fl = parseFloat(q.flete)||0, ot = parseFloat(q.otros)||0;
+  if (fl || ot) ok = true;
+  return ok ? t+fl+ot : null;
+}
+
+let REGS = [];
+const F = { estado:'todas', texto:'', canal:'todos', s:'creado', dir:-1 };
+
 async function cargar(){
-  const lista = document.getElementById('lista');
   const snap = await fb.firestore().collection('cotizaciones').orderBy('creado','desc').limit(300).get();
-  document.getElementById('count').textContent = snap.size + ' solicitudes';
-  lista.innerHTML = '';
-  if (snap.empty){ lista.innerHTML = '<div class="vacio">Sin solicitudes todavía.</div>'; return; }
-  snap.forEach(doc => {
-    const q = doc.data();
+  REGS = [];
+  snap.forEach(doc => REGS.push({id:doc.id, q:doc.data()}));
+  poblarCanales();
+  pintarTabla();
+}
+
+function poblarCanales(){
+  const vals = [...new Set(REGS.map(r=>r.q.canal).filter(Boolean))].sort();
+  document.getElementById('fcanal').innerHTML = '<option value="todos">Todos los canales</option>' +
+    vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+}
+
+function pasaFiltro(reg){
+  const q = reg.q;
+  if (F.estado!=='todas' && estDe(q)!==F.estado) return false;
+  if (F.canal!=='todos' && (q.canal||'')!==F.canal) return false;
+  if (F.texto){
+    const hay = norm([q.nombre,q.telefono,q.correo,q.ciudad,q.mensaje,q.canal,q.origen,
+      ...(q.productos||[]).map(p=>p.nombre)].join(' '));
+    if (!hay.includes(norm(F.texto))) return false;
+  }
+  return true;
+}
+
+function pintarTabla(){
+  const body = document.getElementById('regBody');
+  body.innerHTML = '';
+  const regs = REGS.filter(pasaFiltro).sort((a,b) =>
+    F.s==='nombre' ? F.dir*norm(a.q.nombre).localeCompare(norm(b.q.nombre),'es')
+                   : F.dir*(tsDe(a.q)-tsDe(b.q)));
+  document.getElementById('count').textContent = regs.length===REGS.length
+    ? `${REGS.length} solicitudes` : `${regs.length} de ${REGS.length} solicitudes`;
+  document.querySelectorAll('.rtbl th[data-s]').forEach(th => {
+    th.textContent = (th.dataset.s==='creado'?'Fecha':'Cliente') +
+      (th.dataset.s===F.s ? (F.dir<0?' ↓':' ↑') : '');
+  });
+  if (!regs.length){
+    body.innerHTML = '<tr><td colspan="8" class="vacio">Sin solicitudes con esos filtros.</td></tr>';
+    return;
+  }
+  regs.forEach(reg => {
+    const q = reg.q, t = totalDe(q), est = estDe(q);
+    const tr = document.createElement('tr'); tr.className='rrow'; tr.dataset.id = reg.id;
+    tr.innerHTML = `
+      <td class="sub" style="white-space:nowrap">${fmt(q.creado)}</td>
+      <td><b>${esc(q.nombre)||'—'}</b>${q.instalacion?' <span class="sub">🔧 instalación</span>':''}</td>
+      <td class="sub">${q.telefono?`<a href="tel:${esc(q.telefono)}">${esc(q.telefono)}</a>`:''}${q.correo?`<div>${esc(q.correo)}</div>`:''}</td>
+      <td>${esc(q.ciudad)||'—'}</td>
+      <td class="sub">vía ${esc(q.canal)||'—'}${q.origen?`<div>de ${esc(q.origen)}</div>`:''}</td>
+      <td class="num">${(q.productos||[]).length||'—'}</td>
+      <td class="num">${t!=null?money(t):'—'}</td>
+      <td><span class="tag ${est}">${est.replace('-',' ')}</span></td>`;
+    const det = document.createElement('tr'); det.className='drow'; det.style.display='none';
+    det.innerHTML = '<td colspan="8"><div class="host"></div></td>';
+    tr.onclick = () => {
+      const open = det.style.display !== 'none';
+      body.querySelectorAll('tr.drow').forEach(r=>r.style.display='none');
+      body.querySelectorAll('tr.rrow').forEach(r=>r.classList.remove('open'));
+      if (!open){
+        det.style.display=''; tr.classList.add('open');
+        if (!det.dataset.ready){ det.dataset.ready='1'; det.querySelector('.host').appendChild(crearFicha(reg)); }
+      }
+    };
+    body.appendChild(tr); body.appendChild(det);
+  });
+}
+
+function crearFicha(reg){
+    const q = reg.q;
     const div = document.createElement('div'); div.className='q';
-    div.dataset.estado = q.estado || 'pendiente';
-    const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
-      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const money = n => n.toLocaleString('es-MX',{style:'currency',currency:'MXN'});
     const precios = [...(q.precios||[])];
     const m2De = p => parseFloat(p && p.m2) || 1; // sin m² declarado = 1 m² para cotizar
     const baseDe = p => p && PRECIOS_BASE[p.nombre] != null ? PRECIOS_BASE[p.nombre]
@@ -190,7 +296,7 @@ async function cargar(){
       </div>
       <div class="meta">
         <a href="tel:${esc(q.telefono)}">${esc(q.telefono)||''}</a>${q.correo?' · <a href="mailto:'+esc(q.correo)+'">'+esc(q.correo)+'</a>':''} · ${esc(q.ciudad)||''}
-        · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${esc(q.canal)||'—'}</span>
+        · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${esc(q.canal)||'—'}${q.origen?' · de '+esc(q.origen):''}</span>
         ${q.instalacion?' · <b style="color:var(--ink)">🔧 con instalación</b>':''}
       </div>
       ${prods}
@@ -224,7 +330,7 @@ async function cargar(){
       if (gtEl) gtEl.textContent = (mat || fl || ot) ? money(mat + fl + ot) : '—';
     };
     const guardar = async campo => {
-      try { await fb.firestore().collection('cotizaciones').doc(doc.id).update(campo); }
+      try { await fb.firestore().collection('cotizaciones').doc(reg.id).update(campo); }
       catch(e){ alert('No se pudo guardar — revisa tu conexión.'); }
     };
     div.querySelectorAll('.precio').forEach(inp => inp.onchange = async () => {
@@ -324,33 +430,36 @@ async function cargar(){
       pdfBtn.disabled = false; pdfBtn.textContent = 'Descargar PDF';
     };
     div.querySelector('select').onchange = async e => {
-      await fb.firestore().collection('cotizaciones').doc(doc.id).update({estado: e.target.value});
-      div.dataset.estado = e.target.value;
+      await fb.firestore().collection('cotizaciones').doc(reg.id).update({estado: e.target.value});
+      reg.q.estado = e.target.value;
       div.querySelector('.tag').className = 'tag '+e.target.value;
       div.querySelector('.tag').textContent = e.target.value.replace('-',' ');
-      aplicarFiltro();
+      const tr = document.querySelector(`#regBody tr.rrow[data-id="${reg.id}"]`);
+      if (tr){
+        const tg = tr.querySelector('.tag');
+        if (tg){ tg.className='tag '+reg.q.estado; tg.textContent=reg.q.estado.replace('-',' '); }
+        if (!pasaFiltro(reg)){ tr.style.display='none'; tr.nextElementSibling.style.display='none'; }
+      }
     };
     div.querySelector('.del').onclick = async () => {
       if (!confirm(`¿Eliminar la solicitud de "${q.nombre||'—'}"?`)) return;
-      await fb.firestore().collection('cotizaciones').doc(doc.id).delete();
-      div.remove();
-      document.getElementById('count').textContent =
-        lista.querySelectorAll('.q').length + ' solicitudes';
+      await fb.firestore().collection('cotizaciones').doc(reg.id).delete();
+      REGS = REGS.filter(r => r !== reg);
+      pintarTabla();
     };
-    lista.appendChild(div);
-  });
-  aplicarFiltro();
+    return div;
 }
 
-let filtro = 'todas';
-function aplicarFiltro(){
-  document.querySelectorAll('#lista .q').forEach(el =>
-    el.style.display = (filtro==='todas' || el.dataset.estado===filtro) ? '' : 'none');
-}
 document.querySelectorAll('#filtros button').forEach(b => b.onclick = () => {
-  filtro = b.dataset.f;
+  F.estado = b.dataset.f;
   document.querySelectorAll('#filtros button').forEach(x => x.classList.toggle('on', x===b));
-  aplicarFiltro();
+  pintarTabla();
+});
+document.getElementById('busca').oninput = e => { F.texto = e.target.value; pintarTabla(); };
+document.getElementById('fcanal').onchange = e => { F.canal = e.target.value; pintarTabla(); };
+document.querySelectorAll('.rtbl th[data-s]').forEach(th => th.onclick = () => {
+  if (F.s===th.dataset.s) F.dir *= -1; else { F.s=th.dataset.s; F.dir=-1; }
+  pintarTabla();
 });
 
 async function boot(){
