@@ -132,11 +132,16 @@
     <div class="kick">Modo producto — 1 publicación: foto principal + variantes</div>
     <div class="row" style="align-items:center">
       <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
-      <button class="pri" id="dlCard">Descargar post 1080</button>
+      <button class="pri" id="dlCard">Descargar post</button>
+      <button class="pri" id="dlCardStory">Descargar historia</button>
       <button id="viewCard">Vista previa grande</button>
       <button id="capIAProd">✦ Caption IA</button>
     </div>
-    <img id="cardPrev" alt="" style="display:none;width:300px;margin-top:16px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
+    <div id="pubInfo" style="font-size:.72rem;margin-top:8px;min-height:14px;color:var(--accent)">● = ya publicada · registro de este navegador</div>
+    <div style="display:flex;gap:12px;margin-top:10px;align-items:flex-start">
+      <img id="cardPrev" alt="" style="display:none;width:300px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
+      <img id="cardStoryPrev" alt="" style="display:none;width:169px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
+    </div>
   </div>
 
   <div class="cap">
@@ -262,12 +267,45 @@ async function descargar(e, i, dia){
   const a = document.createElement('a');
   a.download = `portofino-${dia.replaceAll('-','')}-${String(i+1).padStart(2,'0')}.png`;
   a.href = c.toDataURL('image/png'); a.click();
+  markPub(e);
 }
 
 // ── modo producto: 1 post = 1 producto con tira de variantes ──
 const PRODS = PORTOFINO_DATA.flatMap(r =>
   r.proyectos.map(p => ({ nombre:p.nombre, rubro:r.rubro, slug:r.slug, fotos:p.fotos })));
 const slugTxt = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+// ── registro de publicadas — localStorage de este navegador, clave rubro/nombre ──
+const PUB_KEY = 'pubfb_publicados';
+const pubMap = () => { try { return JSON.parse(localStorage.getItem(PUB_KEY)||'{}'); } catch(e){ return {}; } };
+const pubKey = p => `${p.rubro}/${p.nombre}`;
+const pubTag = (p, m) => (m||pubMap())[pubKey(p)] ? '● ' : '';
+function markPub(p){
+  const m = pubMap(); m[pubKey(p)] = new Date().toISOString().slice(0,10);
+  localStorage.setItem(PUB_KEY, JSON.stringify(m));
+  refreshSels(); pintarPubInfo();
+}
+function unmarkPub(p){
+  const m = pubMap(); delete m[pubKey(p)];
+  localStorage.setItem(PUB_KEY, JSON.stringify(m));
+  refreshSels(); pintarPubInfo();
+}
+function refreshSels(){
+  const m = pubMap();
+  for (const sel of [prodSel, promoSel]){
+    if (!sel) continue;
+    [...sel.options].forEach((o,i)=>{ o.textContent = `${pubTag(PRODS[i],m)}${PRODS[i].nombre} — ${PRODS[i].rubro}`; });
+  }
+}
+function pintarPubInfo(){
+  const el = document.getElementById('pubInfo');
+  const p = PRODS[+prodSel.value]; if (!p || !el) return;
+  const f = pubMap()[pubKey(p)];
+  el.innerHTML = '● = ya publicada · registro de este navegador' +
+    (f ? ` — ${tit(p.nombre)}: ${new Date(f+'T12:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'})} · <a href="#" id="unPub" style="color:inherit">quitar marca</a>` : '');
+  const u = document.getElementById('unPub');
+  if (u) u.onclick = ev => { ev.preventDefault(); unmarkPub(p); };
+}
 
 function cover(x, img, dx, dy, dw, dh, rad){
   const s = Math.max(dw/img.width, dh/img.height);
@@ -312,6 +350,52 @@ async function renderCard(p){
   if (lg.complete && lg.naturalWidth){
     const lw = 330, lh = lw*lg.naturalHeight/lg.naturalWidth;
     x.drawImage(lg, (1080-lw)/2, 1080-28-lh, lw, lh);
+  }
+  return c;
+}
+
+// ── modo producto: historia 1080×1920 — proyecto arriba, slab como barra al pie ──
+async function renderCardStory(p){
+  const c = document.createElement('canvas'); c.width = 2160; c.height = 3840;
+  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
+  x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1920);
+
+  // encabezado — bajo la zona segura del nombre de cuenta (~270px)
+  const topSafe = 290;
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = '#67757d'; x.font = '600 26px Inter, sans-serif'; x.letterSpacing = '4px';
+  x.fillText(p.rubro.toUpperCase(), 64, topSafe + 30, 952);
+  x.fillStyle = '#16181b'; x.font = '700 64px Inter, sans-serif'; x.letterSpacing = '0px';
+  let y = topSafe + 116;
+  for (const ln of wrapTxt(x, p.nombre, 952)){ x.fillText(ln, 64, y); y += 74; }
+
+  const barH = 320, barY = 1920 - barH;
+
+  // variantes — fotos de en medio (proyecto = hero, slab = barra; hasta 4)
+  const vars = p.fotos.slice(1, -1).slice(0, 4);
+  const varsH = vars.length ? 168 + 20 : 0;
+
+  // proyecto hero — primera foto, ocupa todo el espacio restante
+  const heroY = y + 24, heroH = Math.max(320, barY - 24 - varsH - heroY);
+  const proj = await loadImg(p.fotos[0]);
+  cover(x, proj, 64, heroY, 952, heroH, 18);
+
+  if (vars.length){
+    const n = vars.length, gap = 16, tw = (952-(n-1)*gap)/n, ty = heroY + heroH + 20;
+    for (let i=0;i<n;i++){
+      const im = await loadImg(vars[i]);
+      cover(x, im, 64+i*(tw+gap), ty, tw, 168, 14);
+    }
+  }
+
+  // barra de slab full-width al pie + logo blanco centrado — igual que T3
+  const slab = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
+  cover(x, slab, 0, barY, 1080, barH, 0);
+  x.fillStyle = 'rgba(12,14,16,.28)'; x.fillRect(0, barY, 1080, barH);
+  const lgw = logoImg.w;
+  if (lgw.complete && lgw.naturalWidth){
+    const lh = barH*.6, lw = lh*lgw.naturalWidth/lgw.naturalHeight;
+    x.drawImage(lgw, (1080-lw)/2, barY+(barH-lh)/2, lw, lh);
   }
   return c;
 }
@@ -543,7 +627,7 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   x.shadowBlur = 0; x.shadowOffsetY = 0;
 
   // proyecto grande bajo el texto — termina antes del pie
-  const logoY = t3 ? 1400 : 1500;
+  const logoY = t3 ? 1640 : 1500;
   if (p.fotos.length > 1){
     const proj = await loadImg(p.fotos[0]);
     const py = y + 56, ph = logoY - 40 - py;
@@ -728,25 +812,42 @@ const prodSel = document.getElementById('prodSel');
 const cardPrev = document.getElementById('cardPrev');
 PRODS.forEach((p,i)=>{
   const o = document.createElement('option');
-  o.value = i; o.textContent = `${p.nombre} — ${p.rubro}`;
+  o.value = i; o.textContent = `${pubTag(p)}${p.nombre} — ${p.rubro}`;
   prodSel.appendChild(o);
 });
 
-let prodCanvas = null;
+let prodCanvas = null, prodStoryCanvas = null;
 async function previewCard(){
   const p = PRODS[+prodSel.value];
   if (!p) return;
   prodCanvas = await renderCard(p);
   cardPrev.src = prodCanvas.toDataURL('image/png');
   cardPrev.style.display = 'block';
+  const sp = document.getElementById('cardStoryPrev');
+  sp.style.display = 'none';
+  renderCardStory(p).then(sc => {
+    prodStoryCanvas = sc;
+    sp.src = sc.toDataURL('image/png');
+    sp.style.display = 'block';
+  });
+  pintarPubInfo();
 }
 prodSel.onchange = previewCard;
+document.getElementById('dlCardStory').onclick = async()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  const c = prodStoryCanvas || await renderCardStory(p);
+  const a = document.createElement('a');
+  a.download = `portofino-historia-${slugTxt(p.nombre)}.png`;
+  a.href = c.toDataURL('image/png'); a.click();
+  markPub(p);
+};
 document.getElementById('dlCard').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
   const c = prodCanvas || await renderCard(p);
   const a = document.createElement('a');
   a.download = `portofino-post-${slugTxt(p.nombre)}.png`;
   a.href = c.toDataURL('image/png'); a.click();
+  markPub(p);
 };
 document.getElementById('viewCard').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
@@ -761,7 +862,7 @@ const promoSel = document.getElementById('promoSel');
 const promoPrev = document.getElementById('promoPrev');
 PRODS.forEach((p,i)=>{
   const o = document.createElement('option');
-  o.value = i; o.textContent = `${p.nombre} — ${p.rubro}`;
+  o.value = i; o.textContent = `${pubTag(p)}${p.nombre} — ${p.rubro}`;
   promoSel.appendChild(o);
 });
 // características por rubro — precargan el detalle del post (editables)
@@ -811,6 +912,7 @@ document.getElementById('dlPromo').onclick = async()=>{
   const a = document.createElement('a');
   a.download = `portofino-promo-${slugTxt(v.p.nombre)}.png`;
   a.href = c.toDataURL('image/png'); a.click();
+  markPub(v.p);
 };
 document.getElementById('dlStory').onclick = async()=>{
   const v = promoVals();
@@ -818,6 +920,7 @@ document.getElementById('dlStory').onclick = async()=>{
   const a = document.createElement('a');
   a.download = `portofino-historia-${slugTxt(v.p.nombre)}.png`;
   a.href = c.toDataURL('image/png'); a.click();
+  markPub(v.p);
 };
 document.getElementById('viewPromo').onclick = async()=>{
   const w = window.open('','_blank');
