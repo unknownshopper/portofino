@@ -414,7 +414,7 @@
     <span class="k">Catálogo</span>
     <h1>Productos</h1>
   </div>
-  <p class="nota">Seleccione los productos de su proyecto y envíe la solicitud — un asesor le cotiza material, precio y envío.</p>
+  <p class="nota">Seleccione los productos de su proyecto y envíe la solicitud — un asesor le cotiza material, precio y disponibilidad.</p>
 </header>
 
 <div class="toolbar">
@@ -825,7 +825,7 @@ cotForm.addEventListener('submit', async e => {
   cotForm.classList.remove('enviando');
   cotForm.hidden = true;
   document.getElementById('cotOkTxt').textContent =
-    `Cotización enviada — un ejecutivo le contactará en breve para confirmar existencias, precio y envío a ${r.datos.ciudad}.`;
+    `Cotización enviada — un ejecutivo le contactará en breve para confirmar existencias y precio en ${r.datos.ciudad}.`;
   cotOk.hidden = false;
 });
 document.getElementById('cotOkBtn').onclick = () => {

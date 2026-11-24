@@ -13,9 +13,10 @@ const FIREBASE_CONFIG = {
 // (aistudio.google.com → Get API key → en Google Cloud agregar restricción de referrer:
 //  *.github.io/* · portofino.com.mx/* · localhost:*/*)
 const GEMINI_KEY = 'AQ.Ab8RN6JMtg21UyLRH0576DGGuSd_hQDk9Uv6rEABd5dCZ1XmEQ';
-// las keys nuevas solo acceden a modelos 3.x; 3-flash = calidad, lite = respaldo rápido
+// las keys nuevas solo acceden a modelos 3.x; 3-flash = calidad, *-latest = respaldo
+// (los "preview" saturan con 503 — flash-lite-latest es el fallback verificado)
 const GEMINI_MODEL = 'gemini-3-flash-preview';
-const GEMINI_MODEL_B = 'gemini-3.1-flash-lite-preview';
+const GEMINI_MODEL_B = 'gemini-flash-lite-latest';
 const GEMINI_ON = !!GEMINI_KEY;
 
 async function gemini(prompt) {
@@ -25,7 +26,8 @@ async function gemini(prompt) {
       const r = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { maxOutputTokens: 4096 } }) });
       if (!r.ok) continue; // 503/429 → intenta el modelo de respaldo
       const j = await r.json();
       const txt = j.candidates?.[0]?.content?.parts?.[0]?.text?.trim();

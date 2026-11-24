@@ -102,11 +102,11 @@
   <div class="ev">
     <h2>Pendientes para cerrar <span class="tag pend">por hacer</span></h2>
     <div class="pasos">
-      <div class="paso"><b>Conjunto de datos web</b> — Conectar datos → Web → Píxel de Meta → tomar el nuevo ID y actualizar <code>meta-pixel.js</code> (o vincular <code>portofinoapp</code> al conjunto desde su Configuración).</div>
-      <div class="paso"><b>Asignar el dataset a la cuenta publicitaria</b> — portofinoapp → Configuración → compartir con <code>1380752262185261</code>. Requisito para optimizar por conversiones.</div>
+      <div class="paso"><b>✓ Conjunto de datos web creado</b> — <code>portofino-web</code> (ID <code>1894573585321138</code>), desde Conectar datos → Web dentro del negocio. <code>meta-pixel.js</code> reapuntado (23-nov).</div>
+      <div class="paso"><b>✓ Eventos verificados</b> — “Probar eventos” recibe PageView por Navegador desde portofino.com.mx (evidencia 06).</div>
+      <div class="paso"><b>Asignar el dataset a la cuenta publicitaria</b> — portofino-web → Configuración → compartir con <code>1380752262185261</code>. Requisito para optimizar por conversiones.</div>
       <div class="paso"><b>Cuenta publicitaria dentro del negocio</b> — Configuración → Cuentas → Cuentas publicitarias → Agregar existente → asignar Jorge con control total (habilita Facturación y pagos).</div>
       <div class="paso"><b>Verificar dominio</b> — Configuración del negocio → Seguridad de la marca → Dominios → <code>portofino.com.mx</code> por meta-tag (se agrega al sitio).</div>
-      <div class="paso"><b>Probar eventos</b> — portofinoapp → Probar eventos → navegar portofino.com.mx y confirmar PageView / ViewContent / Contact / Lead.</div>
       <div class="paso"><b>Campaña</b> — al crear cada anuncio con destino web, pegar los parámetros de URL del bloque anterior.</div>
     </div>
   </div>
@@ -135,8 +135,16 @@
       <figcaption>04 — Conversiones personalizadas: estado inicial, sin ninguna configurada. Pendiente crear la conversión “Cotización” sobre el evento Lead una vez que el dataset reciba actividad.</figcaption>
     </figure>
 
-    <div class="hueco">05 — reservado · soltar captura como <code>evidencia/05.png</code> y duplicar un bloque figure</div>
-    <div class="hueco">06 — reservado · soltar captura como <code>evidencia/06.png</code></div>
+    <figure>
+      <a href="05.png" target="_blank"><img src="05.png" alt="Probar eventos de portofinoapp — dataset de app"></a>
+      <figcaption>05 — “Probar eventos” de <b>portofinoapp</b>: pide “abrir tu app” — todas las pistas hablan del SDK de la app de Facebook en el teléfono. Confirma que es dataset de aplicación móvil: los eventos web del sitio jamás registrarían aquí.</figcaption>
+    </figure>
+
+    <figure>
+      <a href="06.png" target="_blank"><img src="06.png" alt="portofino-web — recibiendo actividad, primer PageView"></a>
+      <figcaption>06 — <b>portofino-web</b> (ID 1894573585321138): “Recibiendo actividad” — primer <b>PageView</b> recibido por Navegador desde portofino.com.mx (test_event_code TEST33069). Pixel verificado funcionando. Nota: el diagnóstico previo mostró <code>ERR_BLOCKED_BY_CLIENT</code> — el ad blocker del navegador impedía la carga de fbevents.js.</figcaption>
+    </figure>
+
     <div class="hueco">07 — reservado · soltar captura como <code>evidencia/07.png</code></div>
     <div class="hueco">08 — reservado · soltar captura como <code>evidencia/08.png</code></div>
   </div>
@@ -148,7 +156,7 @@
       <tbody>
         <tr><td><code>fb.js</code></td><td>Captura de atribución de origen en primer toque (UTM, fbclid, gclid, referrer) → campo <code>origen</code> en cada solicitud.</td></tr>
         <tr><td><code>admin.html</code></td><td>Registros en tabla con filtros (estado / canal / búsqueda), orden por fecha y cliente, ficha expandible por fila, columna de origen.</td></tr>
-        <tr><td><code>meta-pixel.js</code></td><td>Pixel reapuntado al dataset administrable <code>2341118113407438</code> (antes <code>1124678623449829</code>, fuera del negocio).</td></tr>
+        <tr><td><code>meta-pixel.js</code></td><td>Pixel reapuntado al dataset web <code>portofino-web</code> → ID <code>1894573585321138</code> (antes <code>1124678623449829</code>, fuera del negocio; <code>2341118113407438</code> resultó ser dataset de app).</td></tr>
       </tbody>
     </table>
   </div>

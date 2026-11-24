@@ -68,35 +68,28 @@
 <header class="wrap" style="padding-left:0;padding-right:0;max-width:none;border-bottom:none;">
   <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;border-bottom:1px solid rgba(22,24,26,.12);padding-bottom:18px;">
     <div class="brand">PORTOFINO <span>· pubfb</span></div>
-    <div class="ctl">
-      <input type="date" id="dia">
-      <button class="ghost" id="otra">↺ Otra selección</button>
-      <label style="font-size:.75rem;color:var(--accent);">Logo
-        <select id="logoSel"><option value="auto">auto</option><option value="w">blanco</option><option value="ink">tinta</option></select>
-      </label>
-      <label style="font-size:.75rem;color:var(--accent);">
-        <input type="checkbox" id="ovl"> overlay nombre
-      </label>
-    </div>
+    <div class="ollama off" id="ollamaTag">IA: …</div>
   </div>
 </header>
 
 <main class="wrap">
   <div class="intro">
     <div>
-      <div class="kick">Contenido · 2 publicaciones / semana</div>
-      <h1 id="tit">Selección del día</h1>
-      <div class="sub" id="selInfo"></div>
+      <div class="kick">Contenido · publicaciones</div>
+      <h1>Material</h1>
     </div>
-    <div class="ollama off" id="ollamaTag">Ollama: …</div>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div class="cap" style="margin:8px 0 0">
+    <div class="row" style="align-items:center">
+      <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
+      <div id="pubInfo" style="font-size:.72rem;color:var(--accent)">● = ya publicada · registro de este navegador</div>
+    </div>
+  </div>
 
   <div class="cap" style="margin:8px 0 0">
     <div class="kick">Modo promoción — estilo del slider del sitio</div>
     <div class="row" style="align-items:center">
-      <select id="promoSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
       <select id="prTpl" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
         <option value="1">Template 1 — foto + texto</option>
         <option value="2">Template 2 — slab de fondo</option>
@@ -105,8 +98,6 @@
       <button class="pri" id="dlPromo">Descargar post 1080</button>
       <button class="pri" id="dlStory">Descargar historia 1080×1920</button>
       <button id="viewPromo">Vista previa grande</button>
-      <button id="capPromo">Usar caption de promo</button>
-      <button id="capIAPromo">✦ Caption IA</button>
     </div>
     <div class="row" style="margin-top:12px">
       <input id="prTag" type="text" list="tagList" placeholder="Etiqueta — ej. producto nuevo" style="flex:1;min-width:160px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
@@ -131,13 +122,10 @@
   <div class="cap" style="margin:8px 0 0">
     <div class="kick">Modo producto — 1 publicación: foto principal + variantes</div>
     <div class="row" style="align-items:center">
-      <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
       <button class="pri" id="dlCard">Descargar post</button>
       <button class="pri" id="dlCardStory">Descargar historia</button>
       <button id="viewCard">Vista previa grande</button>
-      <button id="capIAProd">✦ Caption IA</button>
     </div>
-    <div id="pubInfo" style="font-size:.72rem;margin-top:8px;min-height:14px;color:var(--accent)">● = ya publicada · registro de este navegador</div>
     <div style="display:flex;gap:12px;margin-top:10px;align-items:flex-start">
       <img id="cardPrev" alt="" style="display:none;width:300px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
       <img id="cardStoryPrev" alt="" style="display:none;width:169px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
@@ -148,11 +136,11 @@
     <div class="kick">Caption de la publicación</div>
     <textarea id="cap"></textarea>
     <div class="row">
-      <button class="pri" id="genOllama">✦ Generar con IA</button>
+      <button class="pri" id="genIA">✦ Generar con IA</button>
       <button id="genTpl">Plantilla</button>
       <button id="copyCap">Copiar caption</button>
-      <button id="dlAll">Descargar las 4 fotos</button>
     </div>
+    <div style="font-size:.7rem;color:var(--accent);margin-top:6px">Con texto en "Oferta" el caption sale como promoción; con el campo vacío, como producto.</div>
   </div>
 </main>
 
@@ -182,98 +170,18 @@
 </script>
 <script>
 const OLLAMA = 'http://localhost:11434';
-let picks = [], salt = 0, model = null;
+let model = null;
 
-// ── rng determinista por fecha ──
-function hash(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
-function rng(seed){let a=seed;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-
-// solo fotos de lámina: el manifest ordena proyecto primero y slab 'S' al final
-const pool = PORTOFINO_DATA.flatMap(r =>
-  r.proyectos.map(p => ({ nombre:p.nombre, rubro:r.rubro, slug:r.slug, foto:p.fotos[p.fotos.length-1] || p.thumb })));
-
-function pick(dstr){
-  const r = rng(hash(dstr+'|'+salt));
-  const usados = new Set(), sel = [];
-  const arr = [...pool].sort(()=>r()-.5);
-  for (const e of arr){ if(!usados.has(e.nombre)){ usados.add(e.nombre); sel.push(e); } if(sel.length===4) break; }
-  return sel;
-}
-
-// reemplazo individual — rota la pieza i por otra no presente en la selección
-const swapSalt = {};
-function swap(i){
-  swapSalt[i] = (swapSalt[i]||0)+1;
-  const usados = new Set(picks.map(e=>e.nombre));
-  const cand = pool.filter(e=>!usados.has(e.nombre));
-  if (!cand.length) return;
-  const r = rng(hash('swap|'+i+'|'+swapSalt[i]));
-  picks[i] = cand[Math.floor(r()*cand.length)];
-}
-
-// ── canvas 1080 con logo + overlay ──
-const logoImg = { w:new Image(), ink:new Image() };
-logoImg.w.src='img/logo-w.png'; logoImg.ink.src='img/logo-ink.png';
-
-function loadImg(src){ return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;}); }
-
-function lum(img, sx, sy, sw, sh){
-  const c=document.createElement('canvas');c.width=c.height=16;
-  const x=c.getContext('2d');x.drawImage(img,sx,sy,sw,sh,0,0,16,16);
-  const d=x.getImageData(0,0,16,16).data;let s=0;
-  for(let i=0;i<d.length;i+=4)s+=d[i]*.299+d[i+1]*.587+d[i+2]*.114;
-  return s/(d.length/4);
-}
-
-async function renderPost(e){
-  const img = await loadImg(e.foto);
-  const c = document.createElement('canvas'); c.width = c.height = 2160;
-  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
-  const s = Math.max(1080/img.width, 1080/img.height);
-  const w=img.width*s, h=img.height*s;
-  x.drawImage(img,(1080-w)/2,(1080-h)/2,w,h);
-
-  // logo completo (placa + PORTOFINO) abajo y centrado, como en la marca; blanco por defecto
-  const mode = document.getElementById('logoSel').value;
-  const lg = mode==='ink' ? logoImg.ink
-    : mode==='w' ? logoImg.w
-    : (lum(img, Math.floor(img.width*.32), Math.floor(img.height*.72), Math.floor(img.width*.36), Math.floor(img.height*.26)) < 128 ? logoImg.w : logoImg.ink);
-  if (lg.complete && lg.naturalWidth){
-    const lw=380, lh=lw*lg.naturalHeight/lg.naturalWidth;
-    x.globalAlpha = .55; // marca de agua tenue: la piedra manda, el logo acompaña
-    x.drawImage(lg, (1080-lw)/2, 1080-56-lh, lw, lh);
-    x.globalAlpha = 1;
-  }
-
-  // texto mínimo: producto / rubro arriba a la izquierda
-  if (document.getElementById('ovl').checked){
-    const gt=x.createLinearGradient(0,0,0,170);
-    gt.addColorStop(0,'rgba(0,0,0,.28)');gt.addColorStop(1,'rgba(0,0,0,0)');
-    x.fillStyle=gt;x.fillRect(0,0,1080,170);
-    x.fillStyle='#fff';x.textBaseline='top';
-    x.shadowColor='rgba(0,0,0,.55)';x.shadowBlur=8;
-    x.letterSpacing='3px';
-    x.font='600 20px Inter, sans-serif';
-    x.fillText(e.nombre.toUpperCase(),44,44,700);
-    x.font='500 13px Inter, sans-serif';x.fillStyle='rgba(255,255,255,.85)';
-    x.fillText(e.rubro.toUpperCase(),44,74,700);
-    x.letterSpacing='0px';x.shadowBlur=0;x.shadowColor='transparent';
-  }
-  return c;
-}
-
-async function descargar(e, i, dia){
-  const c = await renderPost(e);
-  const a = document.createElement('a');
-  a.download = `portofino-${dia.replaceAll('-','')}-${String(i+1).padStart(2,'0')}.png`;
-  a.href = c.toDataURL('image/png'); a.click();
-  markPub(e);
-}
-
-// ── modo producto: 1 post = 1 producto con tira de variantes ──
+// ── selector único de material — alimenta promoción y producto ──
 const PRODS = PORTOFINO_DATA.flatMap(r =>
   r.proyectos.map(p => ({ nombre:p.nombre, rubro:r.rubro, slug:r.slug, fotos:p.fotos })));
 const slugTxt = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const prodSel = document.getElementById('prodSel');
+PRODS.forEach((p,i)=>{
+  const o = document.createElement('option');
+  o.value = i; o.textContent = `${p.nombre} — ${p.rubro}`;
+  prodSel.appendChild(o);
+});
 
 // ── registro de publicadas — localStorage de este navegador, clave rubro/nombre ──
 const PUB_KEY = 'pubfb_publicados';
@@ -292,10 +200,7 @@ function unmarkPub(p){
 }
 function refreshSels(){
   const m = pubMap();
-  for (const sel of [prodSel, promoSel]){
-    if (!sel) continue;
-    [...sel.options].forEach((o,i)=>{ o.textContent = `${pubTag(PRODS[i],m)}${PRODS[i].nombre} — ${PRODS[i].rubro}`; });
-  }
+  [...prodSel.options].forEach((o,i)=>{ o.textContent = `${pubTag(PRODS[i],m)}${PRODS[i].nombre} — ${PRODS[i].rubro}`; });
 }
 function pintarPubInfo(){
   const el = document.getElementById('pubInfo');
@@ -307,6 +212,10 @@ function pintarPubInfo(){
   if (u) u.onclick = ev => { ev.preventDefault(); unmarkPub(p); };
 }
 
+// ── canvas helpers ──
+const logoImg = { w:new Image(), ink:new Image() };
+logoImg.w.src='img/logo-w.png'; logoImg.ink.src='img/logo-ink.png';
+function loadImg(src){ return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;}); }
 function cover(x, img, dx, dy, dw, dh, rad){
   const s = Math.max(dw/img.width, dh/img.height);
   const w = img.width*s, h = img.height*s;
@@ -317,7 +226,17 @@ function cover(x, img, dx, dy, dw, dh, rad){
   x.drawImage(img, dx+(dw-w)/2, dy+(dh-h)/2, w, h);
   x.restore();
 }
+function wrapTxt(x, txt, maxW){
+  const out=[]; let cur='';
+  for (const w of txt.split(' ')){
+    const t = cur ? cur+' '+w : w;
+    if (x.measureText(t).width > maxW && cur){ out.push(cur); cur=w; } else cur=t;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
 
+// ── modo producto: 1 post = 1 producto con tira de variantes ──
 async function renderCard(p){
   const c = document.createElement('canvas'); c.width = c.height = 2160;
   const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
@@ -401,16 +320,6 @@ async function renderCardStory(p){
 }
 
 // ── modo promoción: layout del slider del sitio ──
-function wrapTxt(x, txt, maxW){
-  const out=[]; let cur='';
-  for (const w of txt.split(' ')){
-    const t = cur ? cur+' '+w : w;
-    if (x.measureText(t).width > maxW && cur){ out.push(cur); cur=w; } else cur=t;
-  }
-  if (cur) out.push(cur);
-  return out;
-}
-
 async function renderPromo(p, titular, detalle, vigencia, tpl){
   if (tpl === '2') return renderPromo2(p, titular, detalle, vigencia);
   if (tpl === '3') return renderPromo3(p, titular, detalle, vigencia);
@@ -692,20 +601,9 @@ const tit = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + 
   .replace(/ (De|Del|La|Las|Los|Y|Di|E) /g, w => w.toLowerCase());
 const RUBRO_1 = { CUARCITAS:'Cuarcita', CUARZOS:'Cuarzo', GRANITOS:'Granito', MARMOLES:'Mármol', SINTERIZADOS:'Sinterizado', TRAVERTINO:'Travertino', DEKTON:'Dekton', ECLOS:'Éclos', TARJAS:'Tarja', SELLADORES:'Sellador' };
 const rubro1 = r => RUBRO_1[r] || tit(r);
-const CIERRE = `Sucursales en Villahermosa y Veracruz.
+const CIERRE = `Sucursales en Tabasco, Veracruz y Chiapas.
 🧾 Solicita tu cotización: ${CAT}
 💬 WhatsApp: ${WA}`;
-
-const tpl = p =>
-`La historia se escribe en piedra.
-
-Hay vetas que tardan milenios en formarse — y un solo instante en encontrar su lugar: tu cocina, tu muro, tu espacio.
-
-Hoy: ${p.map(e=>tit(e.nombre)).join(' · ')}
-
-${CIERRE}
-
-#Portofino #Marmol #Granito #LaHistoriaSeEscribeEnPiedra #Interiorismo #Villahermosa #Veracruz`;
 
 const tplSingle = p =>
 `${tit(p.nombre)} — ${rubro1(p.rubro)}.
@@ -714,7 +612,18 @@ Hay materiales que no se compran: se eligen. Pieza a pieza, veta a veta — este
 
 ${CIERRE}
 
-#Portofino #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #LaHistoriaSeEscribeEnPiedra #Interiorismo #Villahermosa #Veracruz`;
+#Portofino #${rubro1(p.rubro).normalize('NFD').replace(/[̀-ͯ]/g,'')} #LaHistoriaSeEscribeEnPiedra #Interiorismo #Tabasco #Veracruz #Chiapas`;
+
+const tplPromo = (p,oferta) =>
+`${promoTag()} — ${tit(p.nombre)}
+
+${oferta.charAt(0).toUpperCase()+oferta.slice(1)}. ${document.getElementById('prDet').value.trim()}
+
+${document.getElementById('prVig').value.trim()}
+
+${CIERRE}
+
+#Portofino #${promoTag().replace(/\s+/g,'')} #${rubro1(p.rubro).normalize('NFD').replace(/[̀-ͯ]/g,'')} #Tabasco #Veracruz #Chiapas`;
 
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
@@ -734,17 +643,7 @@ async function genCapIA(prompt){
   else { tag.className='ollama off'; tag.textContent='IA: sin respuesta — usa Plantilla'; }
 }
 
-const PROMPT_BASE = `Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, por lámina completa, con sucursales en Villahermosa y Veracruz. No anuncies envíos, instalación ni medición — las fotos de proyectos son solo ejemplos de aplicación.`;
-
-async function genOllama(){
-  const nombres = picks.map(e=>`${tit(e.nombre)} (${rubro1(e.rubro)})`).join(', ');
-  genCapIA(`${PROMPT_BASE}
-La publicación muestra: ${nombres}.
-Tono: humano y evocativo — habla de permanencia, legado, el hogar donde la piedra vivirá generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, cero lenguaje de oferta, nada de "precio/descuento". Los nombres de los materiales se mencionan con naturalidad, como parte de la historia — no como lista.
-Estructura: 1-2 líneas evocativas de apertura → mención natural de los materiales → este cierre EXACTO, sin cambiarlo:
-${CIERRE}
-→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas, sin markdown ni explicaciones.`);
-}
+const PROMPT_BASE = `Escribe el caption de UNA publicación de Facebook para Portofino, empresa que vende mármol, granito y superficies de alta gama al menudeo, por lámina completa, con presencia en Tabasco, Veracruz y Chiapas. No anuncies envíos, instalación ni medición — las fotos de proyectos son solo ejemplos de aplicación.`;
 
 async function detectOllama(){
   const tag = document.getElementById('ollamaTag');
@@ -758,64 +657,45 @@ async function detectOllama(){
   }catch(e){}
 }
 
-// ── render ──
-function renderCards(dia){
-  document.getElementById('selInfo').textContent = picks.map(e=>e.nombre).join(' · ');
-  const g = document.getElementById('grid'); g.innerHTML='';
-  picks.forEach((e,i)=>{
-    const card = document.createElement('div'); card.className='card';
-    card.innerHTML = `<img class="ph" src="${e.foto}" alt="${e.nombre}">
-      <div class="bd">
-        <div class="nm">${e.nombre}</div><div class="rb">${e.rubro}</div>
-        <div class="ops">
-          <button class="pri" data-dl="${i}">Descargar PNG</button>
-          <button data-view="${i}">Vista previa</button>
-          <button data-swap="${i}" title="Sustituir por otro producto">↺ Cambiar</button>
-        </div>
-      </div>`;
-    g.appendChild(card);
-  });
-  g.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>descargar(picks[b.dataset.dl],+b.dataset.dl,dia));
-  g.querySelectorAll('[data-view]').forEach(b=>b.onclick=async()=>{
-    const w = window.open('','_blank');
-    const c = await renderPost(picks[b.dataset.view]);
-    w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
-  });
-  g.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>{
-    swap(+b.dataset.swap); renderCards(dia); setCap(tpl(picks));
-  });
-}
-function render(){
-  const dia = document.getElementById('dia').value;
-  picks = pick(dia);
-  document.getElementById('tit').textContent = 'Selección del '+new Date(dia+'T12:00').toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
-  renderCards(dia);
-  setCap(tpl(picks));
-}
-
-document.getElementById('dia').value = new Date().toISOString().slice(0,10);
-document.getElementById('dia').onchange = ()=>{salt=0;render()};
-document.getElementById('otra').onclick = ()=>{salt++;render()};
-document.getElementById('genTpl').onclick = ()=>setCap(tpl(picks));
-document.getElementById('genOllama').onclick = genOllama;
-document.getElementById('copyCap').onclick = ()=>{
-  navigator.clipboard.writeText(document.getElementById('cap').value);
-  const b=document.getElementById('copyCap');b.textContent='✓ Copiado';setTimeout(()=>b.textContent='Copiar caption',1500);
+// ── modo promoción: campos + preview ──
+const RUBRO_DET = {
+  CUARCITAS:   'Cuarcita natural — vetas de mármol con dureza cercana al granito. Usos: cubiertas de cocina y baño, pisos, muros y fachadas. Lámina de 2 cm.',
+  GRANITOS:    'Granito natural — una de las piedras más duras que existen. Usos: cubiertas de cocina, pisos de alto tráfico, exteriores y fachadas. Lámina de 2 cm.',
+  MARMOLES:    'Mármol natural de veteado único e irrepetible. Usos: cubiertas, muros decorativos, pisos interiores y chimeneas. Lámina de 2 cm.',
+  CUARZOS:     'Cuarzo diseñado — color uniforme y cero porosidad. Usos: cubiertas de cocina y baño, muros interiores (no para sol directo). Lámina de 2 cm.',
+  SINTERIZADOS:'Piedra sinterizada ultracompacta. Usos: cubiertas, pisos, recubrimiento de muros exterior e interior y otras aplicaciones.',
+  DEKTON:      'Sinterizado ultracompacto premium. Usos: cubiertas de alta exigencia, fachadas, pisos y exteriores — máxima resistencia a calor, UV y rayones.',
+  ECLOS:       'Sinterizado de gran formato. Usos: cubiertas, muros y mobiliario — superficie casi sin juntas.',
+  TRAVERTINO:  'Travertino natural de tonos tierra cálidos. Usos: terrazas, albercas, patios, pisos y recubrimientos exteriores.',
+  TARJAS:      'Tarja labrada en piedra natural — pieza única para cocina o baño.',
+  SELLADORES:  'Selladores y limpiadores profesionales — protección y mantenimiento de piedra natural.',
 };
-document.getElementById('dlAll').onclick = async()=>{
-  const dia=document.getElementById('dia').value;
-  for(let i=0;i<picks.length;i++){ await descargar(picks[i],i,dia); await new Promise(r=>setTimeout(r,350)); }
-};
+const rubroDet = r => RUBRO_DET[r] || 'Lámina completa de 2 cm — proyecto ilustrativo.';
 
-// ── modo producto: select + preview + descarga + caption individual ──
-const prodSel = document.getElementById('prodSel');
-const cardPrev = document.getElementById('cardPrev');
-PRODS.forEach((p,i)=>{
-  const o = document.createElement('option');
-  o.value = i; o.textContent = `${pubTag(p)}${p.nombre} — ${p.rubro}`;
-  prodSel.appendChild(o);
+const promoTag = () => (document.getElementById('prTag').value.trim() || 'PRODUCTO NUEVO').toUpperCase();
+const promoVals = () => ({
+  p: PRODS[+prodSel.value],
+  tit: document.getElementById('prTit').value.trim() || 'precio especial de introducción',
+  det: document.getElementById('prDet').value.trim(),
+  vig: document.getElementById('prVig').value.trim(),
+  tpl: document.getElementById('prTpl').value,
 });
 
+const promoPrev = document.getElementById('promoPrev');
+let promoCanvas = null;
+async function previewPromo(){
+  const v = promoVals();
+  promoCanvas = await renderPromo(v.p, v.tit, v.det, v.vig, v.tpl);
+  promoPrev.src = promoCanvas.toDataURL('image/png');
+  promoPrev.style.display = 'block';
+  const sp = document.getElementById('storyPrev');
+  const sc = await renderPromoStory(v.p, v.tit, v.det, v.vig, v.tpl);
+  sp.src = sc.toDataURL('image/png');
+  sp.style.display = 'block';
+}
+
+// ── modo producto: preview + descarga ──
+const cardPrev = document.getElementById('cardPrev');
 let prodCanvas = null, prodStoryCanvas = null;
 async function previewCard(){
   const p = PRODS[+prodSel.value];
@@ -832,7 +712,15 @@ async function previewCard(){
   });
   pintarPubInfo();
 }
-prodSel.onchange = previewCard;
+
+// ── wiring ──
+prodSel.onchange = ()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  document.getElementById('prDet').value = rubroDet(p.rubro);
+  previewCard(); previewPromo();
+};
+['prTag','prTit','prDet','prVig','prTpl'].forEach(id => document.getElementById(id).oninput = previewPromo);
+
 document.getElementById('dlCardStory').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
   const c = prodStoryCanvas || await renderCardStory(p);
@@ -855,57 +743,6 @@ document.getElementById('viewCard').onclick = async()=>{
   const w = window.open('','_blank');
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
-previewCard();
-
-// ── modo promoción ──
-const promoSel = document.getElementById('promoSel');
-const promoPrev = document.getElementById('promoPrev');
-PRODS.forEach((p,i)=>{
-  const o = document.createElement('option');
-  o.value = i; o.textContent = `${pubTag(p)}${p.nombre} — ${p.rubro}`;
-  promoSel.appendChild(o);
-});
-// características por rubro — precargan el detalle del post (editables)
-const RUBRO_DET = {
-  CUARCITAS:   'Cuarcita natural — vetas de mármol con dureza cercana al granito. Usos: cubiertas de cocina y baño, pisos, muros y fachadas. Lámina de 2 cm.',
-  GRANITOS:    'Granito natural — una de las piedras más duras que existen. Usos: cubiertas de cocina, pisos de alto tráfico, exteriores y fachadas. Lámina de 2 cm.',
-  MARMOLES:    'Mármol natural de veteado único e irrepetible. Usos: cubiertas, muros decorativos, pisos interiores y chimeneas. Lámina de 2 cm.',
-  CUARZOS:     'Cuarzo diseñado — color uniforme y cero porosidad. Usos: cubiertas de cocina y baño, muros interiores (no para sol directo). Lámina de 2 cm.',
-  SINTERIZADOS:'Piedra sinterizada ultracompacta. Usos: cubiertas, pisos, recubrimiento de muros exterior e interior y otras aplicaciones.',
-  DEKTON:      'Sinterizado ultracompacto premium. Usos: cubiertas de alta exigencia, fachadas, pisos y exteriores — máxima resistencia a calor, UV y rayones.',
-  ECLOS:       'Sinterizado de gran formato. Usos: cubiertas, muros y mobiliario — superficie casi sin juntas.',
-  TRAVERTINO:  'Travertino natural de tonos tierra cálidos. Usos: terrazas, albercas, patios, pisos y recubrimientos exteriores.',
-  TARJAS:      'Tarja labrada en piedra natural — pieza única para cocina o baño.',
-  SELLADORES:  'Selladores y limpiadores profesionales — protección y mantenimiento de piedra natural.',
-};
-const rubroDet = r => RUBRO_DET[r] || 'Lámina completa de 2 cm — proyecto ilustrativo.';
-document.getElementById('prTag').value = 'Producto nuevo';
-document.getElementById('prTit').value = 'precio especial de introducción';
-document.getElementById('prDet').value = rubroDet(PRODS[+promoSel.value].rubro);
-document.getElementById('prVig').value = 'Vigencia al 30 de noviembre o hasta agotar existencias.';
-
-const promoTag = () => (document.getElementById('prTag').value.trim() || 'PRODUCTO NUEVO').toUpperCase();
-const promoVals = () => ({
-  p: PRODS[+promoSel.value],
-  tit: document.getElementById('prTit').value.trim() || 'precio especial de introducción',
-  det: document.getElementById('prDet').value.trim(),
-  vig: document.getElementById('prVig').value.trim(),
-  tpl: document.getElementById('prTpl').value,
-});
-
-let promoCanvas = null;
-async function previewPromo(){
-  const v = promoVals();
-  promoCanvas = await renderPromo(v.p, v.tit, v.det, v.vig, v.tpl);
-  promoPrev.src = promoCanvas.toDataURL('image/png');
-  promoPrev.style.display = 'block';
-  const sp = document.getElementById('storyPrev');
-  const sc = await renderPromoStory(v.p, v.tit, v.det, v.vig, v.tpl);
-  sp.src = sc.toDataURL('image/png');
-  sp.style.display = 'block';
-}
-promoSel.onchange = ()=>{ document.getElementById('prDet').value = rubroDet(PRODS[+promoSel.value].rubro); previewPromo(); };
-['prTag','prTit','prDet','prVig','prTpl'].forEach(id => document.getElementById(id).oninput = previewPromo);
 document.getElementById('dlPromo').onclick = async()=>{
   const v = promoVals();
   const c = promoCanvas || await renderPromo(v.p, v.tit, v.det, v.vig, v.tpl);
@@ -923,47 +760,52 @@ document.getElementById('dlStory').onclick = async()=>{
   markPub(v.p);
 };
 document.getElementById('viewPromo').onclick = async()=>{
+  const v = promoVals();
   const w = window.open('','_blank');
-  const c = promoCanvas || await renderPromo(promoVals().p, promoVals().tit, promoVals().det, promoVals().vig, promoVals().tpl);
+  const c = promoCanvas || await renderPromo(v.p, v.tit, v.det, v.vig, v.tpl);
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
-const tplPromo = (p,oferta) =>
-`${promoTag()} — ${tit(p.nombre)}
 
-${oferta.charAt(0).toUpperCase()+oferta.slice(1)}. ${document.getElementById('prDet').value.trim()}
-
-${document.getElementById('prVig').value.trim()}
-
-${CIERRE}
-
-#Portofino #${promoTag().replace(/\s+/g,'')} #${rubro1(p.rubro).normalize('NFD').replace(/[\u0300-\u036f]/g,'')} #Villahermosa #Veracruz`;
-document.getElementById('capPromo').onclick = ()=>setCap(tplPromo(PRODS[+promoSel.value], promoVals().tit));
-
-// caption IA del modo producto — solo el material seleccionado
-document.getElementById('capIAProd').onclick = ()=>{
-  const p = PRODS[+prodSel.value];
-  genCapIA(`${PROMPT_BASE}
-La publicación muestra UN SOLO material: ${tit(p.nombre)} (${rubro1(p.rubro)}).
-Tono: humano y evocativo — la piedra como protagonista que define un espacio por generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, nada de precio/descuento.
-Estructura: 1-2 líneas evocativas → mención del material → este cierre EXACTO, sin cambiarlo:
-${CIERRE}
-→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
-};
-
-// caption IA del modo promoción — producto nuevo con oferta
-document.getElementById('capIAPromo').onclick = ()=>{
-  const v = promoVals();
-  genCapIA(`${PROMPT_BASE}
+// caption — un solo botón: con oferta → promo; oferta vacía → producto
+const hayOferta = () => !!document.getElementById('prTit').value.trim();
+document.getElementById('genIA').onclick = ()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  if (hayOferta()){
+    const v = promoVals();
+    genCapIA(`${PROMPT_BASE}
 La publicación anuncia: ${promoTag()} — ${tit(v.p.nombre)} (${rubro1(v.p.rubro)}) — ${v.tit}.${v.det ? ' Detalle: '+v.det+'.' : ''}
 Tono: humano y evocativo, con emoción de novedad — la piedra como pieza que define un espacio. No inventes precios ni porcentajes de descuento.
 Estructura: 1-2 líneas de apertura → mención del material y la oferta → este cierre EXACTO, sin cambiarlo:
 ${CIERRE}
 → 4-6 hashtags. Máximo 70 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+  } else {
+    genCapIA(`${PROMPT_BASE}
+La publicación muestra UN SOLO material: ${tit(p.nombre)} (${rubro1(p.rubro)}).
+Tono: humano y evocativo — la piedra como protagonista que define un espacio por generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, nada de precio/descuento.
+Estructura: 1-2 líneas evocativas → mención del material → este cierre EXACTO, sin cambiarlo:
+${CIERRE}
+→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+  }
 };
-previewPromo();
+document.getElementById('genTpl').onclick = ()=>{
+  const p = PRODS[+prodSel.value]; if (!p) return;
+  setCap(hayOferta() ? tplPromo(p, promoVals().tit) : tplSingle(p));
+};
+document.getElementById('copyCap').onclick = ()=>{
+  navigator.clipboard.writeText(document.getElementById('cap').value);
+  const b=document.getElementById('copyCap');b.textContent='✓ Copiado';setTimeout(()=>b.textContent='Copiar caption',1500);
+};
 
+// ── init ──
+document.getElementById('prTag').value = 'Producto nuevo';
+document.getElementById('prTit').value = 'precio especial de introducción';
+document.getElementById('prDet').value = rubroDet(PRODS[+prodSel.value].rubro);
+document.getElementById('prVig').value = 'Vigencia: hasta agotar existencias.';
+refreshSels();
+previewCard();
+previewPromo();
+setCap(tplPromo(PRODS[+prodSel.value], promoVals().tit));
 detectOllama();
-render();
 </script>
 </body>
 </html>
