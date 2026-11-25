@@ -250,18 +250,15 @@ async function renderCard(p){
   x.fillText(p.rubro.toUpperCase(), 24, 96, 1032);
   x.letterSpacing = '0px';
 
-  // foto principal = primera del producto (ambiente); las láminas van a la tira
-  const vars = p.fotos.slice(1, 5);
+  // solo 2 imágenes: proyecto (primera) + lámina (última) como banda
+  const hasSlab = p.fotos.length > 1;
   const main = await loadImg(p.fotos[0]);
-  cover(x, main, 24, 116, 1032, vars.length ? 640 : 800, 18);
+  cover(x, main, 24, 116, 1032, hasSlab ? 640 : 800, 18);
 
-  // tira de variantes (hasta 4; si hay menos, reparte el ancho)
-  if (vars.length){
-    const n = vars.length, gap = 16, tw = (1032-(n-1)*gap)/n, th = 152, ty = 772;
-    for (let i=0;i<n;i++){
-      const im = await loadImg(vars[i]);
-      cover(x, im, 24+i*(tw+gap), ty, tw, th, 14);
-    }
+  // banda de lámina a todo el ancho — donde iba la tira de variantes
+  if (hasSlab){
+    const im = await loadImg(p.fotos[p.fotos.length-1]);
+    cover(x, im, 24, 772, 1032, 152, 14);
   }
 
   // logo completo abajo y centrado
@@ -290,22 +287,10 @@ async function renderCardStory(p){
 
   const barH = 320, barY = 1920 - barH;
 
-  // variantes — fotos de en medio (proyecto = hero, slab = barra; hasta 4)
-  const vars = p.fotos.slice(1, -1).slice(0, 4);
-  const varsH = vars.length ? 168 + 20 : 0;
-
-  // proyecto hero — primera foto, ocupa todo el espacio restante
-  const heroY = y + 24, heroH = Math.max(320, barY - 24 - varsH - heroY);
+  // solo 2 imágenes: proyecto hero + barra de lámina al pie
+  const heroY = y + 24, heroH = Math.max(320, barY - 24 - heroY);
   const proj = await loadImg(p.fotos[0]);
   cover(x, proj, 64, heroY, 952, heroH, 18);
-
-  if (vars.length){
-    const n = vars.length, gap = 16, tw = (952-(n-1)*gap)/n, ty = heroY + heroH + 20;
-    for (let i=0;i<n;i++){
-      const im = await loadImg(vars[i]);
-      cover(x, im, 64+i*(tw+gap), ty, tw, 168, 14);
-    }
-  }
 
   // barra de slab full-width al pie + logo blanco centrado — igual que T3
   const slab = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
@@ -595,15 +580,14 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
 }
 
 // ── caption ──
-const WA = 'https://wa.me/529933023903';
 const CAT = 'https://portofino.com.mx/catalogo.html';
 const tit = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + c.toUpperCase())
   .replace(/ (De|Del|La|Las|Los|Y|Di|E) /g, w => w.toLowerCase());
 const RUBRO_1 = { CUARCITAS:'Cuarcita', CUARZOS:'Cuarzo', GRANITOS:'Granito', MARMOLES:'Mármol', SINTERIZADOS:'Sinterizado', TRAVERTINO:'Travertino', DEKTON:'Dekton', ECLOS:'Éclos', TARJAS:'Tarja', SELLADORES:'Sellador' };
 const rubro1 = r => RUBRO_1[r] || tit(r);
 const CIERRE = `Sucursales en Tabasco, Veracruz y Chiapas.
-🧾 Solicita tu cotización: ${CAT}
-💬 WhatsApp: ${WA}`;
+🧾 Solicita tu cotización: ${CAT}`;
+const TAGS = '#EspaciosUnicos #InspiracionHogar #Interiorismo #ArquitecturaModerna #MarmolesYGranitos';
 
 const tplSingle = p =>
 `${tit(p.nombre)} — ${rubro1(p.rubro)}.
@@ -612,7 +596,7 @@ Hay materiales que no se compran: se eligen. Pieza a pieza, veta a veta — este
 
 ${CIERRE}
 
-#Portofino #${rubro1(p.rubro).normalize('NFD').replace(/[̀-ͯ]/g,'')} #LaHistoriaSeEscribeEnPiedra #Interiorismo #Tabasco #Veracruz #Chiapas`;
+${TAGS}`;
 
 const tplPromo = (p,oferta) =>
 `${promoTag()} — ${tit(p.nombre)}
@@ -623,7 +607,7 @@ ${document.getElementById('prVig').value.trim()}
 
 ${CIERRE}
 
-#Portofino #${promoTag().replace(/\s+/g,'')} #${rubro1(p.rubro).normalize('NFD').replace(/[̀-ͯ]/g,'')} #Tabasco #Veracruz #Chiapas`;
+${TAGS}`;
 
 function setCap(txt){ document.getElementById('cap').value = txt; }
 
@@ -777,14 +761,14 @@ La publicación anuncia: ${promoTag()} — ${tit(v.p.nombre)} (${rubro1(v.p.rubr
 Tono: humano y evocativo, con emoción de novedad — la piedra como pieza que define un espacio. No inventes precios ni porcentajes de descuento.
 Estructura: 1-2 líneas de apertura → mención del material y la oferta → este cierre EXACTO, sin cambiarlo:
 ${CIERRE}
-→ 4-6 hashtags. Máximo 70 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+→ OBLIGATORIO: después del cierre, una línea final con exactamente estos hashtags, sin agregar otros: ${TAGS}. Máximo 70 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
   } else {
     genCapIA(`${PROMPT_BASE}
 La publicación muestra UN SOLO material: ${tit(p.nombre)} (${rubro1(p.rubro)}).
 Tono: humano y evocativo — la piedra como protagonista que define un espacio por generaciones. Referencia del estilo: "la historia se escribe en piedra". Cero ficha técnica, nada de precio/descuento.
 Estructura: 1-2 líneas evocativas → mención del material → este cierre EXACTO, sin cambiarlo:
 ${CIERRE}
-→ 5-7 hashtags. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
+→ OBLIGATORIO: después del cierre, una línea final con exactamente estos hashtags, sin agregar otros: ${TAGS}. Máximo 80 palabras antes del cierre. Español de México con acentos correctos. Solo el caption, sin comillas ni markdown.`);
   }
 };
 document.getElementById('genTpl').onclick = ()=>{
