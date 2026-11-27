@@ -27,10 +27,14 @@ async function gemini(prompt) {
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { maxOutputTokens: 4096 } }) });
+            // los modelos 3.x gastan tokens en "pensar" — van dentro del límite de salida
+            generationConfig: { maxOutputTokens: 16384 } }) });
       if (!r.ok) continue; // 503/429 → intenta el modelo de respaldo
       const j = await r.json();
-      const txt = j.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      const cand = j.candidates?.[0];
+      // MAX_TOKENS = salió cortado a media frase → mejor intentar el respaldo
+      if (cand?.finishReason === 'MAX_TOKENS') continue;
+      const txt = cand?.content?.parts?.[0]?.text?.trim();
       if (txt) return txt;
     } catch (e) { /* sin red */ }
   }

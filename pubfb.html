@@ -580,13 +580,13 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
 }
 
 // ── caption ──
-const CAT = 'https://portofino.com.mx/catalogo.html';
+// sin link en el caption — Business Suite solo permite 1 enlace por publicación
+// y ese slot lo ocupa el botón de WhatsApp; en IG los links de texto no son clicables
 const tit = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + c.toUpperCase())
   .replace(/ (De|Del|La|Las|Los|Y|Di|E) /g, w => w.toLowerCase());
 const RUBRO_1 = { CUARCITAS:'Cuarcita', CUARZOS:'Cuarzo', GRANITOS:'Granito', MARMOLES:'Mármol', SINTERIZADOS:'Sinterizado', TRAVERTINO:'Travertino', DEKTON:'Dekton', ECLOS:'Éclos', TARJAS:'Tarja', SELLADORES:'Sellador' };
 const rubro1 = r => RUBRO_1[r] || tit(r);
-const CIERRE = `Sucursales en Tabasco, Veracruz y Chiapas.
-🧾 Solicita tu cotización: ${CAT}`;
+const CIERRE = 'Sucursales en Tabasco, Veracruz y Chiapas.';
 const TAGS = '#EspaciosUnicos #InspiracionHogar #Interiorismo #ArquitecturaModerna #MarmolesYGranitos';
 
 const tplSingle = p =>

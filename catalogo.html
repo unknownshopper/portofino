@@ -480,6 +480,10 @@
         <button type="button" class="geo" id="fGeo" aria-label="Usar mi ubicación actual" title="Usar mi ubicación actual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></button>
       </div>
       <textarea id="fMsg" placeholder="Comentarios — medidas aproximadas, tipo de proyecto, entrega…"></textarea>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:.72rem;color:#67757d;line-height:1.4;cursor:pointer;">
+        <input id="fAvisos" type="checkbox" checked style="margin-top:2px;accent-color:var(--ink);">
+        Quiero recibir avisos de materiales nuevos y promociones por WhatsApp — son pocos al año, sin spam.
+      </label>
       <button class="enviar mail" id="enviar" type="submit">Enviar solicitud →</button>
       <p class="cot-aviso">La solicitud no genera compra ni cargo — un asesor confirma existencias, medidas y precio final. La recolección es en sucursal (Villahermosa o Veracruz); entregas especiales se valoran caso por caso.</p>
     </form>
@@ -768,7 +772,7 @@ function resumen() {
   return {
     datos: {
       nombre: f('fNombre'), telefono: f('fTel'), correo: f('fCorreo') || null,
-      ciudad: f('fCiudad'),
+      ciudad: f('fCiudad'), avisos: document.getElementById('fAvisos').checked,
       mensaje: f('fMsg') || null, productos,
     },
     texto:

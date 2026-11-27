@@ -247,7 +247,7 @@ function pasaFiltro(reg){
   if (F.estado!=='todas' && estDe(q)!==F.estado) return false;
   if (F.canal!=='todos' && (q.canal||'')!==F.canal) return false;
   if (F.texto){
-    const hay = norm([q.nombre,q.telefono,q.correo,q.ciudad,q.mensaje,q.canal,q.origen,
+    const hay = norm([q.nombre,q.telefono,q.correo,q.ciudad,q.mensaje,q.canal,q.origen,q.avisos?'avisos whatsapp':'',
       ...(q.productos||[]).map(p=>p.nombre)].join(' '));
     if (!hay.includes(norm(F.texto))) return false;
   }
@@ -275,7 +275,7 @@ function pintarTabla(){
     const tr = document.createElement('tr'); tr.className='rrow'; tr.dataset.id = reg.id;
     tr.innerHTML = `
       <td class="sub" style="white-space:nowrap">${fmt(q.creado)}</td>
-      <td><b>${esc(q.nombre)||'—'}</b>${q.instalacion?' <span class="sub">🔧 instalación</span>':''}</td>
+      <td><b>${esc(q.nombre)||'—'}</b>${q.instalacion?' <span class="sub">🔧 instalación</span>':''}${q.avisos?' <span class="sub" title="Acepta avisos por WhatsApp">📣</span>':''}</td>
       <td class="sub">${q.telefono?`<a href="tel:${esc(q.telefono)}">${esc(q.telefono)}</a>`:''}${q.correo?`<div>${esc(q.correo)}</div>`:''}</td>
       <td>${esc(q.ciudad)||'—'}</td>
       <td class="sub" style="white-space:nowrap">${icoCanal(q.canal)}${icoOrigen(q.origen)}</td>
@@ -325,6 +325,7 @@ function crearFicha(reg){
         <a href="tel:${esc(q.telefono)}">${esc(q.telefono)||''}</a>${q.correo?' · <a href="mailto:'+esc(q.correo)+'">'+esc(q.correo)+'</a>':''} · ${esc(q.ciudad)||''}
         · <span class="fecha">${fmt(q.creado)}</span> · <span class="canal">vía ${esc(q.canal)||'—'}${q.origen?' · de '+esc(q.origen):''}</span>
         ${q.instalacion?' · <b style="color:var(--ink)">🔧 con instalación</b>':''}
+        ${q.avisos?' · <b style="color:#257a4d">📣 acepta avisos por WhatsApp</b>':''}
       </div>
       ${prods}
       ${nprod?`<div class="ex-row">
