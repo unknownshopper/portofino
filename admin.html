@@ -144,7 +144,7 @@
     <div class="tblwrap"><table class="rtbl">
       <thead><tr>
         <th data-s="creado">Fecha</th><th data-s="nombre">Cliente</th><th>Contacto</th>
-        <th>Ciudad</th><th>Canal</th><th class="num">Prod.</th><th class="num">Total</th><th>Estado</th>
+        <th>Ciudad</th><th>Canal</th><th>Productos</th><th class="num">Total</th><th>Estado</th>
       </tr></thead>
       <tbody id="regBody"></tbody>
     </table></div>
@@ -279,7 +279,7 @@ function pintarTabla(){
       <td class="sub">${q.telefono?`<a href="tel:${esc(q.telefono)}">${esc(q.telefono)}</a>`:''}${q.correo?`<div>${esc(q.correo)}</div>`:''}</td>
       <td>${esc(q.ciudad)||'—'}</td>
       <td class="sub" style="white-space:nowrap">${icoCanal(q.canal)}${icoOrigen(q.origen)}</td>
-      <td class="num">${(q.productos||[]).length||'—'}</td>
+      <td class="sub" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc((q.productos||[]).map(p=>p.nombre).join(' · '))}">${(q.productos||[]).map(p=>esc(p.nombre)).join(' · ')||'—'}</td>
       <td class="num">${t!=null?money(t):'—'}</td>
       <td><span class="tag ${est}">${est.replace('-',' ')}</span></td>`;
     const det = document.createElement('tr'); det.className='drow'; det.style.display='none';
