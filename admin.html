@@ -310,6 +310,8 @@ function crearFicha(reg){
     const nprod = (q.productos||[]).length;
     // m² útiles aprox por lámina según rubro — estimado; la lámina real se confirma en físico
     const SLAB_M2 = { GRANITOS:6, CUARCITAS:6, MARMOLES:6, CUARZOS:5, SINTERIZADOS:4.6, DEKTON:4.6, ECLOS:4.6, TRAVERTINO:5.5 };
+    // medida típica de lámina por rubro — se muestra en el PDF solo de los rubros cotizados
+    const SLAB_TXT = { GRANITOS:'Granito 3.20 × 1.90 m', CUARCITAS:'Cuarcita 3.20 × 1.90 m', MARMOLES:'Mármol 3.00 × 1.80 m', CUARZOS:'Cuarzo 3.05 × 1.40 m', SINTERIZADOS:'Sinterizado 3.20 × 1.44 m', DEKTON:'Dekton 3.20 × 1.44 m', ECLOS:'Éclos 3.20 × 1.44 m', TRAVERTINO:'Travertino 3.00 × 1.80 m' };
     const lamDe = p => {
       const s = SLAB_M2[p.rubro]; if (!s) return null;
       const m2 = m2De(p), lams = Math.ceil(m2/s), sobra = +(lams*s-m2).toFixed(1);
@@ -457,7 +459,9 @@ function crearFicha(reg){
         D.text('Total', 140, y + 6); D.text(money(gt), MR, y + 6, { align: 'right' });
         y += 16;
         D.setFont('helvetica', 'normal'); D.setFontSize(7.5); D.setTextColor(...acc);
-        const nota = 'Precios en MXN, sujetos a existencia y medición final en sitio. Vigencia de cotización: 15 días naturales. La medición, corte e instalación corren por cuenta del cliente o su contratista.';
+        const rubrosSlab = [...new Set((q.productos||[]).map(p=>SLAB_TXT[p.rubro]).filter(Boolean))];
+        const nota = 'Precios en MXN, sujetos a existencia y medición final en sitio. Vigencia de cotización: 15 días naturales. La medición, corte e instalación corren por cuenta del cliente o su contratista.'
+          + (rubrosSlab.length ? ' Medida aproximada de lámina — ' + rubrosSlab.join('; ') + '. El material sobrante es del cliente.' : '');
         D.text(D.splitTextToSize(nota, MR - ML), ML, y);
         D.setDrawColor(...ink); D.setLineWidth(.2); D.line(ML, 268, MR, 268);
         D.setFontSize(6.8); D.setTextColor(...acc);
