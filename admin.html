@@ -12,7 +12,7 @@
   :root { --ink:#16181b; --paper:#f3f4f4; --accent:#67757d; }
   * { margin:0; box-sizing:border-box; }
   body { font-family:'Inter',-apple-system,sans-serif; background:var(--paper); color:var(--ink); }
-  .wrap { max-width:1000px; margin:0 auto; padding:0 24px; }
+  .wrap { max-width:1400px; margin:0 auto; padding:0 28px; }
   header { border-bottom:1px solid rgba(22,24,26,.12); }
   .bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:22px 0; flex-wrap:wrap; }
   .brand { font-weight:700; letter-spacing:.35em; font-size:.9rem; }
@@ -95,12 +95,13 @@
   /* tabla de registros */
   body { overflow-x:hidden; }
   .tblwrap { overflow-x:auto; background:#fff; border:1px solid rgba(22,24,26,.12); border-radius:10px; }
-  .rtbl { width:100%; border-collapse:collapse; min-width:640px; }
+  .rtbl { width:100%; border-collapse:collapse; }
   #detalle { margin-bottom:14px; }
-  @media (max-width:720px){ .wrap { padding:0 12px; } .rtbl td, .rtbl th { padding:8px 9px; } }
+  @media (max-width:720px){ .wrap { padding:0 12px; } .rtbl td, .rtbl th { padding:8px 9px; } .rtbl td.prods { max-width:110px; } }
   .rtbl th { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid rgba(22,24,26,.15); white-space:nowrap; }
   .rtbl th[data-s] { cursor:pointer; user-select:none; }
-  .rtbl td { font-size:.82rem; padding:10px 12px; border-bottom:1px solid rgba(22,24,26,.07); vertical-align:middle; }
+  .rtbl td { font-size:.82rem; padding:10px 12px; border-bottom:1px solid rgba(22,24,26,.07); vertical-align:middle; overflow-wrap:anywhere; }
+  .rtbl td.prods { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .rtbl td.num, .rtbl th.num { text-align:right; }
   .rtbl td a { color:var(--ink); }
   tr.rrow { cursor:pointer; }
@@ -282,7 +283,7 @@ function pintarTabla(){
       <td class="sub">${q.telefono?`<a href="tel:${esc(q.telefono)}">${esc(q.telefono)}</a>`:''}${q.correo?`<div>${esc(q.correo)}</div>`:''}</td>
       <td>${esc(q.ciudad)||'—'}</td>
       <td class="sub" style="white-space:nowrap">${icoCanal(q.canal)}${icoOrigen(q.origen)}</td>
-      <td class="sub" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc((q.productos||[]).map(p=>p.nombre).join(' · '))}">${(q.productos||[]).map(p=>esc(p.nombre)).join(' · ')||'—'}</td>
+      <td class="sub prods" title="${esc((q.productos||[]).map(p=>p.nombre).join(' · '))}">${(q.productos||[]).map(p=>esc(p.nombre)).join(' · ')||'—'}</td>
       <td class="num">${t!=null?money(t):'—'}</td>
       <td><span class="tag ${est}">${est.replace('-',' ')}</span></td>`;
     tr.onclick = () => {
