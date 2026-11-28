@@ -96,7 +96,8 @@
   body { overflow-x:hidden; }
   .tblwrap { overflow-x:auto; background:#fff; border:1px solid rgba(22,24,26,.12); border-radius:10px; }
   .rtbl { width:100%; border-collapse:collapse; }
-  #detalle { margin-bottom:14px; }
+  tr.drow td { padding:0 14px 14px; border-bottom:1px solid rgba(22,24,26,.15); background:#fbfbfa; }
+  tr.drow .q { margin:14px 0 0; box-shadow:0 2px 12px rgba(22,24,26,.07); }
   @media (max-width:720px){ .wrap { padding:0 12px; } .rtbl td, .rtbl th { padding:8px 9px; } .rtbl td.prods { max-width:110px; } }
   .rtbl th { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; text-align:left; padding:11px 12px; border-bottom:1px solid rgba(22,24,26,.15); white-space:nowrap; }
   .rtbl th[data-s] { cursor:pointer; user-select:none; }
@@ -108,7 +109,6 @@
   tr.rrow:hover td, tr.rrow.open td { background:rgba(22,24,26,.03); }
   tr.rrow td .sub { font-size:.7rem; color:var(--accent); }
   td.sub { color:var(--accent); font-size:.74rem; }
-  #detalle .q { margin-bottom:0; box-shadow:0 2px 12px rgba(22,24,26,.07); }
   .ic { display:inline-flex; vertical-align:middle; margin-right:7px; color:var(--accent); }
   .ic svg { display:block; }
   .busca { font:inherit; font-size:.78rem; padding:7px 14px; border:1px solid rgba(22,24,26,.2); border-radius:20px; min-width:200px; background:#fff; }
@@ -144,7 +144,6 @@
     <select id="fcanal" class="fcanal"><option value="todos">Todos los canales</option></select>
   </div>
   <div id="lista" style="display:none">
-    <div id="detalle" hidden></div>
     <div class="tblwrap"><table class="rtbl">
       <thead><tr>
         <th data-s="creado">Fecha</th><th data-s="nombre">Cliente</th><th>Contacto</th>
@@ -286,19 +285,18 @@ function pintarTabla(){
       <td class="sub prods" title="${esc((q.productos||[]).map(p=>p.nombre).join(' · '))}">${(q.productos||[]).map(p=>esc(p.nombre)).join(' · ')||'—'}</td>
       <td class="num">${t!=null?money(t):'—'}</td>
       <td><span class="tag ${est}">${est.replace('-',' ')}</span></td>`;
+    const det = document.createElement('tr'); det.className='drow'; det.style.display='none';
+    det.innerHTML = '<td colspan="8"><div class="host"></div></td>';
     tr.onclick = () => {
-      const panel = document.getElementById('detalle');
-      const open = !panel.hidden && panel.dataset.id === reg.id;
+      const open = det.style.display !== 'none';
+      body.querySelectorAll('tr.drow').forEach(r=>r.style.display='none');
       body.querySelectorAll('tr.rrow').forEach(r=>r.classList.remove('open'));
-      if (open){ panel.hidden = true; panel.dataset.id=''; return; }
-      panel.dataset.id = reg.id;
-      panel.innerHTML = '';
-      panel.appendChild(crearFicha(reg));
-      panel.hidden = false;
-      tr.classList.add('open');
-      panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+      if (!open){
+        det.style.display=''; tr.classList.add('open');
+        if (!det.dataset.ready){ det.dataset.ready='1'; det.querySelector('.host').appendChild(crearFicha(reg)); }
+      }
     };
-    body.appendChild(tr);
+    body.appendChild(tr); body.appendChild(det);
   });
 }
 
