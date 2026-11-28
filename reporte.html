@@ -49,6 +49,41 @@
     border-top: 1px solid var(--hairline);
     padding-top: 2.2rem; margin-top: 2.6rem; margin-bottom: 1.1rem;
   }
+
+  details.grupo { border-top: 1px solid var(--hairline); padding-top: 2.2rem; margin-top: 2.6rem; }
+  details.grupo summary {
+    list-style: none; cursor: pointer; user-select: none;
+    font-size: .72rem; letter-spacing: .28em; text-transform: uppercase; font-weight: 600;
+    color: var(--accent); margin-bottom: 1.1rem;
+    display: flex; align-items: center; gap: .9rem;
+  }
+  details.grupo summary::-webkit-details-marker { display: none; }
+  details.grupo summary .flecha {
+    flex-shrink: 0;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(22,24,26,.08);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .85rem; color: var(--ink);
+    animation: latido 1.8s ease-in-out infinite;
+    transition: transform .18s, background .2s;
+  }
+  details.grupo summary:hover .flecha { background: rgba(22,24,26,.16); }
+  details.grupo[open] summary .flecha { animation: none; transform: rotate(90deg); }
+  @keyframes latido {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(22,24,26,.18); }
+    35%      { transform: scale(1.14); box-shadow: 0 0 0 8px rgba(22,24,26,0); }
+    55%      { transform: scale(1);    box-shadow: 0 0 0 0 rgba(22,24,26,0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    details.grupo summary .flecha { animation: none; }
+  }
+  .cnt {
+    background: var(--ink); color: var(--paper);
+    font-size: .62rem; letter-spacing: .12em; border-radius: 20px;
+    padding: 4px 12px; font-weight: 600; text-transform: none;
+  }
+  .cnt.pend { background: #8a5a1e; }
+  details.grupo .body { padding-bottom: .6rem; }
   p { margin-bottom: .9rem; font-size: .94rem; }
   main a { color: var(--accent); font-weight: 500; }
   b, strong { font-weight: 600; }
@@ -130,7 +165,9 @@
   <p class="fecha" id="hoy"></p>
   <p class="intro">Estado actual del proyecto <b>portofino.com.mx</b> — lo que ya funciona, lo que falta y de quién depende. El sitio ya está en línea en <a href="https://portofino.com.mx">portofino.com.mx</a> con HTTPS activo.</p>
 
-  <h2>Ya está funcionando</h2>
+  <details class="grupo">
+    <summary><span class="flecha">▸</span> Ya está funcionando <span class="cnt" id="cHecho"></span></summary>
+    <div class="body">
 
   <div class="item hecho"><span class="ico">✓</span><div>
     <p><b>Sitio completo en línea</b> — portada, catálogo de productos, promociones, sucursales reales y contacto. Ya vive en <b>portofino.com.mx</b> con certificado HTTPS (candado) activo y forzado.</p>
@@ -142,12 +179,13 @@
   </div></div>
 
   <div class="item hecho"><span class="ico">✓</span><div>
-    <p><b>Cotizador en línea</b> — el cliente arma su lista de productos con medidas en m² y envía su solicitud; la oficina la recibe completa en un panel interno.</p>
-    <p class="nota">Incluye casilla de "se requiere instalación", validación de teléfono y anti-spam.</p>
+    <p><b>Cotizador en línea</b> — el cliente arma su lista de productos con medidas en m² y envía su solicitud; la oficina la recibe completa en un panel interno y llega aviso por correo.</p>
+    <p class="nota">Incluye casilla de "se requiere instalación", validación de teléfono y anti-spam. 28-nov: ahora pregunta si el cliente quiere <b>avisos por WhatsApp</b> (materiales nuevos y promociones de temporada — la base de la futura lista de difusión) y registra el <b>origen</b> del contacto (directo o anuncio).</p>
   </div></div>
 
   <div class="item hecho"><span class="ico">✓</span><div>
-    <p><b>Panel interno de solicitudes</b> — cada cotización y contacto llega a un panel con contraseña: se puede filtrar por estado (pendiente / en proceso / cerrada), responder por WhatsApp con un clic y eliminar pruebas.</p>
+    <p><b>Panel interno de solicitudes</b> — cada cotización llega a un panel con contraseña: filtros por estado, buscador (escribir "avisos" muestra solo los opt-in), productos visibles en cada fila y, al expandir, medidas, <b>láminas estimadas con sobrante</b>, captura de precios y <b>cotización en PDF descargable</b> con la medida de lámina del tipo cotizado. Gladys ya tiene su propio acceso.</p>
+    <p class="nota">28-nov: la tabla ahora usa todo el ancho de pantalla y funciona en celular — nada queda cortado por los márgenes.</p>
   </div></div>
 
   <div class="item hecho"><span class="ico">✓</span><div>
@@ -167,8 +205,13 @@
   </div></div>
 
   <div class="item hecho"><span class="ico">✓</span><div>
-    <p><b>Herramienta interna de publicaciones</b> — genera las imágenes para Facebook/Instagram (selección del día, producto con variantes y promoción) con el logo de la marca como sello de agua, y redacta el texto con IA, siempre con el WhatsApp y el link al catálogo correctos. Acceso restringido con contraseña — solo el administrador.</p>
-    <p class="nota">Ya en uso: el 29-oct se publicaron y programaron las primeras publicaciones con fotos reales. Estilo acordado con la dirección: logo como sello de agua tenue (blanco o tinta según el fondo, sin leyendas), y cada publicación pasa por visto bueno de Gladys o Eduardo antes de salir.</p>
+    <p><b>Herramienta interna de publicaciones</b> — con un solo selector genera el <b>post</b> (foto de proyecto + banda de lámina + logo) y la <b>historia</b> (foto a pantalla completa + lámina con logo) de cada producto, más un modo promoción. El texto lo redacta IA con los hashtags fijos de la marca y las sucursales correctas. Acceso restringido con contraseña.</p>
+    <p class="nota">Estilo acordado con la dirección: logo como sello de agua tenue, y cada publicación pasa por visto bueno antes de salir. 28-nov: los captions ya no llevan enlaces — Meta solo permite 1 enlace por publicación y así queda libre para el botón de WhatsApp (en Instagram los enlaces en texto no son clicables de todos modos).</p>
+  </div></div>
+
+  <div class="item hecho"><span class="ico">✓</span><div>
+    <p><b>Mensaje unificado: sin envíos, recolección en sucursal</b> — el sitio ya no promete "envíos a todo México" (portada, catálogo, FAQ, aviso de privacidad, datos para Google y el chat). Además se encontró una <b>automatización de Meta</b> que respondía "enviamos a todo México" por palabra clave — corregida, era la fuente de clientes preguntando por envíos.</p>
+    <p class="nota">En publicaciones las sucursales se mencionan como "Tabasco, Veracruz y Chiapas".</p>
   </div></div>
 
   <div class="item hecho"><span class="ico">✓</span><div>
@@ -196,14 +239,19 @@
     <p><b>Cuenta de Meta verificada y protegida</b> — dominio <b>portofino.com.mx</b> verificado en Meta (confirma que la marca es de la empresa), correo ventas@ y WhatsApp 993 302 3903 confirmados, dominio de confianza para anuncios y llave de acceso (passkey) en la cuenta administradora.</p>
   </div></div>
 
+    </div>
+  </details>
+
   <h2>Cómo llega un cliente hoy</h2>
   <div class="flujo">Comentario o DM en FB/IG · WhatsApp  →  respuesta automática / bandeja única
          ↓
-Cotizador en el sitio  →  solicitud al panel interno + WhatsApp
+Cotizador en el sitio  →  solicitud al panel interno + aviso por correo
          ↓                                        <span class="cm">(medido por el Pixel)</span>
-Ejecutivo responde y cierra</div>
+Ejecutivo responde, ajusta precios y manda PDF</div>
 
-  <h2>Lo que falta — y de quién depende</h2>
+  <details class="grupo">
+    <summary><span class="flecha">▸</span> Lo que falta — y de quién depende <span class="cnt pend" id="cPend"></span></summary>
+    <div class="body">
 
   <div class="item pend"><span class="ico">!</span><div>
     <p><b>Fotos reales del resto de categorías</b> — <i>equipo Portofino</i>. Cuarcitas, Sinterizados, Granitos y Productos profesionales ya están; faltan <b>Cuarzos, Dekton, Mármoles, Selladores, Éclos, Tarjas y Travertino</b> (hoy con fotos de muestra), y la foto de <b>Mare Bianco</b> en Cuarcitas. Mismo formato que ya usaron: una carpeta por producto con sus fotos dentro (<a href="instrucciones.html">guía</a>).</p>
@@ -211,7 +259,7 @@ Ejecutivo responde y cierra</div>
   </div></div>
 
   <div class="item pend"><span class="ico">!</span><div>
-    <p><b>WhatsApp Business: perfil y catálogo</b> — <i>equipo Portofino (celular de ventas)</i>. Ya configurados: perfil con descripción, horario, web y correo; respuestas rápidas para el equipo (/precios, /sucursales, /envíos, /catalogo). Pendiente: cargar el <b>catálogo de productos</b> en la app y apagar el "Mensaje de bienvenida" de la app (Meta ya lo cubre, para evitar doble saludo). Falta verificar el mensaje de ausencia y la respuesta de promociones. Las <b>palabras clave personalizadas no están disponibles para WhatsApp</b> (limitación de Meta — solo FB/IG); en WhatsApp cubren el saludo y las FAQs. Se evalúa "Business Agent", la IA de Meta que contesta preguntas abiertas en la bandeja.</p>
+    <p><b>WhatsApp Business: perfil y catálogo</b> — <i>equipo Portofino (celular de ventas)</i>. Ya configurados: perfil con descripción, horario, web y correo; respuestas rápidas para el equipo (/precios, /sucursales, /envíos, /catalogo). Pendiente: cargar el <b>catálogo de productos</b> en la app. Las <b>palabras clave personalizadas no están disponibles para WhatsApp</b> (limitación de Meta — solo FB/IG); en WhatsApp cubren el saludo y las FAQs. 28-nov: se evaluó un proveedor externo de bandeja/difusión (BSP tipo Zernio) — <b>descartado por ahora</b>: la bandeja unificada de Meta + las automatizaciones ya cubren la operación, y la difusión masiva solo se justificaría si la lista de opt-in supera ~250 contactos.</p>
   </div></div>
 
   <div class="item pend"><span class="ico">!</span><div>
@@ -239,16 +287,15 @@ Ejecutivo responde y cierra</div>
   </div></div>
 
   <div class="item pend"><span class="ico">!</span><div>
-    <p><b>Aviso automático a la oficina por cada cotización</b> — <i>desarrollo, por decidir ruta</i>. Hoy el lead llega al panel pero nadie recibe notificación; opciones: correo automático o WhatsApp.</p>
-  </div></div>
-
-  <div class="item pend"><span class="ico">!</span><div>
-    <p><b>Confirmar: ¿medición e instalación incluidas?</b> — <i>equipo Portofino</i>. La plantilla de promociones dice "medición, corte e instalación incluidas" y el asistente del sitio dice que corren por cuenta del contratista del cliente. Hay que dejar una sola versión.</p>
+    <p><b>Primera campaña de temporada por WhatsApp</b> — <i>equipo Portofino</i>. Planeado: 4-6 envíos al año (material nuevo, inicio de temporada), solo a quienes aceptaron avisos. La lista ya se está formando sola desde el cotizador — en el panel se filtra buscando "avisos". Para arrancar alcanzan las <b>listas de difusión</b> de la propia app de WhatsApp (hasta 256 contactos por lista); un servicio de difusión masiva (BSP) solo tendría sentido si la lista supera ese tamaño.</p>
   </div></div>
 
   <div class="item pend"><span class="ico">!</span><div>
     <p><b>Ficha de Search Console (Google)</b> — <i>equipo Portofino + desarrollo</i>. El dominio ya fue verificado en Google por alguna cuenta de la empresa; identificarla para enviar el sitemap y revisar la indexación.</p>
   </div></div>
+
+    </div>
+  </details>
 
   <div class="alerta">
     <b>Lo más urgente: fotos del resto de categorías.</b> Con Cuarcitas, Sinterizados, Granitos y Productos profesionales el catálogo ya se ve real — en cuanto entren las demás carpetas a Dropbox, se publican solas esa misma noche.
@@ -271,6 +318,12 @@ Ejecutivo responde y cierra</div>
 <script>
   document.getElementById('hoy').textContent =
     'Generado el ' + new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nHecho = document.querySelectorAll('.item.hecho').length;
+  const nPend = document.querySelectorAll('.item.pend').length;
+  document.getElementById('cHecho').textContent = nHecho + ' hechos';
+  document.getElementById('cPend').textContent = nPend + ' pendientes';
+  window.addEventListener('beforeprint', () =>
+    document.querySelectorAll('details.grupo').forEach(d => d.open = true));
 </script>
 
 </body>

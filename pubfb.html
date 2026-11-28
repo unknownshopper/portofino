@@ -83,6 +83,11 @@
   <div class="cap" style="margin:8px 0 0">
     <div class="row" style="align-items:center">
       <select id="prodSel" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff;min-width:280px"></select>
+      <select id="prTpl" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
+        <option value="1">Template 1 — foto + texto</option>
+        <option value="2">Template 2 — slab de fondo</option>
+        <option value="3" selected>Template 3 — barra de slab</option>
+      </select>
       <div id="pubInfo" style="font-size:.72rem;color:var(--accent)">● = ya publicada · registro de este navegador</div>
     </div>
   </div>
@@ -90,28 +95,38 @@
   <div class="cap" style="margin:8px 0 0">
     <div class="kick">Modo promoción — estilo del slider del sitio</div>
     <div class="row" style="align-items:center">
-      <select id="prTpl" style="font:inherit;font-size:.82rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
-        <option value="1">Template 1 — foto + texto</option>
-        <option value="2">Template 2 — slab de fondo</option>
-        <option value="3" selected>Template 3 — barra de slab</option>
-      </select>
       <button class="pri" id="dlPromo">Descargar post 1080</button>
       <button class="pri" id="dlStory">Descargar historia 1080×1920</button>
       <button id="viewPromo">Vista previa grande</button>
     </div>
     <div class="row" style="margin-top:12px">
-      <input id="prTag" type="text" list="tagList" placeholder="Etiqueta — ej. producto nuevo" style="flex:1;min-width:160px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
-      <datalist id="tagList">
-        <option value="Producto nuevo">
-        <option value="Promoción">
-        <option value="Remate">
-        <option value="Destacados">
-        <option value="Oferta">
-        <option value="Nuevo ingreso">
-      </datalist>
-      <input id="prTit" type="text" placeholder="Oferta — ej. precio especial" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <select id="prTag" style="flex:1;min-width:150px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
+        <option value="">--</option>
+        <option>Producto nuevo</option>
+        <option>Nuevo ingreso</option>
+        <option>Promoción</option>
+        <option>Oferta</option>
+        <option>Destacados</option>
+        <option>Remate</option>
+        <option>Temporada</option>
+      </select>
+      <select id="prTit" style="flex:2;min-width:200px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
+        <option>precio especial de introducción</option>
+        <option>precio de lanzamiento</option>
+        <option>precio de temporada</option>
+        <option>descuento especial</option>
+        <option>promoción por tiempo limitado</option>
+        <option value="" selected>--</option>
+      </select>
       <input id="prDet" type="text" placeholder="Detalle — ej. lámina completa 2cm, proyecto ilustrativo" style="flex:2;min-width:220px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
-      <input id="prVig" type="text" placeholder="Vigencia — ej. hasta agotar existencias" style="flex:1;min-width:180px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px">
+      <select id="prVig" style="flex:1;min-width:170px;font:inherit;font-size:.8rem;padding:9px 12px;border:1px solid rgba(22,24,26,.2);border-radius:6px;background:#fff">
+        <option>Vigencia: hasta agotar existencias</option>
+        <option>Vigencia: hasta fin de mes</option>
+        <option>Vigencia: por tiempo limitado</option>
+        <option>Vigencia: hasta fin de año</option>
+        <option>Pieza única — hasta agotar existencia</option>
+        <option value="" selected>--</option>
+      </select>
     </div>
     <div class="row" style="align-items:flex-start;gap:16px">
       <img id="promoPrev" alt="" style="display:none;width:300px;margin-top:16px;border:1px solid rgba(22,24,26,.12);border-radius:8px">
@@ -120,7 +135,7 @@
   </div>
 
   <div class="cap" style="margin:8px 0 0">
-    <div class="kick">Modo producto — 1 publicación: foto principal + variantes</div>
+    <div class="kick">Modo producto — mismo template que promoción</div>
     <div class="row" style="align-items:center">
       <button class="pri" id="dlCard">Descargar post</button>
       <button class="pri" id="dlCardStory">Descargar historia</button>
@@ -140,7 +155,7 @@
       <button id="genTpl">Plantilla</button>
       <button id="copyCap">Copiar caption</button>
     </div>
-    <div style="font-size:.7rem;color:var(--accent);margin-top:6px">Con texto en "Oferta" el caption sale como promoción; con el campo vacío, como producto.</div>
+    <div style="font-size:.7rem;color:var(--accent);margin-top:6px">Con una oferta elegida el caption sale como promoción; en "--", como producto.</div>
   </div>
 </main>
 
@@ -236,8 +251,10 @@ function wrapTxt(x, txt, maxW){
   return out;
 }
 
-// ── modo producto: 1 post = 1 producto con tira de variantes ──
-async function renderCard(p){
+// ── modo producto: 1 post = 1 producto — el template seleccionado manda ──
+async function renderCard(p, tpl){
+  if (tpl === '1') return renderCardT1(p);
+  if (tpl === '2') return renderCardT2(p);
   const c = document.createElement('canvas'); c.width = c.height = 2160;
   const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
   x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
@@ -270,8 +287,87 @@ async function renderCard(p){
   return c;
 }
 
+// producto T1 — foto de proyecto a la derecha, rubro + nombre a la izquierda
+async function renderCardT1(p){
+  const c = document.createElement('canvas'); c.width = c.height = 2160;
+  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
+  x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1080);
+
+  const img = await loadImg(p.fotos[0]);
+  cover(x, img, 480, 96, 552, 888, 18);
+
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = '#67757d'; x.font = '600 20px Inter, sans-serif';
+  x.fillText(rubro1(p.rubro).toUpperCase(), 64, 96 + 44);
+  let y = 96 + 92;
+  x.fillStyle = '#16181b'; x.font = '700 44px Inter, sans-serif';
+  for (const ln of wrapTxt(x, p.nombre, 376)){ x.fillText(ln, 64, y); y += 52; }
+
+  const slabSrc = p.fotos.length > 1 ? p.fotos[p.fotos.length-1] : null;
+  const slabH = 230, slabY = 1080-96-slabH;
+  const lg = logoImg.ink;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 240, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, 64 + (376-lw)/2, slabY-36-lh, lw, lh);
+  }
+  if (slabSrc){
+    const im = await loadImg(slabSrc);
+    cover(x, im, 64, slabY, 376, slabH, 16);
+  }
+  return c;
+}
+
+// producto T2 — la lámina es el fondo completo, proyecto como tarjeta
+async function renderCardT2(p){
+  const c = document.createElement('canvas'); c.width = c.height = 2160;
+  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
+
+  const bg = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
+  cover(x, bg, 0, 0, 1080, 1080, 0);
+
+  // velos oscuros arriba (texto) y abajo (logo) — legible sobre láminas claras
+  const g1 = x.createLinearGradient(0, 0, 0, 560);
+  g1.addColorStop(0, 'rgba(12,14,16,.6)'); g1.addColorStop(1, 'rgba(12,14,16,0)');
+  x.fillStyle = g1; x.fillRect(0, 0, 1080, 560);
+  const g2 = x.createLinearGradient(0, 880, 0, 1080);
+  g2.addColorStop(0, 'rgba(12,14,16,0)'); g2.addColorStop(1, 'rgba(12,14,16,.5)');
+  x.fillStyle = g2; x.fillRect(0, 880, 1080, 200);
+
+  // texto arriba a la izquierda — borde fino + sombra
+  const line = (ln, y, lw) => {
+    x.lineWidth = lw; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round';
+    x.strokeText(ln, 64, y); x.fillText(ln, 64, y);
+  };
+  x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 14; x.shadowOffsetY = 2;
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = '600 22px Inter, sans-serif';
+  line(rubro1(p.rubro).toUpperCase(), 96 + 50, 2);
+  let y = 96 + 98;
+  x.fillStyle = '#fff'; x.font = '700 48px Inter, sans-serif';
+  for (const ln of wrapTxt(x, p.nombre, 900)){ line(ln, y, 3.5); y += 60; }
+  x.shadowBlur = 0; x.shadowOffsetY = 0;
+
+  // foto de proyecto ancha — domina la mitad inferior, subida para dar aire al logo
+  const proj = await loadImg(p.fotos[0]);
+  const pw = 952, ph = 560, px = 64, py = 1080 - 200 - ph;
+  x.fillStyle = 'rgba(0,0,0,.4)';
+  x.beginPath();
+  if (x.roundRect) x.roundRect(px+10, py+14, pw, ph, 18); else x.rect(px+10, py+14, pw, ph);
+  x.fill();
+  cover(x, proj, px, py, pw, ph, 16);
+
+  const lg = logoImg.w;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 300, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, (1080-lw)/2, 1080-30-lh, lw, lh);
+  }
+  return c;
+}
+
 // ── modo producto: historia 1080×1920 — proyecto arriba, slab como barra al pie ──
-async function renderCardStory(p){
+async function renderCardStory(p, tpl){
+  if (tpl === '1') return renderCardStoryT1(p);
+  if (tpl === '2') return renderCardStoryT2(p);
   const c = document.createElement('canvas'); c.width = 2160; c.height = 3840;
   const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
   x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1920);
@@ -304,6 +400,90 @@ async function renderCardStory(p){
   return c;
 }
 
+// historia producto T1 — fondo claro, proyecto centrado, logo tinta
+async function renderCardStoryT1(p){
+  const c = document.createElement('canvas'); c.width = 2160; c.height = 3840;
+  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
+  x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1920);
+
+  const topSafe = 290;
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = '#67757d'; x.font = '600 26px Inter, sans-serif'; x.letterSpacing = '4px';
+  x.fillText(p.rubro.toUpperCase(), 64, topSafe + 30, 952);
+  x.fillStyle = '#16181b'; x.font = '700 64px Inter, sans-serif'; x.letterSpacing = '0px';
+  let y = topSafe + 116;
+  for (const ln of wrapTxt(x, p.nombre, 952)){ x.fillText(ln, 64, y); y += 74; }
+
+  const logoY = 1500;
+  const proj = await loadImg(p.fotos[0]);
+  const py = y + 56, ph = logoY - 40 - py;
+  if (ph > 320) cover(x, proj, 64, py, 952, ph, 18);
+
+  let logoBot = logoY;
+  const lg = logoImg.ink;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 400, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, (1080-lw)/2, logoBot, lw, lh);
+    logoBot += lh;
+  }
+  if (p.fotos.length > 1){
+    const slab = await loadImg(p.fotos[p.fotos.length-1]);
+    cover(x, slab, 1016-260, logoY+16, 260, 116, 14);
+  }
+  return c;
+}
+
+// historia producto T2 — lámina de fondo completo, proyecto como tarjeta
+async function renderCardStoryT2(p){
+  const c = document.createElement('canvas'); c.width = 2160; c.height = 3840;
+  const x = c.getContext('2d'); x.scale(2,2); x.imageSmoothingQuality='high';
+
+  const bg = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
+  cover(x, bg, 0, 0, 1080, 1920, 0);
+
+  // velos arriba (texto) y abajo (logo) — legible sobre láminas claras
+  const g1 = x.createLinearGradient(0, 0, 0, 940);
+  g1.addColorStop(0, 'rgba(12,14,16,.55)'); g1.addColorStop(1, 'rgba(12,14,16,0)');
+  x.fillStyle = g1; x.fillRect(0, 0, 1080, 940);
+  const g2 = x.createLinearGradient(0, 1330, 0, 1920);
+  g2.addColorStop(0, 'rgba(12,14,16,0)'); g2.addColorStop(1, 'rgba(12,14,16,.5)');
+  x.fillStyle = g2; x.fillRect(0, 1330, 1080, 590);
+
+  const topSafe = 270;
+  x.textBaseline = 'alphabetic';
+  x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 14; x.shadowOffsetY = 2;
+  const line = (ln, y, lw) => {
+    x.lineWidth = lw; x.strokeStyle = 'rgba(0,0,0,.45)'; x.lineJoin = 'round';
+    x.strokeText(ln, 64, y); x.fillText(ln, 64, y);
+  };
+  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = '600 26px Inter, sans-serif';
+  line(p.rubro.toUpperCase(), topSafe + 52, 2.2);
+  let y = topSafe + 108;
+  x.fillStyle = '#fff'; x.font = '700 62px Inter, sans-serif';
+  for (const ln of wrapTxt(x, p.nombre, 952)){ line(ln, y, 4); y += 72; }
+  x.shadowBlur = 0; x.shadowOffsetY = 0;
+
+  const logoY = 1500;
+  if (p.fotos.length > 1){
+    const proj = await loadImg(p.fotos[0]);
+    const py = y + 32, ph = logoY - 40 - py;
+    if (ph > 320){
+      x.fillStyle = 'rgba(0,0,0,.4)';
+      x.beginPath();
+      if (x.roundRect) x.roundRect(64+12, py+16, 952, ph, 22); else x.rect(64+12, py+16, 952, ph);
+      x.fill();
+      cover(x, proj, 64, py, 952, ph, 18);
+    }
+  }
+
+  const lg = logoImg.w;
+  if (lg.complete && lg.naturalWidth){
+    const lw = 460, lh = lw*lg.naturalHeight/lg.naturalWidth;
+    x.drawImage(lg, (1080-lw)/2, logoY + 30, lw, lh);
+  }
+  return c;
+}
+
 // ── modo promoción: layout del slider del sitio ──
 async function renderPromo(p, titular, detalle, vigencia, tpl){
   if (tpl === '2') return renderPromo2(p, titular, detalle, vigencia);
@@ -316,22 +496,25 @@ async function renderPromo(p, titular, detalle, vigencia, tpl){
   const img = await loadImg(p.fotos[0]);
   cover(x, img, 480, 96, 552, 888, 18);
 
-  // etiqueta "PRODUCTO NUEVO" esquina superior
+  // etiqueta esquina superior — solo si el selector trae una
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
-  x.fillStyle = '#16181b';
-  x.beginPath();
-  if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
-  x.fill();
-  x.fillStyle = '#f3f4f4';
-  x.fillText(etq, 64 + 28, 96 + 36);
+  const etq = promoTag(); let eh = 0;
+  if (etq){
+    const ew = x.measureText(etq).width + 56; eh = 54;
+    x.fillStyle = '#16181b';
+    x.beginPath();
+    if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
+    x.fill();
+    x.fillStyle = '#f3f4f4';
+    x.fillText(etq, 64 + 28, 96 + 36);
+  }
 
   // rubro bajo la etiqueta
   x.fillStyle = '#67757d'; x.font = '600 20px Inter, sans-serif';
   x.fillText(rubro1(p.rubro).toUpperCase(), 64, 96 + eh + 44);
 
   // titular + detalle arriba, bajo la etiqueta
-  const tLns = (()=>{ x.font='700 44px Inter, sans-serif'; return wrapTxt(x, `${p.nombre} — ${titular}`, 376); })();
+  const tLns = (()=>{ x.font='700 44px Inter, sans-serif'; return wrapTxt(x, `${p.nombre}${titular ? ' — ' + titular : ''}`, 376); })();
   x.font='400 28px Inter, sans-serif'; const dLns = wrapTxt(x, detalle, 376);
   if (dLns.length > 4){ dLns.length = 4; dLns[3] = dLns[3].replace(/\s*\S+$/, '…'); }
   let y = 96 + eh + 92;
@@ -348,7 +531,7 @@ async function renderPromo(p, titular, detalle, vigencia, tpl){
   const lg = logoImg.ink;
   if (lg.complete && lg.naturalWidth){
     const lw = 240, lh = lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, 64, slabY-36-lh, lw, lh);
+    x.drawImage(lg, 64 + (376-lw)/2, slabY-36-lh, lw, lh);
   }
   if (slabSrc){
     const im = await loadImg(slabSrc);
@@ -388,22 +571,25 @@ async function renderPromo3(p, titular, detalle, vigencia){
     cover(x, proj, px, py, pw, ph, 16);
   }
 
-  // etiqueta + textos arriba a la izquierda
+  // etiqueta + textos arriba a la izquierda — sin chip si el selector está en "--"
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
-  x.fillStyle = '#16181b';
-  x.beginPath();
-  if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
-  x.fill();
-  x.fillStyle = '#f3f4f4';
-  x.fillText(etq, 64 + 28, 96 + 36);
+  const etq = promoTag(); let eh = 0;
+  if (etq){
+    const ew = x.measureText(etq).width + 56; eh = 54;
+    x.fillStyle = '#16181b';
+    x.beginPath();
+    if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
+    x.fill();
+    x.fillStyle = '#f3f4f4';
+    x.fillText(etq, 64 + 28, 96 + 36);
+  }
 
   x.fillStyle = '#67757d'; x.font = '600 20px Inter, sans-serif';
   x.fillText(rubro1(p.rubro).toUpperCase(), 64, 96 + eh + 44);
 
   let y = 96 + eh + 92;
   x.fillStyle = '#16181b'; x.font = '700 44px Inter, sans-serif';
-  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 520)){ x.fillText(ln, 64, y); y += 52; }
+  for (const ln of wrapTxt(x, `${p.nombre}${titular ? ' — ' + titular : ''}`, 520)){ x.fillText(ln, 64, y); y += 52; }
   y += 30;
   x.fillStyle = '#67757d'; x.font = '400 28px Inter, sans-serif';
   for (const ln of wrapTxt(x, detalle, 520)){ x.fillText(ln, 64, y); y += 40; }
@@ -426,16 +612,25 @@ async function renderPromo2(p, titular, detalle, vigencia){
   const bg = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
   cover(x, bg, 0, 0, 1080, 1080, 0);
 
+  // velo oscuro degradado en la zona de texto — legible sobre láminas claras
+  const gr = x.createLinearGradient(0, 0, 700, 0);
+  gr.addColorStop(0, 'rgba(12,14,16,.62)');
+  gr.addColorStop(1, 'rgba(12,14,16,0)');
+  x.fillStyle = gr; x.fillRect(0, 0, 700, 1080);
+
   // texto directo sobre la lámina — la piedra manda
   // etiqueta invertida (clara sobre oscuro)
   x.textBaseline = 'alphabetic'; x.font = '700 26px Inter, sans-serif';
-  const etq = promoTag(), ew = x.measureText(etq).width + 56, eh = 54;
-  x.fillStyle = '#f3f4f4';
-  x.beginPath();
-  if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
-  x.fill();
-  x.fillStyle = '#16181b';
-  x.fillText(etq, 64 + 28, 96 + 36);
+  const etq = promoTag(); let eh = 0;
+  if (etq){
+    const ew = x.measureText(etq).width + 56; eh = 54;
+    x.fillStyle = '#f3f4f4';
+    x.beginPath();
+    if (x.roundRect) x.roundRect(64, 96, ew, eh, eh/2); else x.rect(64, 96, ew, eh);
+    x.fill();
+    x.fillStyle = '#16181b';
+    x.fillText(etq, 64 + 28, 96 + 36);
+  }
 
   // foto de proyecto como tarjeta a la derecha (si hay más de una foto)
   if (p.fotos.length > 1){
@@ -458,7 +653,7 @@ async function renderPromo2(p, titular, detalle, vigencia){
   line(rubro1(p.rubro).toUpperCase(), 96 + eh + 50, 2);
   let y = 96 + eh + 98;
   x.fillStyle = '#fff'; x.font = '700 48px Inter, sans-serif';
-  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 460)){ line(ln, y, 3.5); y += 60; }
+  for (const ln of wrapTxt(x, `${p.nombre}${titular ? ' — ' + titular : ''}`, 460)){ line(ln, y, 3.5); y += 60; }
   y += 34;
   x.fillStyle = 'rgba(255,255,255,.96)'; x.font = '400 30px Inter, sans-serif';
   for (const ln of wrapTxt(x, detalle, 460)){ line(ln, y, 3); y += 44; }
@@ -468,7 +663,7 @@ async function renderPromo2(p, titular, detalle, vigencia){
   const lg = logoImg.w;
   if (lg.complete && lg.naturalWidth){
     const lw = 340, lh = lw*lg.naturalHeight/lg.naturalWidth;
-    x.drawImage(lg, 64, 1080-84-lh, lw, lh);
+    x.drawImage(lg, (1080-lw)/2, 1080-84-lh, lw, lh);
   }
 
   // vigencia como pie de página centrado
@@ -491,18 +686,28 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   if (t2){
     const bg = await loadImg(p.fotos[p.fotos.length-1] || p.fotos[0]);
     cover(x, bg, 0, 0, 1080, 1920, 0);
+    // velos degradados arriba (texto) y abajo (logo) — legible sobre láminas claras
+    const g1 = x.createLinearGradient(0, 0, 0, 940);
+    g1.addColorStop(0, 'rgba(12,14,16,.55)'); g1.addColorStop(1, 'rgba(12,14,16,0)');
+    x.fillStyle = g1; x.fillRect(0, 0, 1080, 940);
+    const g2 = x.createLinearGradient(0, 1330, 0, 1920);
+    g2.addColorStop(0, 'rgba(12,14,16,0)'); g2.addColorStop(1, 'rgba(12,14,16,.5)');
+    x.fillStyle = g2; x.fillRect(0, 1330, 1080, 590);
   } else { x.fillStyle = '#f3f4f4'; x.fillRect(0,0,1080,1920); }
 
   // etiqueta — bajo la zona del nombre de cuenta de la plataforma (~270px)
   const topSafe = 270, botSafe = 1620;
   x.textBaseline = 'alphabetic'; x.font = '700 30px Inter, sans-serif';
-  const etq = promoTag(), ew = x.measureText(etq).width + 64, eh = 62;
-  x.fillStyle = t2 ? '#f3f4f4' : '#16181b';
-  x.beginPath();
-  if (x.roundRect) x.roundRect(64, topSafe, ew, eh, eh/2); else x.rect(64, topSafe, ew, eh);
-  x.fill();
-  x.fillStyle = t2 ? '#16181b' : '#f3f4f4';
-  x.fillText(etq, 64 + 32, topSafe + 40);
+  const etq = promoTag(); let eh = 0;
+  if (etq){
+    const ew = x.measureText(etq).width + 64; eh = 62;
+    x.fillStyle = t2 ? '#f3f4f4' : '#16181b';
+    x.beginPath();
+    if (x.roundRect) x.roundRect(64, topSafe, ew, eh, eh/2); else x.rect(64, topSafe, ew, eh);
+    x.fill();
+    x.fillStyle = t2 ? '#16181b' : '#f3f4f4';
+    x.fillText(etq, 64 + 32, topSafe + 40);
+  }
 
   // textos — borde fino + sombra solo cuando van sobre la foto (T2)
   if (t2){ x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 14; x.shadowOffsetY = 2; }
@@ -514,7 +719,7 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   line(rubro1(p.rubro).toUpperCase(), topSafe + eh + 52, 2.2);
   let y = topSafe + eh + 108;
   x.fillStyle = ink; x.font = '700 62px Inter, sans-serif';
-  for (const ln of wrapTxt(x, `${p.nombre} — ${titular}`, 952)){ line(ln, y, 4); y += 72; }
+  for (const ln of wrapTxt(x, `${p.nombre}${titular ? ' — ' + titular : ''}`, 952)){ line(ln, y, 4); y += 72; }
   y += 44;
   x.fillStyle = sub; x.font = '400 36px Inter, sans-serif';
   for (const ln of wrapTxt(x, detalle, 920)){ line(ln, y, 3.4); y += 52; }
@@ -524,7 +729,7 @@ async function renderPromoStory(p, titular, detalle, vigencia, tpl){
   const logoY = t3 ? 1640 : 1500;
   if (p.fotos.length > 1){
     const proj = await loadImg(p.fotos[0]);
-    const py = y + 56, ph = logoY - 40 - py;
+    const py = y + 32, ph = logoY - 40 - py;
     if (ph > 320){
       if (t2){
         x.fillStyle = 'rgba(0,0,0,.4)';
@@ -599,7 +804,7 @@ ${CIERRE}
 ${TAGS}`;
 
 const tplPromo = (p,oferta) =>
-`${promoTag()} — ${tit(p.nombre)}
+`${promoTag() ? promoTag() + ' — ' : ''}${tit(p.nombre)}
 
 ${oferta.charAt(0).toUpperCase()+oferta.slice(1)}. ${document.getElementById('prDet').value.trim()}
 
@@ -656,10 +861,10 @@ const RUBRO_DET = {
 };
 const rubroDet = r => RUBRO_DET[r] || 'Lámina completa de 2 cm — proyecto ilustrativo.';
 
-const promoTag = () => (document.getElementById('prTag').value.trim() || 'PRODUCTO NUEVO').toUpperCase();
+const promoTag = () => document.getElementById('prTag').value.trim().toUpperCase();
 const promoVals = () => ({
   p: PRODS[+prodSel.value],
-  tit: document.getElementById('prTit').value.trim() || 'precio especial de introducción',
+  tit: document.getElementById('prTit').value.trim(),
   det: document.getElementById('prDet').value.trim(),
   vig: document.getElementById('prVig').value.trim(),
   tpl: document.getElementById('prTpl').value,
@@ -684,12 +889,13 @@ let prodCanvas = null, prodStoryCanvas = null;
 async function previewCard(){
   const p = PRODS[+prodSel.value];
   if (!p) return;
-  prodCanvas = await renderCard(p);
+  const tpl = document.getElementById('prTpl').value;
+  prodCanvas = await renderCard(p, tpl);
   cardPrev.src = prodCanvas.toDataURL('image/png');
   cardPrev.style.display = 'block';
   const sp = document.getElementById('cardStoryPrev');
   sp.style.display = 'none';
-  renderCardStory(p).then(sc => {
+  renderCardStory(p, tpl).then(sc => {
     prodStoryCanvas = sc;
     sp.src = sc.toDataURL('image/png');
     sp.style.display = 'block';
@@ -703,11 +909,12 @@ prodSel.onchange = ()=>{
   document.getElementById('prDet').value = rubroDet(p.rubro);
   previewCard(); previewPromo();
 };
-['prTag','prTit','prDet','prVig','prTpl'].forEach(id => document.getElementById(id).oninput = previewPromo);
+['prTag','prTit','prDet','prVig'].forEach(id => document.getElementById(id).oninput = previewPromo);
+document.getElementById('prTpl').oninput = ()=>{ previewPromo(); previewCard(); };
 
 document.getElementById('dlCardStory').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
-  const c = prodStoryCanvas || await renderCardStory(p);
+  const c = await renderCardStory(p, document.getElementById('prTpl').value);
   const a = document.createElement('a');
   a.download = `portofino-historia-${slugTxt(p.nombre)}.png`;
   a.href = c.toDataURL('image/png'); a.click();
@@ -715,7 +922,7 @@ document.getElementById('dlCardStory').onclick = async()=>{
 };
 document.getElementById('dlCard').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
-  const c = prodCanvas || await renderCard(p);
+  const c = await renderCard(p, document.getElementById('prTpl').value);
   const a = document.createElement('a');
   a.download = `portofino-post-${slugTxt(p.nombre)}.png`;
   a.href = c.toDataURL('image/png'); a.click();
@@ -723,7 +930,7 @@ document.getElementById('dlCard').onclick = async()=>{
 };
 document.getElementById('viewCard').onclick = async()=>{
   const p = PRODS[+prodSel.value]; if (!p) return;
-  const c = prodCanvas || await renderCard(p);
+  const c = await renderCard(p, document.getElementById('prTpl').value);
   const w = window.open('','_blank');
   w.document.write(`<img src="${c.toDataURL('image/png')}" style="width:100%">`);
 };
@@ -757,7 +964,7 @@ document.getElementById('genIA').onclick = ()=>{
   if (hayOferta()){
     const v = promoVals();
     genCapIA(`${PROMPT_BASE}
-La publicación anuncia: ${promoTag()} — ${tit(v.p.nombre)} (${rubro1(v.p.rubro)}) — ${v.tit}.${v.det ? ' Detalle: '+v.det+'.' : ''}
+La publicación anuncia: ${promoTag() ? promoTag() + ' — ' : ''}${tit(v.p.nombre)} (${rubro1(v.p.rubro)})${v.tit ? ' — ' + v.tit : ''}.${v.det ? ' Detalle: '+v.det+'.' : ''}
 Tono: humano y evocativo, con emoción de novedad — la piedra como pieza que define un espacio. No inventes precios ni porcentajes de descuento.
 Estructura: 1-2 líneas de apertura → mención del material y la oferta → este cierre EXACTO, sin cambiarlo:
 ${CIERRE}
@@ -781,10 +988,7 @@ document.getElementById('copyCap').onclick = ()=>{
 };
 
 // ── init ──
-document.getElementById('prTag').value = 'Producto nuevo';
-document.getElementById('prTit').value = 'precio especial de introducción';
 document.getElementById('prDet').value = rubroDet(PRODS[+prodSel.value].rubro);
-document.getElementById('prVig').value = 'Vigencia: hasta agotar existencias.';
 refreshSels();
 previewCard();
 previewPromo();
