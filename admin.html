@@ -305,17 +305,28 @@ function crearFicha(reg){
     const baseDe = p => p && PRECIOS_BASE[p.nombre] != null ? PRECIOS_BASE[p.nombre]
                      : p && PRECIOS_BASE['_'+p.rubro] != null ? PRECIOS_BASE['_'+p.rubro] : null;
     const nprod = (q.productos||[]).length;
+    // m² útiles aprox por lámina según rubro — estimado; la lámina real se confirma en físico
+    const SLAB_M2 = { GRANITOS:6, CUARCITAS:6, MARMOLES:6, CUARZOS:5, SINTERIZADOS:4.6, DEKTON:4.6, ECLOS:4.6, TRAVERTINO:5.5 };
+    const lamDe = p => {
+      const s = SLAB_M2[p.rubro]; if (!s) return null;
+      const m2 = m2De(p), lams = Math.ceil(m2/s), sobra = +(lams*s-m2).toFixed(1);
+      return { lams, sobra };
+    };
+    let lamTot = 0;
     const filas = (q.productos||[]).map((p,i) => {
       const m2 = m2De(p);
       const pv = precios[i] == null ? (baseDe(p) ?? '') : precios[i];
+      const lam = lamDe(p); if (lam) lamTot += lam.lams;
       return `<tr>
         <td><b>${esc(p.nombre)}</b> <span style="color:var(--accent);font-size:.72rem">${esc(p.rubro)}</span>${p.medidas?`<div style="font-size:.72rem;color:var(--accent)">${esc(p.medidas)}</div>`:''}</td>
         <td class="num">${p.m2?esc(p.m2):'1'}</td>
+        <td class="num" title="Láminas completas estimadas · el sobrante es del cliente">${lam?`<b>${lam.lams}</b>${lam.sobra?`<div style="font-size:.7rem;color:var(--accent)">sobra ${lam.sobra} m²</div>`:''}`:'—'}</td>
         <td class="num"><input class="precio" data-i="${i}" type="number" min="0" step="any" value="${esc(pv)}" placeholder="${m2?'$/m²':'$'}"></td>
         <td class="num lt">${(pv!=='' && m2)?money(m2*pv):((pv!=='' && !m2)?money(pv):'')}</td>
       </tr>`;
     }).join('');
-    const prods = nprod ? `<table class="tbl"><thead><tr><th>Producto</th><th class="num">m²</th><th class="num">$/m²</th><th class="num">Total</th></tr></thead><tbody>${filas}</tbody></table>` : '';
+    const prods = nprod ? `<table class="tbl"><thead><tr><th>Producto</th><th class="num">m²</th><th class="num">Láminas ≈</th><th class="num">$/m²</th><th class="num">Total</th></tr></thead><tbody>${filas}</tbody></table>
+      ${lamTot?`<div style="font-size:.74rem;color:var(--accent);margin-top:6px">≈ ${lamTot} lámina${lamTot>1?'s':''} en total — estimado por m² útil estándar; la medida real de cada lámina se confirma en sucursal. El material sobrante es del cliente.</div>`:''}` : '';
     div.innerHTML = `
       <div class="top">
         <span class="who">${esc(q.nombre)||'—'}</span>
